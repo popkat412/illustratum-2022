@@ -7,11 +7,12 @@ export default class CelestialBody {
 
   velocity: Vec2 = new Vec2();
   acceleration: Vec2 = new Vec2();
+  pos: Vec2 = new Vec2(); // NOT screen coordinates
   mass: number;
 
   fixed: boolean = false;
 
-  get pos(): Vec2 {
+  get screenCoords(): Vec2 {
     return new Vec2(this.pixiGraphics.x, this.pixiGraphics.y);
   }
 
@@ -31,20 +32,26 @@ export default class CelestialBody {
     this.acceleration = this.acceleration.add(f.div(this.mass));
   }
 
-  update(deltaTime: number): void {
+  update(deltaTime: number, scaleFactor: number, timeFactor: number): void {
     if (this.fixed) return;
 
-    this.velocity = this.velocity.add(this.acceleration.mult(deltaTime));
+    this.velocity = this.velocity.add(this.acceleration.mult(deltaTime * timeFactor));
 
     this.pixiTrailGraphics.moveTo(this.pixiGraphics.x, this.pixiGraphics.y);
 
-    const newPos = this.pos.add(this.velocity.mult(deltaTime));
+    this.pos = this.pos.add(this.velocity.mult(deltaTime * timeFactor));
+    
+    const newScreenCoord = this.pos.mult(scaleFactor);
+    this.pixiGraphics.position.set(newScreenCoord.x, newScreenCoord.y);
 
-    this.pixiGraphics.position.set(newPos.x, newPos.y);
-
-    this.pixiTrailGraphics.lineTo(newPos.x, newPos.y);
+    this.pixiTrailGraphics.lineTo(newScreenCoord.x, newScreenCoord.y);
 
     this.acceleration = new Vec2();
+  }
+
+  updateScreenPos(scaleFactor: number): void {
+    const newScreenCoord = this.pos.mult(scaleFactor);
+    this.pixiGraphics.position.set(newScreenCoord.x, newScreenCoord.y);
   }
 
   destroy(): void {
