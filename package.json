@@ -1,0 +1,17 @@
+{
+  "name": "illustratum-2022",
+  "version": "1.0.0",
+  "license": "MIT",
+  "browserlist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "pixi.js": "^6.3.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.4.1",
+    "querystring-es3": "^0.2.1"
+  }
+}
