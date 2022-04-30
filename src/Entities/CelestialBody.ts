@@ -70,6 +70,7 @@ import * as PIXI from "pixi.js";
 import Entity from "../EntitySystem/Entity";
 import Vec2 from "../Vec2";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
+import DraggableComponent from "../Components/DraggableComponent";
 
 export interface CelestialBodyOptions {
   mass: number;
@@ -109,6 +110,11 @@ export function addCelestialBody(
     entity,
     new PixiGraphicsRenderComponent(pixiCircle)
   );
+
+  const colorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
+  colorMatrixFilter.saturate(1, true);
+  colorMatrixFilter.brightness(1, true);
+  entityManager.addComponent(entity, new DraggableComponent(colorMatrixFilter));
 
   return entity;
 }

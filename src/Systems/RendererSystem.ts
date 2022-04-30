@@ -5,6 +5,7 @@ import {
   HasPixiApp,
   HasRenderScale,
 } from "../Environments/EnvironmentInterfaces";
+import { updateGraphicsComponent } from "../utils";
 
 export default class RendererSystem<
   E extends HasPixiApp & HasRenderScale
@@ -24,7 +25,11 @@ export default class RendererSystem<
           ParticleComponent
         );
       if (particleComponent) {
-        this.updateGraphicsComponent(pixiGraphicsComponent, particleComponent);
+        updateGraphicsComponent(
+          pixiGraphicsComponent,
+          particleComponent,
+          this.environment.scaleFactor
+        );
       }
     }
   }
@@ -42,18 +47,12 @@ export default class RendererSystem<
           ParticleComponent
         );
       if (particleComponent) {
-        this.updateGraphicsComponent(pixiGraphicsComponent, particleComponent);
+        updateGraphicsComponent(
+          pixiGraphicsComponent,
+          particleComponent,
+          this.environment.scaleFactor
+        );
       }
     }
-  }
-
-  private updateGraphicsComponent(
-    pixiGraphicsComponent: PixiGraphicsRenderComponent,
-    particleComponent: ParticleComponent
-  ) {
-    pixiGraphicsComponent.pixiGraphics.x =
-      particleComponent.pos.x * this.environment.scaleFactor;
-    pixiGraphicsComponent.pixiGraphics.y =
-      particleComponent.pos.y * this.environment.scaleFactor;
   }
 }

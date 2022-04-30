@@ -61,15 +61,6 @@ export default class TrailRendererSystem<
         particleComponent.prevPos.y * this.environment.scaleFactor
       );
 
-      console.log({
-        prevPosX: particleComponent.prevPos.x,
-        prevPosY: particleComponent.prevPos.y,
-        x,
-        y,
-        prevX,
-        prevY,
-      });
-
       this.context.beginPath();
 
       const colorStr = PIXI.utils.hex2string(trailRendererComponent.trailColor);

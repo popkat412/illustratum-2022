@@ -3,6 +3,7 @@ import { addCelestialBody } from "./Entities/CelestialBody";
 import Entity from "./EntitySystem/Entity";
 import EntityManager from "./EntitySystem/EntityManager";
 import NBodySystemEnvironment from "./Environments/NBodySystemEnvironment";
+import DraggableItemSystem from "./Systems/DraggableItemSystem";
 import GravitySystem from "./Systems/GravitySystem";
 import MoveParticleSystem from "./Systems/MoveParticleSystem";
 import RendererSystem from "./Systems/RendererSystem";
@@ -65,6 +66,7 @@ const entities: Entity[] = [
 const systems = [
   new GravitySystem(entityManager, environment),
   new MoveParticleSystem(entityManager, environment),
+  new DraggableItemSystem(entityManager, environment),
   new RendererSystem(entityManager, environment),
   new TrailRendererSystem(entityManager, environment),
 ];
