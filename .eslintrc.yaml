@@ -1,0 +1,35 @@
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
+parser: "@typescript-eslint/parser"
+parserOptions:
+  project:
+    - ./tsconfig.json
+plugins:
+  - "@typescript-eslint"
+rules:
+  no-shadow: off
+  "@typescript-eslint/no-shadow":
+    - error
+
+  no-use-before-define: off
+  "@typescript-eslint/no-use-before-define":
+    - error
+
+  complexity:
+    - warn
+    - 10
+
+  no-await-in-loop: warn
+  no-eval: error
+  no-implied-eval: error
+  prefer-promise-reject-errors: warn
+
+  "@typescript-eslint/no-non-null-assertion": off
+  "@typescript-eslint/no-empty-function": off
+
+ignorePatterns:
+  - node_modules
+  - dist
+  - .parcel-cache
