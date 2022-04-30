@@ -1,22 +1,22 @@
-import Entity, { EntityId } from "./Entity";
-import Component, { ComponentClass } from "./Component";
+import ECSComponent, { ECSComponentClass } from "./Component";
+import ECSEntity, { ECSEntityId } from "./Entity";
 
 export default class EntityManager {
-  private entities: Set<EntityId>;
+  private entities: Set<ECSEntityId>;
   private componentsByComponentClass: Map<
-    ComponentClass,
-    Map<EntityId, Component>
+    ECSComponentClass,
+    Map<ECSEntityId, ECSComponent>
   >;
 
-  private lowestUnassignedEID: EntityId = 1;
+  private lowestUnassignedEID: ECSEntityId = 1;
 
   constructor() {
     this.entities = new Set();
     this.componentsByComponentClass = new Map();
   }
 
-  addComponent<T extends Component>(entity: Entity, component: T): void {
-    const componentClass = component.constructor as ComponentClass;
+  addComponent<T extends ECSComponent>(entity: ECSEntity, component: T): void {
+    const componentClass = component.constructor as ECSComponentClass;
     if (!this.componentsByComponentClass.get(componentClass)) {
       this.componentsByComponentClass.set(componentClass, new Map());
     }
@@ -25,42 +25,42 @@ export default class EntityManager {
       .set(entity.eid, component);
   }
 
-  getComponent<T extends Component>(
-    entity: Entity,
-    componentClass: ComponentClass
+  getComponent<T extends ECSComponent>(
+    entity: ECSEntity,
+    componentClass: ECSComponentClass
   ): T | undefined {
     return this.componentsByComponentClass
       .get(componentClass)
       ?.get(entity.eid) as T | undefined;
   }
 
-  createEntity(): Entity {
-    const entity = new Entity(this.generateNewEID());
+  createEntity(): ECSEntity {
+    const entity = new ECSEntity(this.generateNewEID());
     this.entities.add(entity.eid);
     return entity;
   }
 
-  removeEntity(entity: Entity): void {
+  removeEntity(entity: ECSEntity): void {
     for (const [_, components] of this.componentsByComponentClass) {
       components.delete(entity.eid);
     }
     this.entities.delete(entity.eid);
   }
 
-  allEntitiesWithComponent<T extends Component>(
-    componentClass: ComponentClass
-  ): [Entity, T][] {
+  allEntitiesWithComponent<T extends ECSComponent>(
+    componentClass: ECSComponentClass
+  ): [ECSEntity, T][] {
     const components = this.componentsByComponentClass.get(componentClass);
     if (!components) return [];
 
-    const res: [Entity, T][] = [];
+    const res: [ECSEntity, T][] = [];
     for (const [eid, component] of components) {
-      res.push([new Entity(eid), component as T]);
+      res.push([new ECSEntity(eid), component as T]);
     }
     return res;
   }
 
-  private generateNewEID(): EntityId {
+  private generateNewEID(): ECSEntityId {
     if (this.lowestUnassignedEID < Number.MAX_SAFE_INTEGER) {
       return this.lowestUnassignedEID++;
     }

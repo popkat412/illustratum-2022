@@ -1,7 +1,7 @@
-import Component from "../EntitySystem/Component";
 import * as PIXI from "pixi.js";
+import ECSComponent from "../EntityComponentSystem/Component";
 
-export default class DraggableComponent extends Component {
+export default class DraggableComponent extends ECSComponent {
   pointerData: PIXI.InteractionData | null = null;
   draggedFilter: PIXI.Filter;
 

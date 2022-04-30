@@ -1,3 +1,3 @@
-import Component from "../EntitySystem/Component";
+import ECSComponent from "../EntityComponentSystem/Component";
 
-export default class GravityComponent extends Component {}
+export default class GravityComponent extends ECSComponent {}

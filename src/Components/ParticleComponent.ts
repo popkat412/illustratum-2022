@@ -1,4 +1,4 @@
-import Component from "../EntitySystem/Component";
+import ECSComponent from "../EntityComponentSystem/Component";
 import Vec2 from "../Vec2";
 
 export interface ParticleComponentOptions {
@@ -9,7 +9,7 @@ export interface ParticleComponentOptions {
   fixed: boolean;
 }
 
-export default class ParticleComponent extends Component {
+export default class ParticleComponent extends ECSComponent {
   private _pos: Vec2; // position
   private _prevPos: Vec2 = new Vec2();
 

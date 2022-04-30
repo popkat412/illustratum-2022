@@ -1,5 +1,5 @@
 import ParticleComponent from "../Components/ParticleComponent";
-import System from "../EntitySystem/System";
+import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasRenderScale,
   HasTimeFactor,
@@ -7,7 +7,7 @@ import {
 
 export default class MoveParticleSystem<
   E extends HasRenderScale & HasTimeFactor
-> extends System<E> {
+> extends ECSSystem<E> {
   setup() {}
 
   update(_deltaTime: number): void {

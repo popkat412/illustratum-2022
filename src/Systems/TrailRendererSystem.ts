@@ -1,8 +1,8 @@
 import * as PIXI from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
-import EntityManager from "../EntitySystem/EntityManager";
-import System from "../EntitySystem/System";
+import EntityManager from "../EntityComponentSystem/EntityManager";
+import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasPixiApp,
   HasRenderScale,
@@ -10,7 +10,7 @@ import {
 
 export default class TrailRendererSystem<
   E extends HasPixiApp & HasRenderScale
-> extends System<E> {
+> extends ECSSystem<E> {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private texture: PIXI.Texture;

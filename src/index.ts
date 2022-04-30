@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import { addCelestialBody } from "./Entities/CelestialBody";
-import Entity from "./EntitySystem/Entity";
-import EntityManager from "./EntitySystem/EntityManager";
+import ECSEntity from "./EntityComponentSystem/Entity";
+import EntityManager from "./EntityComponentSystem/EntityManager";
 import NBodySystemEnvironment from "./Environments/NBodySystemEnvironment";
 import DraggableItemSystem from "./Systems/DraggableItemSystem";
 import GravitySystem from "./Systems/GravitySystem";
@@ -28,7 +28,7 @@ const entityManager = new EntityManager();
 const environment = new NBodySystemEnvironment(app);
 environment.timeFactor = 1e5;
 
-const entities: Entity[] = [
+const entities: ECSEntity[] = [
   // sun
   addCelestialBody(entityManager, {
     mass: 1.989e30,

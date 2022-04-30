@@ -1,6 +1,6 @@
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
-import System from "../EntitySystem/System";
+import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasPixiApp,
   HasRenderScale,
@@ -9,7 +9,7 @@ import { updateGraphicsComponent } from "../utils";
 
 export default class RendererSystem<
   E extends HasPixiApp & HasRenderScale
-> extends System<E> {
+> extends ECSSystem<E> {
   setup() {
     for (const [
       entity,

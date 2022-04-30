@@ -1,14 +1,14 @@
-import DraggableComponent from "../Components/DraggableComponent";
-import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
-import System from "../EntitySystem/System";
 import * as PIXI from "pixi.js";
+import DraggableComponent from "../Components/DraggableComponent";
 import ParticleComponent from "../Components/ParticleComponent";
-import { removeAllByValue, updateParticleComponent } from "../utils";
+import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
+import ECSSystem from "../EntityComponentSystem/System";
 import { HasRenderScale } from "../Environments/EnvironmentInterfaces";
+import { removeAllByValue, updateParticleComponent } from "../utils";
 
 export default class DraggableItemSystem<
   E extends HasRenderScale
-> extends System<E> {
+> extends ECSSystem<E> {
   // TODO: make this work if the DraggableComponent gets deleted sometime after setup
   setup() {
     for (const [

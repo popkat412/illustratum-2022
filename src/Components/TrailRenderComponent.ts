@@ -1,6 +1,6 @@
-import Component from "../EntitySystem/Component";
+import ECSComponent from "../EntityComponentSystem/Component";
 
-export default class TrailRenderComponent extends Component {
+export default class TrailRenderComponent extends ECSComponent {
   trailColor: number;
 
   constructor(trailColor: number) {

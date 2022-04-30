@@ -1,7 +1,7 @@
-import Component from "../EntitySystem/Component";
 import * as PIXI from "pixi.js";
+import ECSComponent from "../EntityComponentSystem/Component";
 
-export default class PixiGraphicsRenderComponent extends Component {
+export default class PixiGraphicsRenderComponent extends ECSComponent {
   pixiGraphics: PIXI.Graphics;
 
   constructor(graphics: PIXI.Graphics) {

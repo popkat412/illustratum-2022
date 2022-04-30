@@ -1,12 +1,12 @@
 import GravityComponent from "../Components/GravityComponent";
 import ParticleComponent from "../Components/ParticleComponent";
-import System from "../EntitySystem/System";
+import ECSSystem from "../EntityComponentSystem/System";
 import { HasGravitationalConstant } from "../Environments/EnvironmentInterfaces";
 import { unzipList } from "../utils";
 
 export default class GravitySystem<
   E extends HasGravitationalConstant
-> extends System<E> {
+> extends ECSSystem<E> {
   setup() {}
 
   update(_deltaTime: number): void {

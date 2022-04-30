@@ -1,6 +1,6 @@
 import EntityManager from "./EntityManager";
 
-export default abstract class System<E> {
+export default abstract class ECSSystem<E> {
   entityManager: EntityManager;
   environment: E;
 
