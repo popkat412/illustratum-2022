@@ -2,9 +2,10 @@ import * as PIXI from "pixi.js";
 import DraggableComponent from "../Components/DraggableComponent";
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
+import SelectableComponent from "../Components/SelectableComponent";
 import ECSSystem from "../EntityComponentSystem/System";
 import { HasRenderScale } from "../Environments/EnvironmentInterfaces";
-import { removeAllByValue, updateParticleComponent } from "../utils";
+import { updateParticleComponent } from "../utils";
 
 export default class DraggableItemSystem<
   E extends HasRenderScale
@@ -27,12 +28,19 @@ export default class DraggableItemSystem<
           entity,
           ParticleComponent
         );
+      const selectableComponent =
+        this.entityManager.getComponent<SelectableComponent>(
+          entity,
+          SelectableComponent
+        );
 
-      if (pixiGraphicsComponent) {
+      if (pixiGraphicsComponent && selectableComponent) {
         const { pixiGraphics } = pixiGraphicsComponent;
 
         pixiGraphics.buttonMode = true;
         pixiGraphics.interactive = true;
+
+        let previousIsFixed = particleComponent?.fixed ?? null;
 
         const onDragStart = (ev: PIXI.InteractionEvent) => {
           console.log(ev);
@@ -41,12 +49,12 @@ export default class DraggableItemSystem<
           if (!this.entityManager.getComponent(entity, DraggableComponent))
             return;
 
-          if (!pixiGraphics.filters) pixiGraphics.filters = [];
-          pixiGraphics.filters.push(draggableComponent.draggedFilter);
+          selectableComponent.isSelected = true;
 
           draggableComponent.pointerData = ev.data;
           if (particleComponent) {
             console.log("here");
+            previousIsFixed = particleComponent.fixed;
             particleComponent.fixed = true;
           }
         };
@@ -56,16 +64,13 @@ export default class DraggableItemSystem<
           if (!this.entityManager.getComponent(entity, DraggableComponent))
             return;
 
-          if (pixiGraphics.filters) {
-            removeAllByValue(
-              pixiGraphics.filters,
-              draggableComponent.draggedFilter
-            );
-          }
+          selectableComponent.isSelected = false;
 
           draggableComponent.pointerData = null;
           if (particleComponent) {
-            particleComponent.fixed = false;
+            console.assert(previousIsFixed != null);
+            particleComponent.fixed = previousIsFixed!;
+            previousIsFixed = null;
           }
         };
 

@@ -1,11 +1,14 @@
+import { GlowFilter } from "@pixi/filter-glow";
 import * as PIXI from "pixi.js";
 import DraggableComponent from "../Components/DraggableComponent";
 import GravityComponent from "../Components/GravityComponent";
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
+import SelectableComponent from "../Components/SelectableComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import EntityManager from "../EntityComponentSystem/EntityManager";
+import { lightenHexColor } from "../utils";
 import Vec2 from "../Vec2";
 
 export interface CelestialBodyOptions {
@@ -46,11 +49,19 @@ export function addCelestialBody(
     entity,
     new PixiGraphicsRenderComponent(pixiCircle)
   );
+  entityManager.addComponent(entity, new DraggableComponent());
 
   const colorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
   colorMatrixFilter.saturate(1, true);
   colorMatrixFilter.brightness(1, true);
-  entityManager.addComponent(entity, new DraggableComponent(colorMatrixFilter));
+  const glowFilter = new GlowFilter({
+    distance: 20,
+    color: lightenHexColor(color, 0.1),
+  });
+  entityManager.addComponent(
+    entity,
+    new SelectableComponent([colorMatrixFilter, glowFilter])
+  );
 
   return entity;
 }

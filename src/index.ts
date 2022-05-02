@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import ParticleComponent from "./Components/ParticleComponent";
 import { addCelestialBody } from "./Entities/CelestialBody";
 import ECSEntity from "./EntityComponentSystem/Entity";
 import EntityManager from "./EntityComponentSystem/EntityManager";
@@ -6,7 +7,9 @@ import NBodySystemEnvironment from "./Environments/NBodySystemEnvironment";
 import DraggableItemSystem from "./Systems/DraggableItemSystem";
 import GravitySystem from "./Systems/GravitySystem";
 import MoveParticleSystem from "./Systems/MoveParticleSystem";
+import ParticleUISystem from "./Systems/ParticleUISystem";
 import RendererSystem from "./Systems/RendererSystem";
+import SelectableItemSystem from "./Systems/SelectableItemSystem";
 import TrailRendererSystem from "./Systems/TrailRendererSystem";
 import { randInt } from "./utils";
 import Vec2 from "./Vec2";
@@ -66,9 +69,11 @@ const entities: ECSEntity[] = [
 const systems = [
   new GravitySystem(entityManager, environment),
   new MoveParticleSystem(entityManager, environment),
+  new SelectableItemSystem(entityManager, environment),
   new DraggableItemSystem(entityManager, environment),
   new RendererSystem(entityManager, environment),
   new TrailRendererSystem(entityManager, environment),
+  new ParticleUISystem(entityManager, environment),
 ];
 
 for (const system of systems) {
@@ -84,3 +89,10 @@ app.ticker.add((deltaTime: number) => {
 
   fpsText.text = `${app.ticker.FPS.toFixed()} FPS`;
 });
+
+// for debugging purposes only
+document.onkeyup = (ev: KeyboardEvent) => {
+  if (ev.key == " ") {
+    console.log(entityManager.allEntitiesWithComponent(ParticleComponent));
+  }
+}

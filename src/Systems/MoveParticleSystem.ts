@@ -17,15 +17,15 @@ export default class MoveParticleSystem<
     ] of this.entityManager.allEntitiesWithComponent<ParticleComponent>(
       ParticleComponent
     )) {
-      if (particleComponent.fixed) continue;
+      if (!particleComponent.fixed) {
+        particleComponent.vel = particleComponent.vel.add(
+          particleComponent.acc.mult(this.environment.timeFactor)
+        );
 
-      particleComponent.vel = particleComponent.vel.add(
-        particleComponent.acc.mult(this.environment.timeFactor)
-      );
-
-      particleComponent.pos = particleComponent.pos.add(
-        particleComponent.vel.mult(this.environment.timeFactor)
-      );
+        particleComponent.pos = particleComponent.pos.add(
+          particleComponent.vel.mult(this.environment.timeFactor)
+        );
+      }
       particleComponent.acc.set(0, 0);
     }
   }

@@ -2,15 +2,22 @@
   "name": "illustratum-2022",
   "version": "1.0.0",
   "license": "MIT",
-  "browserlist": "> 0.5%, last 2 versions, not dead",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html"
   },
+  "alias": {
+    "vue": "vue/dist/vue.esm-bundler.js"
+  },
   "dependencies": {
-    "pixi.js": "^6.3.0"
+    "@pixi/filter-glow": "^4.1.5",
+    "pixi.js": "^6.3.0",
+    "vue": "^3.2.33"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "2.4.1",
+    "@parcel/transformer-vue": "2.4.1",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",
