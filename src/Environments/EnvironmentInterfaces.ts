@@ -1,3 +1,4 @@
+import { Viewport } from "pixi-viewport";
 import * as PIXI from "pixi.js";
 
 export interface HasGravitationalConstant {
@@ -14,4 +15,8 @@ export interface HasTimeFactor {
 
 export interface HasPixiApp {
   app: PIXI.Application;
+}
+
+export interface HasViewport {
+  viewport: Viewport;
 }

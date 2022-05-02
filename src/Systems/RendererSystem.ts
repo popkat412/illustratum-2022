@@ -3,12 +3,13 @@ import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderCompone
 import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasPixiApp,
+  HasViewport,
   HasRenderScale,
 } from "../Environments/EnvironmentInterfaces";
 import { updateGraphicsComponent } from "../utils";
 
 export default class RendererSystem<
-  E extends HasPixiApp & HasRenderScale
+  E extends HasViewport & HasPixiApp & HasRenderScale
 > extends ECSSystem<E> {
   setup() {
     for (const [
@@ -17,7 +18,7 @@ export default class RendererSystem<
     ] of this.entityManager.allEntitiesWithComponent<PixiGraphicsRenderComponent>(
       PixiGraphicsRenderComponent
     )) {
-      this.environment.app.stage.addChild(pixiGraphicsComponent.pixiGraphics);
+      this.environment.viewport.addChild(pixiGraphicsComponent.pixiGraphics);
 
       const particleComponent =
         this.entityManager.getComponent<ParticleComponent>(

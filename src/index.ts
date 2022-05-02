@@ -1,3 +1,4 @@
+import { Viewport } from "pixi-viewport";
 import * as PIXI from "pixi.js";
 import ParticleComponent from "./Components/ParticleComponent";
 import { addCelestialBody } from "./Entities/CelestialBody";
@@ -17,6 +18,19 @@ import Vec2 from "./Vec2";
 const app = new PIXI.Application();
 document.body.appendChild(app.view);
 
+// viewport
+const viewport = new Viewport({
+  screenWidth: app.view.width,
+  screenHeight: app.view.height,
+  worldWidth: 1000,
+  worldHeight: 1000,
+  interaction: app.renderer.plugins.interaction,
+});
+app.stage.addChild(viewport);
+// no dragging because it interferes with dragging actual bodies and i'm lazy to fix it
+viewport.pinch().wheel().decelerate();
+
+// fps text
 const fpsText = new PIXI.Text(
   "",
   new PIXI.TextStyle({
@@ -27,8 +41,9 @@ fpsText.position.set(10, 10);
 fpsText.zIndex = 10;
 app.stage.addChild(fpsText);
 
+// entity component system
 const entityManager = new EntityManager();
-const environment = new NBodySystemEnvironment(app);
+const environment = new NBodySystemEnvironment(app, viewport);
 environment.timeFactor = 1e5;
 
 const entities: ECSEntity[] = [
@@ -95,4 +110,4 @@ document.onkeyup = (ev: KeyboardEvent) => {
   if (ev.key == " ") {
     console.log(entityManager.allEntitiesWithComponent(ParticleComponent));
   }
-}
+};
