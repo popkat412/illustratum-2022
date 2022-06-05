@@ -1,11 +1,12 @@
 import ParticleComponent from "../Components/ParticleComponent";
+import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasPixiApp,
   HasRenderScale,
 } from "../Environments/EnvironmentInterfaces";
-import { updateGraphicsComponent } from "../utils";
+import { updatePixiContainer } from "../utils";
 
 export default class RendererSystem<
   E extends HasPixiApp & HasRenderScale
@@ -13,11 +14,12 @@ export default class RendererSystem<
   setup() {
     for (const [
       entity,
-      pixiGraphicsComponent,
-    ] of this.entityManager.allEntitiesWithComponent<PixiGraphicsRenderComponent>(
-      PixiGraphicsRenderComponent
+      pixiContainerComponent,
+    ] of this.entityManager.allEntitiesWithComponent<PixiContainerComponent>(
+      PixiContainerComponent
     )) {
-      this.environment.app.stage.addChild(pixiGraphicsComponent.pixiGraphics);
+
+      this.environment.app.stage.addChild(pixiContainerComponent.container);
 
       const particleComponent =
         this.entityManager.getComponent<ParticleComponent>(
@@ -25,11 +27,16 @@ export default class RendererSystem<
           ParticleComponent
         );
       if (particleComponent) {
-        updateGraphicsComponent(
-          pixiGraphicsComponent,
+        updatePixiContainer(
+          pixiContainerComponent,
           particleComponent,
           this.environment.scaleFactor
         );
+      }
+
+      const pixiGraphicsComponent = this.entityManager.getComponent<PixiGraphicsRenderComponent>(entity, PixiGraphicsRenderComponent);
+      if (pixiGraphicsComponent) {
+        pixiContainerComponent.container.addChild(pixiGraphicsComponent.pixiGraphics);
       }
     }
   }
@@ -37,9 +44,9 @@ export default class RendererSystem<
   update() {
     for (const [
       entity,
-      pixiGraphicsComponent,
-    ] of this.entityManager.allEntitiesWithComponent<PixiGraphicsRenderComponent>(
-      PixiGraphicsRenderComponent
+      pixiContainerComponent,
+    ] of this.entityManager.allEntitiesWithComponent<PixiContainerComponent>(
+      PixiContainerComponent
     )) {
       const particleComponent =
         this.entityManager.getComponent<ParticleComponent>(
@@ -47,8 +54,8 @@ export default class RendererSystem<
           ParticleComponent
         );
       if (particleComponent) {
-        updateGraphicsComponent(
-          pixiGraphicsComponent,
+        updatePixiContainer(
+          pixiContainerComponent,
           particleComponent,
           this.environment.scaleFactor
         );

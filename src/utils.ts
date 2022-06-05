@@ -1,6 +1,6 @@
 import ParticleComponent from "./Components/ParticleComponent";
-import PixiGraphicsRenderComponent from "./Components/PIXIGraphicsRenderComponent";
 import * as PIXI from "pixi.js";
+import PixiContainerComponent from "./Components/PIXIContainerComponent";
 
 export function randFloat(min: number, max: number) {
   return Math.random() * (max - min) + min;
@@ -41,20 +41,41 @@ export function lightenHexColor(color: number, strength: number): number {
   return PIXI.utils.rgb2hex([gray + x * r, gray + x * g, gray + x * b]);
 }
 
-export function updateGraphicsComponent(
-  pixiGraphicsComponent: PixiGraphicsRenderComponent,
+export function updatePixiContainer(
+  pixiContainerComponent: PixiContainerComponent,
   particleComponent: ParticleComponent,
   scaleFactor: number
 ) {
-  pixiGraphicsComponent.pixiGraphics.x = particleComponent.pos.x * scaleFactor;
-  pixiGraphicsComponent.pixiGraphics.y = particleComponent.pos.y * scaleFactor;
+  pixiContainerComponent.container.x = particleComponent.pos.x * scaleFactor;
+  pixiContainerComponent.container.y = particleComponent.pos.y * scaleFactor;
 }
 
 export function updateParticleComponent(
-  pixiGraphicsComponent: PixiGraphicsRenderComponent,
+  pixiContainerComponent: PixiContainerComponent,
   particleComponent: ParticleComponent,
   scaleFactor: number
 ) {
-  particleComponent.pos.x = pixiGraphicsComponent.pixiGraphics.x / scaleFactor;
-  particleComponent.pos.y = pixiGraphicsComponent.pixiGraphics.y / scaleFactor;
+  particleComponent.pos.x = pixiContainerComponent.container.x / scaleFactor;
+  particleComponent.pos.y = pixiContainerComponent.container.y / scaleFactor;
+}
+
+export function clampRange(x: number, low: number, high: number): number {
+  return Math.max(Math.min(x, high), low);
+}
+
+// https://github.com/processing/p5.js/blob/v1.4.1/src/math/calculation.js#L409
+export function mapRange(x: number, s1: number, e1: number, s2: number, e2: number, clamp: boolean = false): number {
+  const newx = (x - s1) / (e1 - s1) * (e2 - s2) + s2;
+  if (!clamp) return newx;
+  if (s2 < e2) {
+    return clampRange(newx, s2, e2);
+  } else {
+    return clampRange(newx, e2, s2);
+  }
+}
+
+export function sgn(x: number): number {
+  if (x > 0) return 1;
+  if (x < 0) return -1;
+  return 0;
 }

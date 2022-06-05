@@ -10,6 +10,7 @@ import MoveParticleSystem from "./Systems/MoveParticleSystem";
 import ParticleUISystem from "./Systems/ParticleUISystem";
 import RendererSystem from "./Systems/RendererSystem";
 import SelectableItemSystem from "./Systems/SelectableItemSystem";
+import ShowVectorSystem from "./Systems/ShowVectorSystem";
 import TrailRendererSystem from "./Systems/TrailRendererSystem";
 import { randInt } from "./utils";
 import Vec2 from "./Vec2";
@@ -74,6 +75,7 @@ const systems = [
   new RendererSystem(entityManager, environment),
   new TrailRendererSystem(entityManager, environment),
   new ParticleUISystem(entityManager, environment),
+  new ShowVectorSystem(entityManager, environment),
 ];
 
 for (const system of systems) {
@@ -89,6 +91,8 @@ app.ticker.add((deltaTime: number) => {
 
   fpsText.text = `${app.ticker.FPS.toFixed()} FPS`;
 });
+
+app.stage.sortChildren();
 
 // for debugging purposes only
 document.onkeyup = (ev: KeyboardEvent) => {

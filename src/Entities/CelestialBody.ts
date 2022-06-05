@@ -3,8 +3,10 @@ import * as PIXI from "pixi.js";
 import DraggableComponent from "../Components/DraggableComponent";
 import GravityComponent from "../Components/GravityComponent";
 import ParticleComponent from "../Components/ParticleComponent";
+import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import SelectableComponent from "../Components/SelectableComponent";
+import ShowVectorComponent from "../Components/ShowVectorComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import EntityManager from "../EntityComponentSystem/EntityManager";
@@ -45,10 +47,12 @@ export function addCelestialBody(
   entityManager.addComponent(entity, new GravityComponent());
 
   entityManager.addComponent(entity, new TrailRenderComponent(color));
+  entityManager.addComponent(entity, new PixiContainerComponent())
   entityManager.addComponent(
     entity,
     new PixiGraphicsRenderComponent(pixiCircle)
   );
+
   entityManager.addComponent(entity, new DraggableComponent());
 
   const colorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
@@ -62,6 +66,9 @@ export function addCelestialBody(
     entity,
     new SelectableComponent([colorMatrixFilter, glowFilter])
   );
+
+  entityManager.addComponent(entity, new ShowVectorComponent("F", "N", 0xFFFFFF));
+
 
   return entity;
 }

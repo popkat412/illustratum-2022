@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import DraggableComponent from "../Components/DraggableComponent";
 import ParticleComponent from "../Components/ParticleComponent";
+import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import SelectableComponent from "../Components/SelectableComponent";
 import ECSSystem from "../EntityComponentSystem/System";
@@ -18,10 +19,10 @@ export default class DraggableItemSystem<
     ] of this.entityManager.allEntitiesWithComponent<DraggableComponent>(
       DraggableComponent
     )) {
-      const pixiGraphicsComponent =
-        this.entityManager.getComponent<PixiGraphicsRenderComponent>(
+      const pixiContainerComponent =
+        this.entityManager.getComponent<PixiContainerComponent>(
           entity,
-          PixiGraphicsRenderComponent
+          PixiContainerComponent
         );
       const particleComponent =
         this.entityManager.getComponent<ParticleComponent>(
@@ -34,11 +35,11 @@ export default class DraggableItemSystem<
           SelectableComponent
         );
 
-      if (pixiGraphicsComponent && selectableComponent) {
-        const { pixiGraphics } = pixiGraphicsComponent;
+      if (pixiContainerComponent && selectableComponent) {
+        const { container } = pixiContainerComponent;
 
-        pixiGraphics.buttonMode = true;
-        pixiGraphics.interactive = true;
+        container.buttonMode = true;
+        container.interactive = true;
 
         let previousIsFixed = particleComponent?.fixed ?? null;
 
@@ -81,14 +82,14 @@ export default class DraggableItemSystem<
 
           if (draggableComponent.pointerData) {
             const newPos = draggableComponent.pointerData.getLocalPosition(
-              pixiGraphics.parent
+              container.parent
             );
-            pixiGraphics.x = newPos.x;
-            pixiGraphics.y = newPos.y;
+            container.x = newPos.x;
+            container.y = newPos.y;
 
             if (particleComponent) {
               updateParticleComponent(
-                pixiGraphicsComponent,
+                pixiContainerComponent,
                 particleComponent,
                 this.environment.scaleFactor
               );
@@ -96,10 +97,10 @@ export default class DraggableItemSystem<
           }
         };
 
-        pixiGraphics.on("pointerdown", onDragStart);
-        pixiGraphics.on("pointermove", onDragMove);
-        pixiGraphics.on("pointerup", onDragEnd);
-        pixiGraphics.on("pointerupoutside", onDragEnd);
+        container.on("pointerdown", onDragStart);
+        container.on("pointermove", onDragMove);
+        container.on("pointerup", onDragEnd);
+        container.on("pointerupoutside", onDragEnd);
       }
     }
   }
