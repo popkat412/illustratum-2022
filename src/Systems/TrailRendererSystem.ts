@@ -35,6 +35,9 @@ export default class TrailRendererSystem<
   setup(): void {}
 
   update(_deltaTime: number): void {
+    this.context.fillStyle = "#00000010";
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
     const entities =
       this.entityManager.allEntitiesWithComponent<TrailRenderComponent>(
         TrailRenderComponent
