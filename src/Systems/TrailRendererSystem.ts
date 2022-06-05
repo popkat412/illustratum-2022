@@ -6,11 +6,10 @@ import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasPixiApp,
   HasRenderScale,
-  HasViewport,
 } from "../Environments/EnvironmentInterfaces";
 
 export default class TrailRendererSystem<
-  E extends HasPixiApp & HasViewport & HasRenderScale
+  E extends HasPixiApp & HasRenderScale
 > extends ECSSystem<E> {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
@@ -30,7 +29,7 @@ export default class TrailRendererSystem<
     const sprite = new PIXI.Sprite(this.texture);
     sprite.width = this.environment.app.renderer.width;
     sprite.height = this.environment.app.renderer.height;
-    this.environment.viewport.addChild(sprite);
+    this.environment.app.stage.addChild(sprite);
   }
 
   setup(): void {}
