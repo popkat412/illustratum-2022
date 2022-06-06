@@ -99,4 +99,4 @@ document.onkeyup = (ev: KeyboardEvent) => {
   if (ev.key == " ") {
     console.log(entityManager.allEntitiesWithComponent(ParticleComponent));
   }
-}
+};

@@ -75,4 +75,8 @@ export default class Vec2 {
   copy(): Vec2 {
     return new Vec2(this.x, this.y);
   }
+
+  toString(): string {
+    return `(${this.x.toExponential(1)}, ${this.y.toExponential(1)})`;
+  }
 }
