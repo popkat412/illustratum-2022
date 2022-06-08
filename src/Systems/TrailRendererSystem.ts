@@ -1,38 +1,15 @@
 import * as PIXI from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
-import EntityManager from "../EntityComponentSystem/EntityManager";
-import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasPixiApp,
   HasRenderScale,
 } from "../Environments/EnvironmentInterfaces";
+import BaseCanvasSystem from "./BaseCanvasSystem";
 
 export default class TrailRendererSystem<
   E extends HasPixiApp & HasRenderScale
-> extends ECSSystem<E> {
-  private canvas: HTMLCanvasElement;
-  private context: CanvasRenderingContext2D;
-  private texture: PIXI.Texture;
-
-  constructor(entityManager: EntityManager, environment: E) {
-    super(entityManager, environment);
-
-    this.canvas = document.createElement("canvas");
-    this.canvas.width = this.environment.app.view.width;
-    this.canvas.height = this.environment.app.view.height;
-
-    this.context = this.canvas.getContext("2d")!;
-
-    this.texture = PIXI.Texture.from(this.canvas);
-
-    const sprite = new PIXI.Sprite(this.texture);
-    sprite.zIndex = -100;
-    sprite.width = this.environment.app.renderer.width;
-    sprite.height = this.environment.app.renderer.height;
-    this.environment.app.stage.addChild(sprite);
-  }
-
+> extends BaseCanvasSystem<E> {
   setup(): void {}
 
   update(_deltaTime: number): void {

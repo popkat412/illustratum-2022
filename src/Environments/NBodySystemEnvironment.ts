@@ -4,6 +4,7 @@ import {
   HasPixiApp,
   HasRenderScale,
   HasTimeFactor,
+  HasFieldLinesColor,
 } from "./EnvironmentInterfaces";
 
 export default class NBodySystemEnvironment
@@ -11,7 +12,8 @@ export default class NBodySystemEnvironment
     HasPixiApp,
     HasRenderScale,
     HasTimeFactor,
-    HasGravitationalConstant
+    HasGravitationalConstant,
+    HasFieldLinesColor
 {
   app: PIXI.Application;
 
@@ -19,6 +21,8 @@ export default class NBodySystemEnvironment
 
   scaleFactor = 1e-9;
   timeFactor = 1e5;
+
+  fieldLinesColor = "#ffffff";
 
   constructor(app: PIXI.Application) {
     this.app = app;

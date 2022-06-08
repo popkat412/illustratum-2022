@@ -5,6 +5,7 @@ import ECSEntity from "./EntityComponentSystem/Entity";
 import EntityManager from "./EntityComponentSystem/EntityManager";
 import NBodySystemEnvironment from "./Environments/NBodySystemEnvironment";
 import DraggableItemSystem from "./Systems/DraggableItemSystem";
+import FieldLinesSystem from "./Systems/FieldLinesSystem";
 import GravitySystem from "./Systems/GravitySystem";
 import MoveParticleSystem from "./Systems/MoveParticleSystem";
 import ParticleUISystem from "./Systems/ParticleUISystem";
@@ -79,6 +80,7 @@ const systems = [
   new ParticleUISystem(entityManager, environment),
   new ShowVectorSystem(entityManager, environment),
   new ShowVectorFieldSystem(entityManager, environment),
+  new FieldLinesSystem(entityManager, environment),
 ];
 
 for (const system of systems) {
@@ -89,7 +91,7 @@ environment.app.stage.sortChildren();
 
 console.log(entityManager);
 
-app.ticker.add((deltaTime: number) => {
+app.ticker.addOnce((deltaTime: number) => {
   for (const system of systems) {
     system.update(deltaTime);
   }

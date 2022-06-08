@@ -15,3 +15,7 @@ export interface HasTimeFactor {
 export interface HasPixiApp {
   app: PIXI.Application;
 }
+
+export interface HasFieldLinesColor {
+  fieldLinesColor: string;
+}

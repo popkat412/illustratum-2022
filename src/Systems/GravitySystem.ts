@@ -13,7 +13,14 @@ export default class GravitySystem<
   setup() {}
 
   update(_deltaTime: number): void {
+    // todo: see if any way to remove duplicate between this and GravitySystem.ts
     const entities = this.gravityEntities();
+    const particleComponents: ParticleComponent[] = entities
+      .map((e) =>
+        this.entityManager.getComponent<ParticleComponent>(e, ParticleComponent)
+      )
+      .filter((e) => e) as ParticleComponent[];
+
     for (const entity of entities) {
       const particleComponent =
         this.entityManager.getComponent<ParticleComponent>(
