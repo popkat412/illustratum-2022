@@ -13,7 +13,7 @@ export default class Vec2 {
   }
 
   // in pixi coord space
-  static readonly UP = new Vec2(0, -1); 
+  static readonly UP = new Vec2(0, -1);
   static readonly RIGHT = new Vec2(1, 0);
 
   add(other: Vec2): Vec2 {
@@ -41,6 +41,7 @@ export default class Vec2 {
   }
 
   div(s: number): Vec2 {
+    console.assert(s != 0);
     return new Vec2(this.x / s, this.y / s);
   }
 
@@ -58,7 +59,7 @@ export default class Vec2 {
 
   // angle to the *vertical* in *radians*
   angle(): number {
-    return Math.atan2(this.y, this.x) + Math.PI/2;
+    return Math.atan2(this.y, this.x) + Math.PI / 2;
   }
 
   rotate(angle: number): Vec2 {

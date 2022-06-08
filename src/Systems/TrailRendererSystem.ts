@@ -27,6 +27,7 @@ export default class TrailRendererSystem<
     this.texture = PIXI.Texture.from(this.canvas);
 
     const sprite = new PIXI.Sprite(this.texture);
+    sprite.zIndex = -100;
     sprite.width = this.environment.app.renderer.width;
     sprite.height = this.environment.app.renderer.height;
     this.environment.app.stage.addChild(sprite);
@@ -35,7 +36,7 @@ export default class TrailRendererSystem<
   setup(): void {}
 
   update(_deltaTime: number): void {
-    this.context.fillStyle = "#00000010";
+    this.context.fillStyle = "#00000005";
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     const entities =

@@ -26,12 +26,12 @@ export default class GravitySystem<
           ParticleComponent
         )
       );
-      // ??? i have no idea why this works even though the particleComponents does include itself, but it works
-      console.assert(particleComponents.includes(particleComponent));
-      const field = this.gravitationlField(
+      const field = gravitationlField(
         particleComponent.pos,
-        particleComponents
+        particleComponents.filter((v) => v != particleComponent),
+        this.environment.gravitationalConstant
       );
+      if (!field) continue;
       const f = field.mult(particleComponent.mass);
       particleComponent.applyForce(f);
 
@@ -54,19 +54,22 @@ export default class GravitySystem<
     );
     return entities;
   }
+}
 
-  private gravitationlField(
-    pos: Vec2,
-    dueToParticles: ParticleComponent[]
-  ): Vec2 {
-    let totalField = new Vec2();
-    for (const particle of dueToParticles) {
-      const diff = particle.pos.sub(pos);
-      const field = diff.setMag(
-        (this.environment.gravitationalConstant * particle.mass) / diff.magSq()
-      );
-      totalField = totalField.add(field);
-    }
-    return totalField;
+export function gravitationlField(
+  pos: Vec2,
+  dueToParticles: ParticleComponent[],
+  gravitationalConstant: number
+): Vec2 | undefined {
+  const epsilon = 1;
+  // returns undefined if its too close to an actual body
+  let totalField = new Vec2();
+  for (const particle of dueToParticles) {
+    const diff = particle.pos.sub(pos);
+    const distSq = diff.magSq();
+    if (distSq < epsilon) return undefined;
+    const field = diff.setMag((gravitationalConstant * particle.mass) / distSq);
+    totalField = totalField.add(field);
   }
+  return totalField;
 }

@@ -10,6 +10,7 @@ import MoveParticleSystem from "./Systems/MoveParticleSystem";
 import ParticleUISystem from "./Systems/ParticleUISystem";
 import RendererSystem from "./Systems/RendererSystem";
 import SelectableItemSystem from "./Systems/SelectableItemSystem";
+import ShowVectorFieldSystem from "./Systems/ShowVectorFieldSystem";
 import ShowVectorSystem from "./Systems/ShowVectorSystem";
 import TrailRendererSystem from "./Systems/TrailRendererSystem";
 import { randInt } from "./utils";
@@ -37,18 +38,19 @@ const entities: ECSEntity[] = [
   addCelestialBody(entityManager, {
     mass: 1.989e30,
     color: randInt(0, 0xffffff),
-    radius: 35,
+    radius: 25,
     fixed: true,
     initialPos: new Vec2(
       app.renderer.width / 2 / environment.scaleFactor,
       app.renderer.height / 2 / environment.scaleFactor
     ),
   }),
-  // two "earth"s
   addCelestialBody(entityManager, {
-    mass: 5.972e24,
+    // mass: 5.972e24,
+    mass: 1.989e30,
     color: randInt(0, 0xffffff),
-    radius: 20,
+    // radius: 20,
+    radius: 25,
     initialPos: new Vec2(
       app.renderer.width / 2 / environment.scaleFactor,
       app.renderer.height / 4 / environment.scaleFactor
@@ -63,7 +65,7 @@ const entities: ECSEntity[] = [
       app.renderer.width / 2 / environment.scaleFactor,
       (app.renderer.height * 3.5) / 4 / environment.scaleFactor
     ),
-    initialVel: new Vec2(10000, 0),
+    initialVel: new Vec2(10500, 0),
   }),
 ];
 
@@ -76,11 +78,14 @@ const systems = [
   new TrailRendererSystem(entityManager, environment),
   new ParticleUISystem(entityManager, environment),
   new ShowVectorSystem(entityManager, environment),
+  new ShowVectorFieldSystem(entityManager, environment),
 ];
 
 for (const system of systems) {
   system.setup();
 }
+
+environment.app.stage.sortChildren();
 
 console.log(entityManager);
 
@@ -93,10 +98,3 @@ app.ticker.add((deltaTime: number) => {
 });
 
 app.stage.sortChildren();
-
-// for debugging purposes only
-document.onkeyup = (ev: KeyboardEvent) => {
-  if (ev.key == " ") {
-    console.log(entityManager.allEntitiesWithComponent(ParticleComponent));
-  }
-};
