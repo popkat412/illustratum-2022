@@ -10,7 +10,7 @@ import ShowVectorComponent from "../Components/ShowVectorComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import EntityManager from "../EntityComponentSystem/EntityManager";
-import { lightenHexColor } from "../utils";
+import { lightenHexColor } from "../Utils/math";
 import Vec2 from "../Vec2";
 
 export interface CelestialBodyOptions {
@@ -47,7 +47,7 @@ export function addCelestialBody(
   entityManager.addComponent(entity, new GravityComponent());
 
   entityManager.addComponent(entity, new TrailRenderComponent(color));
-  entityManager.addComponent(entity, new PixiContainerComponent())
+  entityManager.addComponent(entity, new PixiContainerComponent());
   entityManager.addComponent(
     entity,
     new PixiGraphicsRenderComponent(pixiCircle)
@@ -67,8 +67,10 @@ export function addCelestialBody(
     new SelectableComponent([colorMatrixFilter, glowFilter])
   );
 
-  entityManager.addComponent(entity, new ShowVectorComponent("F", "N", 0xFFFFFF));
-
+  entityManager.addComponent(
+    entity,
+    new ShowVectorComponent("F", "N", 0xffffff)
+  );
 
   return entity;
 }

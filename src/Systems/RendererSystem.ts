@@ -6,7 +6,7 @@ import {
   HasPixiApp,
   HasRenderScale,
 } from "../Environments/EnvironmentInterfaces";
-import { updatePixiContainer } from "../utils";
+import { updatePixiContainer } from "../Utils/render";
 
 export default class RendererSystem<
   E extends HasPixiApp & HasRenderScale
@@ -18,7 +18,6 @@ export default class RendererSystem<
     ] of this.entityManager.allEntitiesWithComponent<PixiContainerComponent>(
       PixiContainerComponent
     )) {
-
       this.environment.app.stage.addChild(pixiContainerComponent.container);
 
       const particleComponent =
@@ -34,9 +33,15 @@ export default class RendererSystem<
         );
       }
 
-      const pixiGraphicsComponent = this.entityManager.getComponent<PixiGraphicsRenderComponent>(entity, PixiGraphicsRenderComponent);
+      const pixiGraphicsComponent =
+        this.entityManager.getComponent<PixiGraphicsRenderComponent>(
+          entity,
+          PixiGraphicsRenderComponent
+        );
       if (pixiGraphicsComponent) {
-        pixiContainerComponent.container.addChild(pixiGraphicsComponent.pixiGraphics);
+        pixiContainerComponent.container.addChild(
+          pixiGraphicsComponent.pixiGraphics
+        );
       }
     }
   }

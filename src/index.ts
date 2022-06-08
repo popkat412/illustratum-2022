@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import ParticleComponent from "./Components/ParticleComponent";
 import { addCelestialBody } from "./Entities/CelestialBody";
 import ECSEntity from "./EntityComponentSystem/Entity";
 import EntityManager from "./EntityComponentSystem/EntityManager";
@@ -14,7 +13,7 @@ import SelectableItemSystem from "./Systems/SelectableItemSystem";
 import ShowVectorFieldSystem from "./Systems/ShowVectorFieldSystem";
 import ShowVectorSystem from "./Systems/ShowVectorSystem";
 import TrailRendererSystem from "./Systems/TrailRendererSystem";
-import { randInt } from "./utils";
+import { randInt } from "./Utils/math";
 import Vec2 from "./Vec2";
 
 const app = new PIXI.Application();
@@ -91,7 +90,7 @@ environment.app.stage.sortChildren();
 
 console.log(entityManager);
 
-app.ticker.addOnce((deltaTime: number) => {
+app.ticker.add((deltaTime: number) => {
   for (const system of systems) {
     system.update(deltaTime);
   }

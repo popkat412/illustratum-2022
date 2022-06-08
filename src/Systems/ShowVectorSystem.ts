@@ -1,6 +1,7 @@
 import ShowVectorComponent from "../Components/ShowVectorComponent";
 import ECSSystem from "../EntityComponentSystem/System";
-import { mapRange, sgn, updateArrowGraphic } from "../utils";
+import { mapRange, sgn } from "../Utils/math";
+import { updateArrowGraphic } from "../Utils/render";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import Vec2 from "../Vec2";
 
@@ -31,7 +32,7 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
 
   update() {
     for (const [
-      entity,
+      _entity,
       { vec, label, units, color, arrowGraphic, pixiText },
     ] of this.entityManager.allEntitiesWithComponent<ShowVectorComponent>(
       ShowVectorComponent

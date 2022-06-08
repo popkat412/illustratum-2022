@@ -4,7 +4,7 @@ import ShowVectorComponent from "../Components/ShowVectorComponent";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import ECSSystem from "../EntityComponentSystem/System";
 import { HasGravitationalConstant } from "../Environments/EnvironmentInterfaces";
-import { unzipList } from "../utils";
+import { unzipList } from "../Utils/prog";
 import Vec2 from "../Vec2";
 
 export default class GravitySystem<

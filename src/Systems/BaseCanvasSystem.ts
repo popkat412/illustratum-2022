@@ -24,6 +24,7 @@ export default abstract class BaseCanvasSystem<
     const sprite = new PIXI.Sprite(this.texture);
     sprite.width = this.environment.app.renderer.width;
     sprite.height = this.environment.app.renderer.height;
+    sprite.zIndex = -1;
     this.environment.app.stage.addChild(sprite);
   }
 

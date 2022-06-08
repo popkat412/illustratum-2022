@@ -1,7 +1,7 @@
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import SelectableComponent from "../Components/SelectableComponent";
 import ECSSystem from "../EntityComponentSystem/System";
-import { removeAllByValue } from "../utils";
+import { removeAllByValue } from "../Utils/prog";
 
 export default class SelectableItemSystem<E> extends ECSSystem<E> {
   setup() {}

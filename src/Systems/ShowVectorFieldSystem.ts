@@ -9,13 +9,9 @@ import Vec2 from "../Vec2";
 import { gravitationlField } from "./GravitySystem";
 import GravityComponent from "../Components/GravityComponent";
 import ParticleComponent from "../Components/ParticleComponent";
-import {
-  lerpColor,
-  mapRange,
-  unzipList,
-  updateArrowGraphic,
-  zipList,
-} from "../utils";
+import { lerpColor, mapRange } from "../Utils/math";
+import { unzipList, zipList } from "../Utils/prog";
+import { updateArrowGraphic } from "../Utils/render";
 
 const SAMPLE_DISTANCE = 50;
 
@@ -32,27 +28,6 @@ export default class ShowVectorFieldSystem<
 
   update() {
     this.arrowsContainer.removeChildren();
-
-    // console.log(
-    //   gravitationlField(
-    //     new Vec2(
-    //       this.environment.app.renderer.width /
-    //         2 /
-    //         this.environment.scaleFactor +
-    //         2,
-    //       this.environment.app.renderer.height /
-    //         2 /
-    //         this.environment.scaleFactor +
-    //         1
-    //     ),
-    //     [
-    //       this.entityManager.allEntitiesWithComponent<ParticleComponent>(
-    //         ParticleComponent
-    //       )[0][1],
-    //     ],
-    //     this.environment.gravitationalConstant
-    //   )
-    // );
 
     // generate sample points (in pixi space)
     const samplePoints: Vec2[] = [];
@@ -86,6 +61,10 @@ export default class ShowVectorFieldSystem<
         this.environment.gravitationalConstant
       )
     );
+
+    // const fieldStrengths = fields.flatMap((v) => (v ? [v.mag()] : []));
+    // console.log(Math.min(...fieldStrengths), Math.max(...fieldStrengths));
+
     // draw the arrow
     for (const [coord, field] of zipList(samplePoints, fields)) {
       if (!field) continue;

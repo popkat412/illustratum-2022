@@ -4,6 +4,7 @@ import {
   HasRenderScale,
   HasTimeFactor,
 } from "../Environments/EnvironmentInterfaces";
+import Vec2 from "../Vec2";
 
 export default class MoveParticleSystem<
   E extends HasRenderScale & HasTimeFactor
@@ -26,7 +27,7 @@ export default class MoveParticleSystem<
           particleComponent.vel.mult(this.environment.timeFactor)
         );
       }
-      particleComponent.acc.set(0, 0);
+      particleComponent.acc = new Vec2();
     }
   }
 }

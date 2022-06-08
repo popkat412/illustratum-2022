@@ -68,9 +68,8 @@ export default class Vec2 {
     return new Vec2(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
   }
 
-  set(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+  map(fn: (n: number) => number): Vec2 {
+    return new Vec2(fn(this.x), fn(this.y));
   }
 
   copy(): Vec2 {

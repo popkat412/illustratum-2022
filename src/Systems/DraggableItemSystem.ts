@@ -2,11 +2,10 @@ import * as PIXI from "pixi.js";
 import DraggableComponent from "../Components/DraggableComponent";
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
-import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import SelectableComponent from "../Components/SelectableComponent";
 import ECSSystem from "../EntityComponentSystem/System";
 import { HasRenderScale } from "../Environments/EnvironmentInterfaces";
-import { updateParticleComponent } from "../utils";
+import { updateParticleComponent } from "../Utils/render";
 
 export default class DraggableItemSystem<
   E extends HasRenderScale
