@@ -34,6 +34,10 @@ export function mapRange(
   }
 }
 
+export function makeSqrtScalingFn(k: number): (mag: number) => number {
+  return (mag: number) => mapRange(Math.sqrt(mag / k), 0, 5, 20, 80, true);
+}
+
 // }}}
 
 export function sgn(x: number): number {

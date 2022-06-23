@@ -1,7 +1,35 @@
-* {
-  padding: 0;
-  margin: 0;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+
+  margin: 0 auto;
+  line-height: 1.7em;
+  max-width: 35em;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-justify: inter-word;
+  text-align: justify;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-size: 20px;
+}
+
+.canvas-container {
+  width: 100%;
+  margin-bottom: 1em;
+
+  canvas {
+    width: 100%;
+  }
+}
+
+aside {
+  background-color: #eee;
+  padding: 0.2em 1em;
+  border: 3px #ffb87d solid;
+  border-radius: 10px;
+  margin: 0.5em 0;
 }
 
 [v-cloak] {

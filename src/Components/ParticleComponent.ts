@@ -7,6 +7,7 @@ export interface ParticleComponentOptions {
   acc: Vec2;
   mass: number;
   fixed: boolean;
+  showVelocityVector: boolean;
 }
 
 export default class ParticleComponent extends ECSComponent {
@@ -32,6 +33,9 @@ export default class ParticleComponent extends ECSComponent {
   mass: number;
   fixed: boolean;
 
+  // display options
+  showVelocityVector: boolean;
+
   constructor(opts?: Partial<ParticleComponentOptions>) {
     super();
     this._pos = opts?.pos || new Vec2();
@@ -39,6 +43,7 @@ export default class ParticleComponent extends ECSComponent {
     this.acc = opts?.acc || new Vec2();
     this.mass = opts?.mass || 1;
     this.fixed = opts?.fixed || false;
+    this.showVelocityVector = opts?.showVelocityVector || false;
   }
 
   // helper method

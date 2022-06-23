@@ -1,6 +1,9 @@
 import GravityComponent from "../Components/GravityComponent";
 import ParticleComponent from "../Components/ParticleComponent";
-import ShowVectorComponent from "../Components/ShowVectorComponent";
+import ShowVectorComponent, {
+  ShowVectorData,
+} from "../Components/ShowVectorComponent";
+import { GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID } from "../constants";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import ECSSystem from "../EntityComponentSystem/System";
 import { HasGravitationalConstant } from "../Environments/EnvironmentInterfaces";
@@ -15,11 +18,11 @@ export default class GravitySystem<
   update(_deltaTime: number): void {
     // todo: see if any way to remove duplicate between this and GravitySystem.ts
     const entities = this.gravityEntities();
-    const particleComponents: ParticleComponent[] = entities
-      .map((e) =>
-        this.entityManager.getComponent<ParticleComponent>(e, ParticleComponent)
-      )
-      .filter((e) => e) as ParticleComponent[];
+    // const particleComponents: ParticleComponent[] = entities
+    //   .map((e) =>
+    //     this.entityManager.getComponent<ParticleComponent>(e, ParticleComponent)
+    //   )
+    //   .filter((e) => e) as ParticleComponent[];
 
     for (const entity of entities) {
       const particleComponent =
@@ -47,8 +50,11 @@ export default class GravitySystem<
           entity,
           ShowVectorComponent
         );
-      if (showVectorComponent && !particleComponent.fixed) {
-        showVectorComponent.vec = f;
+      if (showVectorComponent /*&& !particleComponent.fixed*/) {
+        const vecData = showVectorComponent.getVectorData(
+          GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID
+        )!;
+        vecData.vec = f;
       }
     }
   }

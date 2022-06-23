@@ -6,11 +6,17 @@ import ParticleComponent from "../Components/ParticleComponent";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import SelectableComponent from "../Components/SelectableComponent";
-import ShowVectorComponent from "../Components/ShowVectorComponent";
+import ShowVectorComponent, {
+  ShowVectorData,
+} from "../Components/ShowVectorComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
+import {
+  GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID,
+  VELOCITY_SHOW_VECTOR_COMPONENT_ID,
+} from "../constants";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import EntityManager from "../EntityComponentSystem/EntityManager";
-import { lightenHexColor } from "../Utils/math";
+import { lightenHexColor, makeSqrtScalingFn } from "../Utils/math";
 import Vec2 from "../Vec2";
 
 export interface CelestialBodyOptions {
@@ -69,7 +75,22 @@ export function addCelestialBody(
 
   entityManager.addComponent(
     entity,
-    new ShowVectorComponent("F", "N", 0xffffff)
+    new ShowVectorComponent([
+      new ShowVectorData(
+        GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID,
+        "F",
+        "N",
+        0xffffff,
+        makeSqrtScalingFn(1e22)
+      ),
+      new ShowVectorData(
+        VELOCITY_SHOW_VECTOR_COMPONENT_ID,
+        "v",
+        "m/s",
+        0xa3ffbb,
+        makeSqrtScalingFn(1e4)
+      ),
+    ])
   );
 
   return entity;
