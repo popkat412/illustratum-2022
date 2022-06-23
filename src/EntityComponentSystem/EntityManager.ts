@@ -2,18 +2,13 @@ import ECSComponent, { ECSComponentClass } from "./Component";
 import ECSEntity, { ECSEntityId } from "./Entity";
 
 export default class EntityManager {
-  private entities: Set<ECSEntityId>;
+  private entities: Set<ECSEntityId> = new Set();
   private componentsByComponentClass: Map<
     ECSComponentClass,
     Map<ECSEntityId, ECSComponent>
-  >;
+  > = new Map();
 
   private lowestUnassignedEID: ECSEntityId = 1;
-
-  constructor() {
-    this.entities = new Set();
-    this.componentsByComponentClass = new Map();
-  }
 
   addComponent<T extends ECSComponent>(entity: ECSEntity, component: T): void {
     const componentClass = component.constructor as ECSComponentClass;

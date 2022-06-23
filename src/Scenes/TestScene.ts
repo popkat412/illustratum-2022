@@ -1,3 +1,4 @@
+/*
 import * as PIXI from "pixi.js";
 import { addCelestialBody } from "../Entities/CelestialBody";
 import NBodySystemEnvironment from "../Environments/NBodySystemEnvironment";
@@ -71,3 +72,4 @@ export default class TestScene extends Scene<NBodySystemEnvironment> {
     });
   }
 }
+*/

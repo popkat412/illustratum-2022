@@ -6,8 +6,8 @@ import { HasPixiApp } from "../Environments/EnvironmentInterfaces";
 export default abstract class BaseCanvasSystem<
   E extends HasPixiApp
 > extends ECSSystem<E> {
-  protected canvas: HTMLCanvasElement;
-  protected context: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D;
   protected texture: PIXI.Texture;
 
   constructor(entityManager: EntityManager, environment: E) {

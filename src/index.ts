@@ -1,9 +1,9 @@
 import ForcesScene from "./Scenes/ForcesScene";
-import TestScene from "./Scenes/TestScene";
+// import TestScene from "./Scenes/TestScene";
 import CircularObitScene from "./Scenes/CircularOrbitScene";
 
 const SCENES_MAP = {
-  test: TestScene,
+  // test: TestScene,
   forces: ForcesScene,
   "circular-orbit": CircularObitScene,
 };

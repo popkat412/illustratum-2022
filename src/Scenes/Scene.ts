@@ -5,9 +5,13 @@ import * as PIXI from "pixi.js";
 
 export default abstract class Scene<E extends HasPixiApp> {
   htmlContainer: HTMLDivElement;
+  readonly resetButton: HTMLButtonElement;
+
   environment: E;
   entityManager = new EntityManager();
+
   systems: ECSSystem<E>[] = [];
+
   readonly fpsText: PIXI.Text;
 
   constructor(htmlContainer: HTMLDivElement, environment: E) {
@@ -25,6 +29,17 @@ export default abstract class Scene<E extends HasPixiApp> {
     this.fpsText.position.set(10, 10);
     this.fpsText.zIndex = 10;
     this.environment.app.stage.addChild(this.fpsText);
+
+    // reset button
+    this.resetButton = document.createElement("button");
+    this.resetButton.innerText = "Reset";
+    this.resetButton.onclick = () => {
+      this.reset();
+    };
+    this.resetButton.style.position = "absolute";
+    this.resetButton.style.bottom = "20px";
+    this.resetButton.style.left = "10px";
+    this.htmlContainer.appendChild(this.resetButton);
 
     // update function
     this.environment.app.ticker.add((deltaTime: number) => {
@@ -45,4 +60,6 @@ export default abstract class Scene<E extends HasPixiApp> {
     }
     this.fpsText.text = `${this.environment.app.ticker.FPS.toFixed()} FPS`;
   }
+
+  abstract reset(): void;
 }
