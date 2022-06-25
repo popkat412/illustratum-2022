@@ -41,13 +41,16 @@ export default class DraggableItemSystem<
         container.interactive = true;
 
         let previousIsFixed = particleComponent?.fixed ?? null;
+        let dragStarted = false;
 
         const onDragStart = (ev: PIXI.InteractionEvent) => {
-          // console.log(ev);
+          console.log("onDragStart", ev);
 
           // do nothing if the DraggableComponent got removed
-          if (!this.entityManager.getComponent(entity, DraggableComponent))
-            return;
+          // if (!this.entityManager.getComponent(entity, DraggableComponent))
+          //   return;
+
+          dragStarted = true;
 
           selectableComponent.isSelected = true;
 
@@ -59,24 +62,30 @@ export default class DraggableItemSystem<
         };
 
         const onDragEnd = () => {
+          if (!dragStarted) return;
+          console.log("onDragEnd", previousIsFixed);
           // do nothing if the DraggableComponent got removed
-          if (!this.entityManager.getComponent(entity, DraggableComponent))
-            return;
+          // if (!this.entityManager.getComponent(entity, DraggableComponent))
+          //   return;
+
+          dragStarted = false;
 
           selectableComponent.isSelected = false;
 
           draggableComponent.pointerData = null;
           if (particleComponent) {
-            console.assert(previousIsFixed != null);
+            console.assert(previousIsFixed != null, "previousIsFixed is null");
             particleComponent.fixed = previousIsFixed!;
             previousIsFixed = null;
           }
         };
 
         const onDragMove = () => {
+          if (!dragStarted) return;
+          console.log("onDragMove");
           // do nothing if the DraggableComponent got removed
-          if (!this.entityManager.getComponent(entity, DraggableComponent))
-            return;
+          // if (!this.entityManager.getComponent(entity, DraggableComponent))
+          //   return;
 
           if (draggableComponent.pointerData) {
             const newPos = draggableComponent.pointerData.getLocalPosition(
