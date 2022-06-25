@@ -61,6 +61,8 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
 
   // TODO: make this just save a copy of all their initial components
   reset(): void {
+    super.reset();
+
     this.earthParticleComponent.pos = this.earthInitialPos;
     this.earthParticleComponent.vel = this.earthInitialVel;
 

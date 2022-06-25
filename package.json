@@ -17,6 +17,7 @@
     "vue": "^3.2.33"
   },
   "devDependencies": {
+    "@parcel/transformer-inline-string": "2.4.1",
     "@parcel/transformer-sass": "2.4.1",
     "@parcel/transformer-vue": "2.4.1",
     "@types/katex": "^0.14.0",

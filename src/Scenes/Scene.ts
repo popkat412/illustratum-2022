@@ -1,6 +1,7 @@
 import EntityManager from "../EntityComponentSystem/EntityManager";
 import ECSSystem from "../EntityComponentSystem/System";
 import { HasPixiApp } from "../Environments/EnvironmentInterfaces";
+import checkmarkSvg from "bundle-text:../assets/checkmark.svg";
 import * as PIXI from "pixi.js";
 
 export default abstract class Scene<E extends HasPixiApp> {
@@ -16,8 +17,24 @@ export default abstract class Scene<E extends HasPixiApp> {
 
   // goal related things
   abstract goalIsMet(): boolean;
+  abstract goalMetFn(): void;
   abstract readonly goalMessage: string;
+  private _goalMetAlready = false;
+  get goalMetAlready(): boolean {
+    return this._goalMetAlready;
+  }
+  set goalMetAlready(newValue: boolean) {
+    if (newValue) {
+      this.goalMessageSpan.classList.add("strikethrough");
+      this.goalMetIcon.hidden = false;
+    } else {
+      this.goalMessageSpan.classList.remove("strikethrough");
+      this.goalMetIcon.hidden = true;
+    }
+  }
   goalMessageDiv: HTMLDivElement;
+  goalMessageSpan: HTMLSpanElement;
+  goalMetIcon: HTMLDivElement;
 
   constructor(htmlContainer: HTMLDivElement, environment: E) {
     this.htmlContainer = htmlContainer;
@@ -45,13 +62,23 @@ export default abstract class Scene<E extends HasPixiApp> {
     this.htmlContainer.appendChild(this.resetButton);
 
     // goal message
+    this.goalMessageSpan = document.createElement("span");
+
     this.goalMessageDiv = document.createElement("div");
     setTimeout(() => {
       // very ugly hack to access a abstract property
-      this.goalMessageDiv.innerHTML = `Goal: ${this.goalMessage}`;
+      this.goalMessageSpan.innerHTML = `Goal: ${this.goalMessage}`;
     });
     this.goalMessageDiv.classList.add("goal-message");
+
+    this.goalMetIcon = document.createElement("div");
+    this.goalMetIcon.classList.add("goal-met-icon");
+    this.goalMetIcon.innerHTML = checkmarkSvg;
+    this.goalMetIcon.hidden = true;
+
+    this.goalMessageDiv.appendChild(this.goalMessageSpan);
     this.htmlContainer.appendChild(this.goalMessageDiv);
+    this.htmlContainer.appendChild(this.goalMetIcon);
 
     // update function
     this.environment.app.ticker.add((deltaTime: number) => {
@@ -75,12 +102,14 @@ export default abstract class Scene<E extends HasPixiApp> {
     // goals
     const goalMet = this.goalIsMet();
     if (goalMet) {
-      console.log("goal met");
+      this.goalMetFn();
     }
 
     // fps text
     this.fpsText.text = `${this.environment.app.ticker.FPS.toFixed()} FPS`;
   }
 
-  abstract reset(): void;
+  reset(): void {
+    this.goalMetAlready = false;
+  }
 }

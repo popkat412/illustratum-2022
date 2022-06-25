@@ -66,6 +66,9 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
   }
 
   reset(): void {
+    super.reset();
+
+    this.goalMetAlready = false;
     const earthParticleComponent =
       this.entityManager.getComponent<ParticleComponent>(
         this.earthEntity,
@@ -87,8 +90,9 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
   goalIsMet(): boolean {
     const expected = GOAL_FORCE.toExponential(DISP_EXP_DIGITS);
     // a bit ugly but it'll work
-    // use the ShowVectorComponent to get the forces between the two
-    // a lot of force unwrapping but whatever
+    // use the ShowVectorComponent to get the forces between the two.
+    // (a lot of force unwrapping but whatever)
+    // TODO: refactor this
     const actual = this.earthShowVectorComponent!.getVectorData(
       GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID
     )!
@@ -96,6 +100,17 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
       .toExponential(DISP_EXP_DIGITS);
 
     return expected == actual;
+  }
+  goalMetFn(): void {
+    if (this.goalMetAlready) return;
+    // wait half a second for better UX
+    setTimeout(() => {
+      // if the goal is still met
+      if (this.goalIsMet()) {
+        // ok now show some tick or something
+        this.goalMetAlready = true;
+      }
+    }, 500);
   }
 
   private get initialEarthPos(): Vec2 {
