@@ -6,6 +6,9 @@ import ParticleComponent from "../Components/ParticleComponent";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import SelectableComponent from "../Components/SelectableComponent";
+import ShowDistanceComponent, {
+  ShowDistanceData,
+} from "../Components/ShowDistanceComponent";
 import ShowVectorComponent, {
   ShowVectorData,
 } from "../Components/ShowVectorComponent";
@@ -26,6 +29,7 @@ export interface CelestialBodyOptions {
   fixed?: boolean;
   initialPos?: Vec2;
   initialVel?: Vec2;
+  showDistData?: ShowDistanceData[];
 }
 
 export function addCelestialBody(
@@ -37,6 +41,7 @@ export function addCelestialBody(
     fixed = false,
     initialPos: pos = new Vec2(),
     initialVel: vel = new Vec2(),
+    showDistData = [],
   }: CelestialBodyOptions
 ): ECSEntity {
   const pixiCircle = new PIXI.Graphics();
@@ -92,6 +97,8 @@ export function addCelestialBody(
       ),
     ])
   );
+
+  entityManager.addComponent(entity, new ShowDistanceComponent(showDistData));
 
   return entity;
 }

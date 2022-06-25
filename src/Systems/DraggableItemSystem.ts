@@ -43,7 +43,7 @@ export default class DraggableItemSystem<
         let previousIsFixed = particleComponent?.fixed ?? null;
 
         const onDragStart = (ev: PIXI.InteractionEvent) => {
-          console.log(ev);
+          // console.log(ev);
 
           // do nothing if the DraggableComponent got removed
           if (!this.entityManager.getComponent(entity, DraggableComponent))
@@ -53,7 +53,6 @@ export default class DraggableItemSystem<
 
           draggableComponent.pointerData = ev.data;
           if (particleComponent) {
-            console.log("here");
             previousIsFixed = particleComponent.fixed;
             particleComponent.fixed = true;
           }

@@ -78,6 +78,7 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
   }
 
   private defaultTextPos(vec: Vec2, h: number): Vec2 {
+    // TODO: account for height offset
     const upOrDown = sgn(Vec2.UP.dot(vec));
     const textOffset = vec.rotate(Math.PI / 2).setMag(20);
     const textPos = vec.setMag(h * 0.75).add(textOffset.mult(upOrDown));

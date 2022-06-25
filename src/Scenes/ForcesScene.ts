@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
+import { ShowDistanceData } from "../Components/ShowDistanceComponent";
 import ShowVectorComponent from "../Components/ShowVectorComponent";
 import {
   ASTRONIMICAL_UNIT,
@@ -16,6 +17,7 @@ import GravitySystem from "../Systems/GravitySystem";
 import MoveParticleSystem from "../Systems/MoveParticleSystem";
 import RendererSystem from "../Systems/RendererSystem";
 import SelectableItemSystem from "../Systems/SelectableItemSystem";
+import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
 import { randInt } from "../Utils/math";
 import { showHtmlExponential } from "../Utils/render";
@@ -42,6 +44,7 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
       new DraggableItemSystem(this.entityManager, this.environment),
       new RendererSystem(this.entityManager, this.environment),
       new ShowVectorSystem(this.entityManager, this.environment),
+      new ShowDistanceSystem(this.entityManager, this.environment),
     ];
 
     // set up entities
@@ -58,6 +61,7 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
       radius: 20,
       fixed: true,
       initialPos: this.initialSunPos,
+      showDistData: [new ShowDistanceData(this.earthEntity)],
     });
   }
 

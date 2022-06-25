@@ -40,10 +40,10 @@ export function makeSqrtScalingFn(k: number): (mag: number) => number {
 
 // }}}
 
-export function sgn(x: number): number {
+export function sgn(x: number, zeroValue = 0): number {
   if (x > 0) return 1;
   if (x < 0) return -1;
-  return 0;
+  return zeroValue;
 }
 
 export function approxEq(a: number, b: number, plusminus: number): boolean {
