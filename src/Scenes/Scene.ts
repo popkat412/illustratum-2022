@@ -14,6 +14,11 @@ export default abstract class Scene<E extends HasPixiApp> {
 
   readonly fpsText: PIXI.Text;
 
+  // goal related things
+  abstract goalIsMet(): boolean;
+  abstract readonly goalMessage: string;
+  goalMessageDiv: HTMLDivElement;
+
   constructor(htmlContainer: HTMLDivElement, environment: E) {
     this.htmlContainer = htmlContainer;
     this.environment = environment;
@@ -36,10 +41,17 @@ export default abstract class Scene<E extends HasPixiApp> {
     this.resetButton.onclick = () => {
       this.reset();
     };
-    this.resetButton.style.position = "absolute";
-    this.resetButton.style.bottom = "20px";
-    this.resetButton.style.left = "10px";
+    this.resetButton.classList.add("reset-button");
     this.htmlContainer.appendChild(this.resetButton);
+
+    // goal message
+    this.goalMessageDiv = document.createElement("div");
+    setTimeout(() => {
+      // very ugly hack to access a abstract property
+      this.goalMessageDiv.innerHTML = `Goal: ${this.goalMessage}`;
+    });
+    this.goalMessageDiv.classList.add("goal-message");
+    this.htmlContainer.appendChild(this.goalMessageDiv);
 
     // update function
     this.environment.app.ticker.add((deltaTime: number) => {
@@ -55,9 +67,18 @@ export default abstract class Scene<E extends HasPixiApp> {
   }
 
   update(deltaTime: number): void {
+    // systems
     for (const system of this.systems) {
       system.update(deltaTime);
     }
+
+    // goals
+    const goalMet = this.goalIsMet();
+    if (goalMet) {
+      console.log("goal met");
+    }
+
+    // fps text
     this.fpsText.text = `${this.environment.app.ticker.FPS.toFixed()} FPS`;
   }
 

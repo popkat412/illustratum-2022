@@ -46,6 +46,10 @@ export function sgn(x: number): number {
   return 0;
 }
 
+export function approxEq(a: number, b: number, plusminus: number): boolean {
+  return Math.abs(a - b) < plusminus;
+}
+
 // {{{ colourful stuffs
 // adapted from https://gist.github.com/nikolas/b0cce2261f1382159b507dd492e1ceef
 export function lerpColor(a: number, b: number, amt: number): number {

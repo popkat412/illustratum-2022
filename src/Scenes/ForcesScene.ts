@@ -1,9 +1,15 @@
 import * as PIXI from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
-import { ASTRONIMICAL_UNIT, EARTH_MASS, SUN_MASS } from "../constants";
+import ShowVectorComponent from "../Components/ShowVectorComponent";
+import {
+  ASTRONIMICAL_UNIT,
+  DISP_EXP_DIGITS,
+  EARTH_MASS,
+  GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID,
+  SUN_MASS,
+} from "../constants";
 import { addCelestialBody } from "../Entities/CelestialBody";
 import ECSEntity from "../EntityComponentSystem/Entity";
-import EntityManager from "../EntityComponentSystem/EntityManager";
 import NBodySystemEnvironment from "../Environments/NBodySystemEnvironment";
 import DraggableItemSystem from "../Systems/DraggableItemSystem";
 import GravitySystem from "../Systems/GravitySystem";
@@ -12,8 +18,11 @@ import RendererSystem from "../Systems/RendererSystem";
 import SelectableItemSystem from "../Systems/SelectableItemSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
 import { randInt } from "../Utils/math";
+import { showHtmlExponential } from "../Utils/render";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
+
+const GOAL_FORCE = 1e22;
 
 export default class ForcesScene extends Scene<NBodySystemEnvironment> {
   private sunEntity: ECSEntity;
@@ -67,6 +76,24 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     sunParticleComponent.pos = this.initialSunPos;
   }
 
+  readonly goalMessage = `Get the force of attraction to be approximately ${showHtmlExponential(
+    GOAL_FORCE,
+    1
+  )} N`;
+  goalIsMet(): boolean {
+    const expected = GOAL_FORCE.toExponential(DISP_EXP_DIGITS);
+    // a bit ugly but it'll work
+    // use the ShowVectorComponent to get the forces between the two
+    // a lot of force unwrapping but whatever
+    const actual = this.earthShowVectorComponent!.getVectorData(
+      GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID
+    )!
+      .vec!.mag()
+      .toExponential(DISP_EXP_DIGITS);
+
+    return expected == actual;
+  }
+
   private get initialEarthPos(): Vec2 {
     const app = this.environment.app;
     const scaleFactor = this.environment.scaleFactor;
@@ -81,6 +108,12 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     return new Vec2(
       app.renderer.width / 2 / scaleFactor + ASTRONIMICAL_UNIT / 2,
       app.renderer.height / 2 / scaleFactor
+    );
+  }
+  private get earthShowVectorComponent(): ShowVectorComponent | undefined {
+    return this.entityManager.getComponent<ShowVectorComponent>(
+      this.earthEntity,
+      ShowVectorComponent
     );
   }
 }

@@ -4,6 +4,7 @@ import { sgn } from "../Utils/math";
 import { updateArrowGraphic } from "../Utils/render";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import Vec2 from "../Vec2";
+import { DISP_EXP_DIGITS } from "../constants";
 
 export default class ShowVectorSystem<E> extends ECSSystem<E> {
   textPosFn: (vec: Vec2, h: number) => Vec2 = this.defaultTextPos;
@@ -66,7 +67,9 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
           arrowheadWidth: 20,
         });
 
-        pixiText.text = `${label} = ${vec.mag().toExponential(1)} ${units}`;
+        pixiText.text = `${label} = ${vec
+          .mag()
+          .toExponential(DISP_EXP_DIGITS)} ${units}`;
         const textPos = this.textPosFn(vec, h);
         pixiText.x = textPos.x;
         pixiText.y = textPos.y;

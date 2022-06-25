@@ -147,3 +147,9 @@ export function drawLines(ctx: CanvasRenderingContext2D, pts: Vec2[]) {
   ctx.moveTo(pts[0].x, pts[0].y);
   for (const pt of pts) ctx.lineTo(pt.x, pt.y);
 }
+
+export function showHtmlExponential(n: number, fractionDigits: number): string {
+  const s = n.toExponential(fractionDigits);
+  const [base, exp] = s.split(/e/);
+  return `${base}<sup>${exp.replace("+", "")}</sup>`;
+}

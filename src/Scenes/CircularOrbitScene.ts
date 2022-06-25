@@ -53,6 +53,12 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
     this.earthParticleComponent.showVelocityVector = true;
   }
 
+  readonly goalMessage =
+    "Give the planet an initial velocity such that it goes into circular orbit.";
+  goalIsMet(): boolean {
+    return false;
+  }
+
   // TODO: make this just save a copy of all their initial components
   reset(): void {
     this.earthParticleComponent.pos = this.earthInitialPos;
