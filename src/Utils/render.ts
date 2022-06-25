@@ -151,5 +151,5 @@ export function drawLines(ctx: CanvasRenderingContext2D, pts: Vec2[]) {
 export function showHtmlExponential(n: number, fractionDigits: number): string {
   const s = n.toExponential(fractionDigits);
   const [base, exp] = s.split(/e/);
-  return `${base}<sup>${exp.replace("+", "")}</sup>`;
+  return `${base} &times; 10<sup>${exp.replace("+", "")}</sup>`;
 }
