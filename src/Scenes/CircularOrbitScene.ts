@@ -1,6 +1,14 @@
 import * as PIXI from "pixi.js";
+import { DEG_TO_RAD, RAD_TO_DEG } from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
-import { ASTRONIMICAL_UNIT, EARTH_MASS, SUN_MASS } from "../constants";
+import PixiContainerComponent from "../Components/PIXIContainerComponent";
+import ShowVectorComponent from "../Components/ShowVectorComponent";
+import {
+  ASTRONIMICAL_UNIT,
+  EARTH_MASS,
+  SUN_MASS,
+  VELOCITY_SHOW_VECTOR_COMPONENT_ID,
+} from "../constants";
 import { addCelestialBody } from "../Entities/CelestialBody";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import NBodySystemEnvironment from "../Environments/NBodySystemEnvironment";
@@ -16,6 +24,68 @@ import Scene from "./Scene";
 export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
   private sunEntity: ECSEntity;
   private earthEntity: ECSEntity;
+
+  private _isChoosingInitialVel = true;
+  get isChoosingInitialVel(): boolean {
+    return this._isChoosingInitialVel;
+  }
+  set isChoosingInitialVel(newVal: boolean) {
+    this._isChoosingInitialVel = newVal;
+    if (newVal) {
+      // assuming that everything is already reset (to avoid mutual recursive loop)
+      this.earthParticleComponent.fixed = true;
+      this.earthParticleComponent.pos = this.earthInitialPos;
+      this.earthParticleComponent.vel = this.earthInitialVel;
+
+      // setup interaction
+      this.app.stage.interactive = true;
+      const pointermoveCallback = () => {
+        if (!this.dragEventData) return;
+        const pointerScreenCoord = new Vec2(
+          this.dragEventData.global.x,
+          this.dragEventData.global.y
+        );
+        const earthScreenCoord = Vec2.fromVec(
+          this.earthPixiContainerComponent.container.getGlobalPosition()
+        );
+
+        const screenCoordDiff = pointerScreenCoord.sub(earthScreenCoord); // points from earth to cursor
+        const length = screenCoordDiff.mag();
+        const inverseScalingFn = this.earthShowVecComponent.getVectorData(
+          VELOCITY_SHOW_VECTOR_COMPONENT_ID
+        )!.inverseScalingFn;
+        const velMag = inverseScalingFn(length);
+        const vel = screenCoordDiff.setMag(velMag, 0);
+        this.earthParticleComponent.vel = vel;
+        this.updateInitialVelUI();
+      };
+
+      this.app.stage.on("pointerdown", (ev: PIXI.InteractionEvent) => {
+        if (!this.isChoosingInitialVel) return;
+        this.dragEventData = ev.data;
+        pointermoveCallback();
+      });
+      this.app.stage.on("pointermove", pointermoveCallback);
+      this.app.stage.on("pointerup", () => {
+        if (!this.dragEventData) return;
+        this.dragEventData = null;
+      });
+
+      // show UI
+      this.initialVelUiDiv.style.display = "flex";
+    } else {
+      console.log("here");
+      this.earthParticleComponent.fixed = false;
+      this.initialVelUiDiv.style.display = "none";
+    }
+  }
+
+  private initialVelUiDiv: HTMLDivElement;
+  private magnitudeInputBox: HTMLInputElement;
+  private angleInputBox: HTMLInputElement;
+  private goButton: HTMLButtonElement;
+
+  private dragEventData: PIXI.InteractionData | null = null;
 
   constructor(htmlContainer: HTMLDivElement) {
     const app = new PIXI.Application();
@@ -47,10 +117,54 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       color: randInt(0, 0xffffff),
       radius: 20,
       initialPos: this.earthInitialPos,
-      initialVel: this.earthInitialVel,
+      initialVel: new Vec2(),
     });
 
     this.earthParticleComponent.showVelocityVector = true;
+
+    // choosing initial vel UI (which is done in HTML and CSS instead
+    // of programatically (yes i am NOT doing all that in js))
+    this.initialVelUiDiv = document.getElementById(
+      "circular-orbit-initial-vel-ui"
+    )! as HTMLDivElement;
+    this.magnitudeInputBox = document.getElementById(
+      "circular-orbit-vec-magnitude"
+    )! as HTMLInputElement;
+    this.angleInputBox = document.getElementById(
+      "circular-orbit-vec-angle"
+    )! as HTMLInputElement;
+    this.goButton = document.getElementById(
+      "circular-orbit-go-button"
+    )! as HTMLButtonElement;
+
+    this.magnitudeInputBox.oninput = (ev) => {
+      console.log(ev);
+      if (!ev.target) return;
+      const val = (ev.target as HTMLInputElement).value;
+      const parsed = parseFloat(val);
+      if (isNaN(parsed)) return;
+      console.log(parsed);
+      this.earthParticleComponent.vel = this.earthParticleComponent.vel.setMag(
+        parsed,
+        0
+      );
+    };
+    this.angleInputBox.oninput = (ev) => {
+      if (!ev.target) return;
+      const val = (ev.target as HTMLInputElement).value;
+      const parsed = parseFloat(val);
+      if (isNaN(parsed)) return;
+      this.earthParticleComponent.vel =
+        this.earthParticleComponent.vel.setAngle(parsed * DEG_TO_RAD);
+    };
+    this.goButton.onpointerup = () => {
+      this.isChoosingInitialVel = false;
+    };
+
+    this.magnitudeInputBox.value = "0";
+    this.angleInputBox.value = "0";
+
+    this.isChoosingInitialVel = true; // to trigger the setter to run
   }
 
   readonly goalMessage =
@@ -58,10 +172,22 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
   goalIsMet(): boolean {
     return false;
   }
+  goalMetFn(): void {
+    if (this.goalMetAlready) return;
+    // wait half a second for better ux
+    setTimeout(() => {
+      // if goal is still met
+      if (this.goalIsMet()) {
+        this.goalMetAlready = true;
+      }
+    }, 500);
+  }
 
   // TODO: make this just save a copy of all their initial components
   reset(): void {
     super.reset();
+
+    this.isChoosingInitialVel = true;
 
     this.earthParticleComponent.pos = this.earthInitialPos;
     this.earthParticleComponent.vel = this.earthInitialVel;
@@ -74,6 +200,11 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       canvas.height
     );
   }
+
+  // update(deltaTime: number): void {
+  //   super.update(deltaTime);
+  //   this.updateInitialVelUI();
+  // }
 
   // a bunch of helper functions
   private get earthParticleComponent(): ParticleComponent {
@@ -100,17 +231,45 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       app.renderer.height / 2 / scaleFactor
     );
   }
-
   private get earthInitialVel(): Vec2 {
-    const earthSpeed = Math.sqrt(
-      (this.environment.gravitationalConstant * SUN_MASS) / ASTRONIMICAL_UNIT
-    );
-    return new Vec2(0, earthSpeed);
+    return new Vec2();
   }
+
+  // private get earthInitialVel(): Vec2 {
+  //   const earthSpeed = Math.sqrt(
+  //     (this.environment.gravitationalConstant * SUN_MASS) / ASTRONIMICAL_UNIT
+  //   );
+  //   return new Vec2(0, earthSpeed);
+  // }
 
   private get trailRendererSystem(): TrailRendererSystem<NBodySystemEnvironment> {
     return this.systems.filter(
       (x) => x instanceof TrailRendererSystem
     )[0] as TrailRendererSystem<NBodySystemEnvironment>;
+  }
+
+  private get earthShowVecComponent(): ShowVectorComponent {
+    return this.entityManager.getComponent<ShowVectorComponent>(
+      this.earthEntity,
+      ShowVectorComponent
+    )!;
+  }
+
+  private get earthPixiContainerComponent(): PixiContainerComponent {
+    return this.entityManager.getComponent<PixiContainerComponent>(
+      this.earthEntity,
+      PixiContainerComponent
+    )!;
+  }
+
+  private updateInitialVelUI(): void {
+    if (!this.isChoosingInitialVel) return;
+    const vel = this.earthParticleComponent.vel;
+    this.magnitudeInputBox.value = vel.mag().toExponential(2);
+    this.angleInputBox.value = (RAD_TO_DEG * vel.angle()).toFixed(1);
+  }
+
+  private get app(): PIXI.Application {
+    return this.environment.app;
   }
 }

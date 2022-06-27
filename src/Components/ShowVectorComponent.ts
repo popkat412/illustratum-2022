@@ -1,6 +1,7 @@
 import ECSComponent from "../EntityComponentSystem/Component";
 import * as PIXI from "pixi.js";
 import Vec2 from "../Vec2";
+import { InverseScalingFn, ScalingFn } from "../Utils/math";
 
 export class ShowVectorData {
   readonly id: string;
@@ -13,20 +14,24 @@ export class ShowVectorData {
 
   arrowGraphic = new PIXI.Graphics();
   pixiText = new PIXI.Text("");
-  scalingFn: (mag: number) => number;
+
+  scalingFn: ScalingFn;
+  inverseScalingFn: InverseScalingFn;
 
   constructor(
     id: string,
     label: string,
     units: string,
     color: number,
-    scalingFn: (mag: number) => number
+    scalingFn: ScalingFn,
+    inverseScalingFn: InverseScalingFn
   ) {
     this.id = id;
     this.label = label;
     this.units = units;
     this.color = color;
     this.scalingFn = scalingFn;
+    this.inverseScalingFn = inverseScalingFn;
   }
 }
 

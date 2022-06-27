@@ -19,7 +19,11 @@ import {
 } from "../constants";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import EntityManager from "../EntityComponentSystem/EntityManager";
-import { lightenHexColor, makeSqrtScalingFn } from "../Utils/math";
+import {
+  lightenHexColor,
+  makeInverseSqrtScalingFn,
+  makeSqrtScalingFn,
+} from "../Utils/math";
 import Vec2 from "../Vec2";
 
 export interface CelestialBodyOptions {
@@ -86,14 +90,16 @@ export function addCelestialBody(
         "F",
         "N",
         0xffffff,
-        makeSqrtScalingFn(1e22)
+        makeSqrtScalingFn(1e22),
+        makeInverseSqrtScalingFn(1e22)
       ),
       new ShowVectorData(
         VELOCITY_SHOW_VECTOR_COMPONENT_ID,
         "v",
         "m/s",
         0xa3ffbb,
-        makeSqrtScalingFn(1e4)
+        makeSqrtScalingFn(1e3),
+        makeInverseSqrtScalingFn(1e3)
       ),
     ])
   );

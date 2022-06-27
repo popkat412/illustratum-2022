@@ -28,21 +28,21 @@ export default class MoveParticleSystem<
         particleComponent.pos = particleComponent.pos.add(
           particleComponent.vel.mult(this.environment.timeFactor)
         );
-
-        if (particleComponent.showVelocityVector) {
-          const showVectorComponent =
-            this.entityManager.getComponent<ShowVectorComponent>(
-              entity,
-              ShowVectorComponent
-            );
-          const vectorData = showVectorComponent?.getVectorData(
-            VELOCITY_SHOW_VECTOR_COMPONENT_ID
+      }
+      if (particleComponent.showVelocityVector) {
+        const showVectorComponent =
+          this.entityManager.getComponent<ShowVectorComponent>(
+            entity,
+            ShowVectorComponent
           );
-          if (vectorData) {
-            vectorData.vec = particleComponent.vel;
-          }
+        const vectorData = showVectorComponent?.getVectorData(
+          VELOCITY_SHOW_VECTOR_COMPONENT_ID
+        );
+        if (vectorData) {
+          vectorData.vec = particleComponent.vel;
         }
       }
+
       particleComponent.acc = new Vec2();
     }
   }

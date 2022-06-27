@@ -19,7 +19,7 @@ export default class NBodySystemEnvironment
 
   readonly gravitationalConstant: number = 6.67408e-11;
 
-  scaleFactor = 1.5e-9;
+  scaleFactor = 1e-9;
   timeFactor = 1e5;
 
   fieldLinesColor = "#ffffff";

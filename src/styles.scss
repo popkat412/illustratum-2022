@@ -1,9 +1,11 @@
+$content-width: 35em;
+
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
 
   margin: 0 auto;
   line-height: 1.7em;
-  max-width: 35em;
+  max-width: $content-width;
   padding-left: 50px;
   padding-right: 50px;
   padding-top: 50px;
@@ -56,6 +58,28 @@ $goal-green: #73af55;
   text-align: center;
   white-space: nowrap;
   color: white;
+}
+
+#circular-orbit-initial-vel-ui {
+  position: absolute;
+  display: flex;
+  bottom: 10px;
+  right: 10px;
+  text-align: left;
+  // width: calc($content-width / 3);
+
+  flex-direction: column;
+
+  > div {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    height: 1.5em;
+  }
+
+  > * {
+    margin-bottom: 0.5em;
+  }
 }
 
 @keyframes dash {
@@ -112,6 +136,7 @@ $goal-green: #73af55;
 }
 
 .canvas-container {
+  color: white;
   width: 100%;
   position: relative;
   margin-bottom: 1em;

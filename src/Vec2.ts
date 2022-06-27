@@ -16,6 +16,10 @@ export default class Vec2 {
   static readonly UP = new Vec2(0, -1);
   static readonly RIGHT = new Vec2(1, 0);
 
+  static fromVec({ x, y }: { x: number; y: number }): Vec2 {
+    return new Vec2(x, y);
+  }
+
   add(other: Vec2): Vec2 {
     return new Vec2(this.x + other.x, this.y + other.y);
   }
@@ -32,7 +36,15 @@ export default class Vec2 {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
-  setMag(s: number): Vec2 {
+  setMag(s: number, assumeAngle: number | false = false): Vec2 {
+    if (this.mag() == 0) {
+      if (assumeAngle === false) {
+        console.warn("Vec2: attempting to setMag a zero vector, no effect");
+        return new Vec2();
+      } else {
+        return Vec2.UP.mult(s).rotate(assumeAngle);
+      }
+    }
     return this.normalize().mult(s);
   }
 
@@ -41,11 +53,17 @@ export default class Vec2 {
   }
 
   div(s: number): Vec2 {
-    console.assert(s != 0);
+    if (s == 0) {
+      throw new Error("Vec2: division by zero");
+    }
     return new Vec2(this.x / s, this.y / s);
   }
 
   normalize(): Vec2 {
+    if (this.mag() == 0) {
+      console.warn("Vec2: normalizing zero vector");
+      return new Vec2();
+    }
     return this.div(this.mag());
   }
 
@@ -57,9 +75,19 @@ export default class Vec2 {
     return this.mult(-1);
   }
 
-  // angle to the *vertical* in *radians*
+  // angle to the _vertical_ in _radians_
+  // 0 degress points UP in _pixi space_
   angle(): number {
+    if (this.mag() == 0) {
+      console.warn("Vec2.angle() is 0 for zero vector");
+    }
     return Math.atan2(this.y, this.x) + Math.PI / 2;
+  }
+
+  // angle to the _vertical_ in _radians_
+  // 0 degress points UP in _pixi space_
+  setAngle(angle: number): Vec2 {
+    return new Vec2(Math.sin(angle), Math.cos(angle)).mult(-this.mag());
   }
 
   rotate(angle: number): Vec2 {
@@ -68,7 +96,7 @@ export default class Vec2 {
     return new Vec2(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
   }
 
-  map(fn: (n: number) => number): Vec2 {
+  fmap(fn: (n: number) => number): Vec2 {
     return new Vec2(fn(this.x), fn(this.y));
   }
 

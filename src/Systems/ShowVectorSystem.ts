@@ -57,6 +57,7 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
         arrowGraphic.clear();
 
         if (!vec) continue;
+        if (vec.mag() == 0) continue; // don't draw anything if the vector is zero
         arrowGraphic.rotation = vec.angle();
 
         const h = scalingFn(vec.mag());

@@ -34,8 +34,15 @@ export function mapRange(
   }
 }
 
-export function makeSqrtScalingFn(k: number): (mag: number) => number {
-  return (mag: number) => mapRange(Math.sqrt(mag / k), 0, 5, 20, 80, true);
+export type ScalingFn = (mag: number) => number; // returns the length of arrow in pixels
+export type InverseScalingFn = (length: number) => number; // returns the magnitude
+
+export function makeSqrtScalingFn(k: number): ScalingFn {
+  return (mag: number) => mapRange(Math.sqrt(mag / k), 0, 5, 20, 80);
+}
+
+export function makeInverseSqrtScalingFn(k: number): InverseScalingFn {
+  return (length: number) => mapRange(length, 20, 80, 0, 5) ** 2 * k;
 }
 
 // }}}
