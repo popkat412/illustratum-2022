@@ -1,3 +1,5 @@
+import { approxEq } from "./Utils/math";
+
 /**
   Basic 2D vector class containing only the methods I need.
 */
@@ -69,6 +71,13 @@ export default class Vec2 {
 
   dot(other: Vec2): number {
     return this.x * other.x + this.y * other.y;
+  }
+
+  approxEq(other: Vec2, magPlusMinus: number, anglePlusMinus: number): boolean {
+    return (
+      approxEq(this.mag(), other.mag(), magPlusMinus) &&
+      approxEq(this.angle(), other.angle(), anglePlusMinus)
+    );
   }
 
   neg(): Vec2 {

@@ -21,7 +21,7 @@ import RendererSystem from "../Systems/RendererSystem";
 import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
 import TrailRendererSystem from "../Systems/TrailRendererSystem";
-import { randInt } from "../Utils/math";
+import { approxEq, randInt } from "../Utils/math";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
 
@@ -176,6 +176,23 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
         this.earthParticleComponent.vel.setAngle(parsed * DEG_TO_RAD);
     };
     this.goButton.onpointerup = () => {
+      const magPM = 1000,
+        anglePM = 0.1;
+      if (
+        this.earthParticleComponent.vel.approxEq(
+          this.correctInitialVel,
+          magPM,
+          anglePM
+        ) ||
+        this.earthParticleComponent.vel.approxEq(
+          this.correctInitialVel.neg(),
+          magPM,
+          anglePM
+        )
+      ) {
+        console.log("goalMetAlready");
+        this.goalMetAlready = true;
+      }
       this.isChoosingInitialVel = false;
     };
 
@@ -187,19 +204,12 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
 
   readonly goalMessage =
     "Give the planet an initial velocity such that it goes into circular orbit.";
+
+  // just leave this unused, will be "manually" setting goalMetAlready
   goalIsMet(): boolean {
     return false;
   }
-  goalMetFn(): void {
-    if (this.goalMetAlready) return;
-    // wait half a second for better ux
-    setTimeout(() => {
-      // if goal is still met
-      if (this.goalIsMet()) {
-        this.goalMetAlready = true;
-      }
-    }, 500);
-  }
+  goalMetFn(): void {}
 
   // TODO: make this just save a copy of all their initial components
   reset(): void {
@@ -253,12 +263,12 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
     return new Vec2();
   }
 
-  // private get earthInitialVel(): Vec2 {
-  //   const earthSpeed = Math.sqrt(
-  //     (this.environment.gravitationalConstant * SUN_MASS) / ASTRONIMICAL_UNIT
-  //   );
-  //   return new Vec2(0, earthSpeed);
-  // }
+  private get correctInitialVel(): Vec2 {
+    const earthSpeed = Math.sqrt(
+      (this.environment.gravitationalConstant * SUN_MASS) / ASTRONIMICAL_UNIT
+    );
+    return new Vec2(0, earthSpeed);
+  }
 
   private get trailRendererSystem(): TrailRendererSystem<NBodySystemEnvironment> {
     return this.systems.filter(
