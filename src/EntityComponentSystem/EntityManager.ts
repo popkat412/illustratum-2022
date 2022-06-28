@@ -20,6 +20,11 @@ export default class EntityManager {
       .set(entity.eid, component);
   }
 
+  // does nothing if the component doesn't exist
+  removeComponent(entity: ECSEntity, componentClass: ECSComponentClass): void {
+    this.componentsByComponentClass.get(componentClass)?.delete(entity.eid);
+  }
+
   getComponent<T extends ECSComponent>(
     entity: ECSEntity,
     componentClass: ECSComponentClass

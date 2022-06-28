@@ -10,6 +10,8 @@ export class ShowDistanceData {
   lineGraphic = new PIXI.Graphics();
   pixiText = new PIXI.Text("");
 
+  _setupDone = false;
+
   constructor(target: ECSEntity, color = 0xffffff) {
     this.target = target;
     this.color = color;

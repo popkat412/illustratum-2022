@@ -5,4 +5,8 @@ export default class ECSEntity {
   constructor(id: ECSEntityId) {
     this.eid = id;
   }
+
+  toString(): string {
+    return this.eid.toString();
+  }
 }

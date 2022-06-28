@@ -2,6 +2,9 @@ import * as PIXI from "pixi.js";
 import { DEG_TO_RAD, RAD_TO_DEG } from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
+import ShowDistanceComponent, {
+  ShowDistanceData,
+} from "../Components/ShowDistanceComponent";
 import ShowVectorComponent from "../Components/ShowVectorComponent";
 import {
   ASTRONIMICAL_UNIT,
@@ -15,6 +18,7 @@ import NBodySystemEnvironment from "../Environments/NBodySystemEnvironment";
 import GravitySystem from "../Systems/GravitySystem";
 import MoveParticleSystem from "../Systems/MoveParticleSystem";
 import RendererSystem from "../Systems/RendererSystem";
+import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
 import TrailRendererSystem from "../Systems/TrailRendererSystem";
 import { randInt } from "../Utils/math";
@@ -36,6 +40,13 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       this.earthParticleComponent.fixed = true;
       this.earthParticleComponent.pos = this.earthInitialPos;
       this.earthParticleComponent.vel = this.earthInitialVel;
+
+      // setup distance display
+      this.entityManager.addComponent(
+        this.sunEntity,
+        new ShowDistanceComponent([new ShowDistanceData(this.earthEntity)])
+      );
+      console.log(`sunEntity: ${this.sunEntity}`);
 
       // setup interaction
       this.app.stage.interactive = true;
@@ -75,7 +86,13 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       this.initialVelUiDiv.style.display = "flex";
     } else {
       console.log("here");
+
       this.earthParticleComponent.fixed = false;
+
+      // TODO: refactor so the component has a setup and destroy function
+      // but for now i'll just have to remember to manually remove it
+      this.destroyShowDistnaceComponent();
+
       this.initialVelUiDiv.style.display = "none";
     }
   }
@@ -99,6 +116,7 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       new RendererSystem(this.entityManager, this.environment),
       new TrailRendererSystem(this.entityManager, this.environment),
       new ShowVectorSystem(this.entityManager, this.environment),
+      new ShowDistanceSystem(this.entityManager, this.environment),
     ];
 
     // set up entities
@@ -271,5 +289,25 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
 
   private get app(): PIXI.Application {
     return this.environment.app;
+  }
+
+  private destroyShowDistnaceComponent(): void {
+    const entity = this.sunEntity;
+    const pixiContainerComponent =
+      this.entityManager.getComponent<PixiContainerComponent>(
+        entity,
+        PixiContainerComponent
+      )!;
+    const showDistanceData =
+      this.entityManager.getComponent<ShowDistanceComponent>(
+        entity,
+        ShowDistanceComponent
+      )!.showDistDataArr[0]; // very fragile but yes
+    // TODO:             ^ refactor to use id instead
+    pixiContainerComponent.container.removeChild(showDistanceData.pixiText);
+    pixiContainerComponent.container.removeChild(showDistanceData.lineGraphic);
+    showDistanceData.pixiText.destroy();
+    showDistanceData.lineGraphic.destroy();
+    this.entityManager.removeComponent(this.sunEntity, ShowDistanceComponent);
   }
 }

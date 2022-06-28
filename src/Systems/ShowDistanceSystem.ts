@@ -1,7 +1,10 @@
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
-import ShowDistanceComponent from "../Components/ShowDistanceComponent";
+import ShowDistanceComponent, {
+  ShowDistanceData,
+} from "../Components/ShowDistanceComponent";
 import { DISP_EXP_DIGITS } from "../constants";
+import ECSEntity from "../EntityComponentSystem/Entity";
 import ECSSystem from "../EntityComponentSystem/System";
 import { HasRenderScale } from "../Environments/EnvironmentInterfaces";
 import { sgn } from "../Utils/math";
@@ -17,25 +20,8 @@ export default class ShowDistanceSystem<
     ] of this.entityManager.allEntitiesWithComponent<ShowDistanceComponent>(
       ShowDistanceComponent
     )) {
-      for (const { lineGraphic, pixiText, color } of showDistDataArr) {
-        lineGraphic.zIndex = -1;
-        lineGraphic.pivot.set(0, 0);
-
-        pixiText.zIndex = -1;
-        pixiText.style.fill = "#" + color.toString(16);
-        pixiText.style.fontSize = 15;
-
-        const pixiContainerComponent =
-          this.entityManager.getComponent<PixiContainerComponent>(
-            entity,
-            PixiContainerComponent
-          );
-
-        if (pixiContainerComponent) {
-          pixiContainerComponent.container.addChild(lineGraphic);
-          pixiContainerComponent.container.addChild(pixiText);
-          pixiContainerComponent.container.sortChildren();
-        }
+      for (const showDistData of showDistDataArr) {
+        this.setupShowDistData(entity, showDistData);
       }
     }
   }
@@ -47,7 +33,12 @@ export default class ShowDistanceSystem<
     ] of this.entityManager.allEntitiesWithComponent<ShowDistanceComponent>(
       ShowDistanceComponent
     )) {
-      for (const { target, lineGraphic, pixiText, color } of showDistDataArr) {
+      for (const showDistData of showDistDataArr) {
+        const { target, lineGraphic, pixiText, color, _setupDone } =
+          showDistData;
+
+        if (!_setupDone) this.setupShowDistData(entity, showDistData);
+
         const particleComponent =
           this.entityManager.getComponent<ParticleComponent>(
             entity,
@@ -70,7 +61,7 @@ export default class ShowDistanceSystem<
 
         // line
         lineGraphic.clear();
-        lineGraphic.lineStyle({ color: 0xffffff, width: 1 });
+        lineGraphic.lineStyle({ color, width: 1 });
         const lineLength = dist * this.environment.scaleFactor;
         const LINE_OFFSET = 40,
           TAIL_LENGTH = 20,
@@ -94,5 +85,33 @@ export default class ShowDistanceSystem<
         pixiText.scale.x = orientation;
       }
     }
+  }
+
+  private setupShowDistData(
+    entity: ECSEntity,
+    showDistData: ShowDistanceData
+  ): void {
+    console.log(`setting up entity: ${entity}`);
+    const { lineGraphic, pixiText, color } = showDistData;
+    lineGraphic.zIndex = -1;
+    lineGraphic.pivot.set(0, 0);
+
+    pixiText.zIndex = -1;
+    pixiText.style.fill = "#" + color.toString(16);
+    pixiText.style.fontSize = 15;
+
+    const pixiContainerComponent =
+      this.entityManager.getComponent<PixiContainerComponent>(
+        entity,
+        PixiContainerComponent
+      );
+
+    if (pixiContainerComponent) {
+      pixiContainerComponent.container.addChild(lineGraphic);
+      pixiContainerComponent.container.addChild(pixiText);
+      pixiContainerComponent.container.sortChildren();
+    }
+
+    showDistData._setupDone = true;
   }
 }
