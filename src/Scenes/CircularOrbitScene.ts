@@ -229,6 +229,9 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       canvas.width,
       canvas.height
     );
+
+    this.magnitudeInputBox.value = "0";
+    this.angleInputBox.value = "0";
   }
 
   // update(deltaTime: number): void {
