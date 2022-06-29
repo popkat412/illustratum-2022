@@ -4,8 +4,7 @@ import { HasPixiApp } from "../Environments/EnvironmentInterfaces";
 import checkmarkSvg from "bundle-text:../assets/checkmark.svg";
 import crossSvg from "bundle-text:../assets/cross.svg";
 import * as PIXI from "pixi.js";
-
-type GoalMetStatus = "success" | "failure" | "undecided";
+import { GoalStatus } from "./Goals";
 
 export default abstract class Scene<E extends HasPixiApp> {
   htmlContainer: HTMLDivElement;
@@ -20,28 +19,52 @@ export default abstract class Scene<E extends HasPixiApp> {
 
   // goal related things
   abstract readonly goalMessage: string;
-  private _goalMetStatus: GoalMetStatus = "undecided";
-  get goalMetStatus(): GoalMetStatus {
-    return this._goalMetStatus;
-  }
-  set goalMetStatus(newValue: GoalMetStatus) {
-    switch (newValue) {
+  private goalMetStatus: GoalStatus = new GoalStatus();
+  private onGoalMetStatusUpdate(newValue: GoalStatus) {
+    const setupSucessFailureUI = (icon: HTMLDivElement) => {
+      this.goalMetMessageDiv.hidden = false;
+      this.goalContainer.hidden = false;
+      this.goalContainer.classList.add("goal-container-animation");
+      icon.classList.add("goal-icon-animation");
+      console.log("goal status msg", this.goalMetStatus.msg);
+      if (this.goalMetStatus.msg) {
+        this.goalMetMessageDiv.innerHTML = this.goalMetStatus.msg;
+      }
+    };
+    switch (newValue.status) {
       case "success":
+        setupSucessFailureUI(this.goalMetIcon);
         this.goalMessageSpan.classList.add("strikethrough");
         this.goalMetIcon.hidden = false;
+        this.goalMetMessageDiv.classList.add("goal-green");
         break;
       case "failure":
+        setupSucessFailureUI(this.goalFailedIcon);
         this.goalFailedIcon.hidden = false;
+        this.goalMetMessageDiv.classList.add("goal-red");
         break;
       default:
         this.goalMessageSpan.classList.remove("strikethrough");
+        this.goalContainer.hidden = true;
+        this.goalMetMessageDiv.hidden = true;
+        this.goalMetMessageDiv.classList.remove("goal-green", "goal-red");
+        // TODO: refactor so this is a map of goal status to icon
+        this.goalMetIcon.classList.remove("goal-icon-animation");
+        this.goalFailedIcon.classList.remove("goal-icon-animation");
         this.goalMetIcon.hidden = true;
+        this.goalFailedIcon.hidden = true;
+
+        this.goalContainer.classList.remove("goal-container-animation");
+        break;
     }
   }
   goalMessageDiv: HTMLDivElement;
   goalMessageSpan: HTMLSpanElement;
+
+  goalContainer: HTMLDivElement;
   goalMetIcon: HTMLDivElement;
   goalFailedIcon: HTMLDivElement;
+  goalMetMessageDiv: HTMLDivElement;
 
   constructor(htmlContainer: HTMLDivElement, environment: E) {
     this.htmlContainer = htmlContainer;
@@ -68,7 +91,7 @@ export default abstract class Scene<E extends HasPixiApp> {
     this.resetButton.classList.add("reset-button");
     this.htmlContainer.appendChild(this.resetButton);
 
-    // goal message
+    // goal system
     this.goalMessageSpan = document.createElement("span");
 
     this.goalMessageDiv = document.createElement("div");
@@ -88,10 +111,24 @@ export default abstract class Scene<E extends HasPixiApp> {
     this.goalFailedIcon.innerHTML = crossSvg;
     this.goalFailedIcon.hidden = true;
 
+    this.goalMetMessageDiv = document.createElement("div");
+    this.goalMetMessageDiv.classList.add("goal-met-message");
+    this.goalMetMessageDiv.hidden = true;
+
+    this.goalContainer = document.createElement("div");
+    this.goalContainer.hidden = true;
+    this.goalContainer.classList.add("goal-container");
+
     this.goalMessageDiv.appendChild(this.goalMessageSpan);
+
+    this.goalContainer.appendChild(this.goalMetIcon);
+    this.goalContainer.appendChild(this.goalFailedIcon);
+    this.goalContainer.appendChild(this.goalMetMessageDiv);
+
     this.htmlContainer.appendChild(this.goalMessageDiv);
-    this.htmlContainer.appendChild(this.goalMetIcon);
-    this.htmlContainer.appendChild(this.goalFailedIcon);
+    this.htmlContainer.appendChild(this.goalContainer);
+
+    this.goalMetStatus.onUpdate = this.onGoalMetStatusUpdate.bind(this);
 
     // update function
     this.environment.app.ticker.add((deltaTime: number) => {
@@ -117,6 +154,6 @@ export default abstract class Scene<E extends HasPixiApp> {
   }
 
   reset(): void {
-    this.goalMetStatus = "undecided";
+    this.goalMetStatus.undecided();
   }
 }

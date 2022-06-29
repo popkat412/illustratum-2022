@@ -193,7 +193,7 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
         )
       ) {
         console.log("goalMetAlready");
-        this.goalMetAlready = true;
+        this.goalMetStatus.success();
       }
       this.isChoosingInitialVel = false;
     };
@@ -206,12 +206,6 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
 
   readonly goalMessage =
     "Give the planet an initial velocity such that it goes into circular orbit.";
-
-  // just leave this unused, will be "manually" setting goalMetAlready
-  goalIsMet(): boolean {
-    return false;
-  }
-  goalMetFn(): void {}
 
   // TODO: make this just save a copy of all their initial components
   reset(): void {

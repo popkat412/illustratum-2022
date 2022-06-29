@@ -2,6 +2,7 @@ import { approxEq } from "./Utils/math";
 
 /**
   Basic 2D vector class containing only the methods I need.
+  Should ideally be treated as immutable
 */
 export default class Vec2 {
   x: number;

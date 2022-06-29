@@ -110,14 +110,14 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     return expected == actual;
   }
   goalMetFn(): void {
-    if (this.goalMetStatus != "undecided") return;
+    if (!this.goalMetStatus.isUndecided()) return;
     // wait half a second for better UX
     // TODO: make this not spawn like ten thousand setTimeouts
     setTimeout(() => {
       // if the goal is still met
       if (this.goalIsMet()) {
         // ok now show some tick or something
-        this.goalMetStatus = "success";
+        this.goalMetStatus.success("test success message");
       }
     }, 500);
   }
