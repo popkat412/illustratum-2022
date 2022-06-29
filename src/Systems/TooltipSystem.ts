@@ -9,7 +9,6 @@ export default class TooltipSystem<E> extends ECSSystem<E> {
     // setup UI
     const tooltipDiv = document.createElement("div");
     tooltipDiv.classList.add("tooltip");
-    tooltipDiv.innerText = "hallo";
     tooltipDiv.style.display = "none";
     document.body.appendChild(tooltipDiv);
 
@@ -30,6 +29,7 @@ export default class TooltipSystem<E> extends ECSSystem<E> {
       graphics.on("pointerover", (ev: PIXI.InteractionEvent) => {
         const canvas = ev.data.originalEvent.target as HTMLCanvasElement;
         tooltipDiv.style.display = "block";
+        tooltipDiv.innerHTML = tooltipComponent.tooltipContent;
         const pixiCoords = Vec2.fromVec(
           pixiGraphicsRenderComponent.pixiGraphics.getGlobalPosition()
         );
@@ -45,11 +45,8 @@ export default class TooltipSystem<E> extends ECSSystem<E> {
         const tooltipWidth = tooltipDiv.clientWidth;
         const offset = new Vec2(-tooltipWidth / 2, -60);
         const tooltipPosition = pixiClientCoords.add(offset);
-        // console.log(tooltipPosition);
         tooltipDiv.style.left = `${tooltipPosition.x}px`;
         tooltipDiv.style.top = `${tooltipPosition.y}px`;
-        // tooltipDiv.style.left = `${canvasClientCoords.x}px`;
-        // tooltipDiv.style.top = `${canvasClientCoords.y}px`;
       });
       graphics.on("pointerout", () => {
         tooltipDiv.style.display = "none";

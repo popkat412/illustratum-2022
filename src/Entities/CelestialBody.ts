@@ -15,6 +15,7 @@ import ShowVectorComponent, {
 import TooltipComponent from "../Components/TooltipComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
 import {
+  DISP_EXP_DIGITS,
   GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID,
   VELOCITY_SHOW_VECTOR_COMPONENT_ID,
 } from "../constants";
@@ -25,6 +26,7 @@ import {
   makeInverseSqrtScalingFn,
   makeSqrtScalingFn,
 } from "../Utils/math";
+import { showHtmlExponential } from "../Utils/render";
 import Vec2 from "../Vec2";
 
 export interface CelestialBodyOptions {
@@ -107,7 +109,12 @@ export function addCelestialBody(
 
   entityManager.addComponent(entity, new ShowDistanceComponent(showDistData));
 
-  entityManager.addComponent(entity, new TooltipComponent());
+  entityManager.addComponent(
+    entity,
+    new TooltipComponent(
+      `Mass: ${showHtmlExponential(mass, DISP_EXP_DIGITS)} kg`
+    )
+  );
 
   return entity;
 }
