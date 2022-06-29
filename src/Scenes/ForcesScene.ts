@@ -68,7 +68,6 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
   reset(): void {
     super.reset();
 
-    this.goalMetAlready = false;
     const earthParticleComponent =
       this.entityManager.getComponent<ParticleComponent>(
         this.earthEntity,
@@ -87,6 +86,15 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     GOAL_FORCE,
     1
   )} N`;
+
+  update(deltaTime: number): void {
+    super.update(deltaTime);
+
+    if (this.goalIsMet()) {
+      this.goalMetFn();
+    }
+  }
+
   goalIsMet(): boolean {
     const expected = GOAL_FORCE.toExponential(DISP_EXP_DIGITS);
     // a bit ugly but it'll work
@@ -102,13 +110,14 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     return expected == actual;
   }
   goalMetFn(): void {
-    if (this.goalMetAlready) return;
+    if (this.goalMetStatus != "undecided") return;
     // wait half a second for better UX
+    // TODO: make this not spawn like ten thousand setTimeouts
     setTimeout(() => {
       // if the goal is still met
       if (this.goalIsMet()) {
         // ok now show some tick or something
-        this.goalMetAlready = true;
+        this.goalMetStatus = "success";
       }
     }, 500);
   }
