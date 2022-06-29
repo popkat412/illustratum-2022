@@ -54,6 +54,10 @@ export default class Vec2 {
     return new Vec2(this.x * s, this.y * s);
   }
 
+  multComponents(v: Vec2): Vec2 {
+    return new Vec2(this.x * v.x, this.y * v.y);
+  }
+
   div(s: number): Vec2 {
     if (s == 0) {
       throw new Error("Vec2: division by zero");

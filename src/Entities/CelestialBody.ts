@@ -12,6 +12,7 @@ import ShowDistanceComponent, {
 import ShowVectorComponent, {
   ShowVectorData,
 } from "../Components/ShowVectorComponent";
+import TooltipComponent from "../Components/TooltipComponent";
 import TrailRenderComponent from "../Components/TrailRenderComponent";
 import {
   GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID,
@@ -105,6 +106,8 @@ export function addCelestialBody(
   );
 
   entityManager.addComponent(entity, new ShowDistanceComponent(showDistData));
+
+  entityManager.addComponent(entity, new TooltipComponent());
 
   return entity;
 }

@@ -20,8 +20,9 @@ import MoveParticleSystem from "../Systems/MoveParticleSystem";
 import RendererSystem from "../Systems/RendererSystem";
 import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
+import TooltipSystem from "../Systems/TooltipSystem";
 import TrailRendererSystem from "../Systems/TrailRendererSystem";
-import { approxEq, randInt } from "../Utils/math";
+import { randInt } from "../Utils/math";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
 
@@ -117,6 +118,7 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       new TrailRendererSystem(this.entityManager, this.environment),
       new ShowVectorSystem(this.entityManager, this.environment),
       new ShowDistanceSystem(this.entityManager, this.environment),
+      new TooltipSystem(this.entityManager, this.environment),
     ];
 
     // set up entities

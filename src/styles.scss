@@ -146,6 +146,16 @@ $goal-green: #73af55;
   }
 }
 
+.tooltip {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  background-color: #ccccccaa;
+  padding: 0.2em;
+  border-radius: 10%;
+  margin: 0;
+}
+
 aside {
   background-color: #eee;
   padding: 0.2em 1em;
