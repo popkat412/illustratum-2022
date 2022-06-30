@@ -61,7 +61,14 @@ $checkmark-animation-delay: 0.35s;
   width: 100%;
   text-align: center;
   white-space: nowrap;
-  color: white;
+}
+
+.goal-met-message {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  bottom: 20px;
 }
 
 @keyframes bg-fade-inout {
@@ -145,6 +152,7 @@ $checkmark-animation-delay: 0.35s;
 }
 
 .goal-icon {
+  display: block;
   width: 60px;
   height: 60px;
   position: absolute;

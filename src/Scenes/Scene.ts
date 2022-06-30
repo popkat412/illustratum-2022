@@ -19,11 +19,10 @@ export default abstract class Scene<E extends HasPixiApp> {
 
   // goal related things
   abstract readonly goalMessage: string;
-  private goalMetStatus: GoalStatus = new GoalStatus();
+  protected goalMetStatus: GoalStatus = new GoalStatus();
   private onGoalMetStatusUpdate(newValue: GoalStatus) {
     const setupSucessFailureUI = (icon: HTMLDivElement) => {
-      this.goalMetMessageDiv.hidden = false;
-      this.goalContainer.hidden = false;
+      this.unhideElement(this.goalMetMessageDiv, this.goalContainer);
       this.goalContainer.classList.add("goal-container-animation");
       icon.classList.add("goal-icon-animation");
       console.log("goal status msg", this.goalMetStatus.msg);
@@ -35,24 +34,27 @@ export default abstract class Scene<E extends HasPixiApp> {
       case "success":
         setupSucessFailureUI(this.goalMetIcon);
         this.goalMessageSpan.classList.add("strikethrough");
-        this.goalMetIcon.hidden = false;
+        this.unhideElement(this.goalMetIcon);
         this.goalMetMessageDiv.classList.add("goal-green");
         break;
       case "failure":
         setupSucessFailureUI(this.goalFailedIcon);
-        this.goalFailedIcon.hidden = false;
+        this.unhideElement(this.goalFailedIcon);
         this.goalMetMessageDiv.classList.add("goal-red");
         break;
       default:
         this.goalMessageSpan.classList.remove("strikethrough");
-        this.goalContainer.hidden = true;
-        this.goalMetMessageDiv.hidden = true;
+        this.hideElement(
+          this.goalContainer,
+          this.goalContainer,
+          this.goalMetMessageDiv,
+          this.goalMetIcon,
+          this.goalFailedIcon
+        );
         this.goalMetMessageDiv.classList.remove("goal-green", "goal-red");
         // TODO: refactor so this is a map of goal status to icon
         this.goalMetIcon.classList.remove("goal-icon-animation");
         this.goalFailedIcon.classList.remove("goal-icon-animation");
-        this.goalMetIcon.hidden = true;
-        this.goalFailedIcon.hidden = true;
 
         this.goalContainer.classList.remove("goal-container-animation");
         break;
@@ -104,19 +106,19 @@ export default abstract class Scene<E extends HasPixiApp> {
     this.goalMetIcon = document.createElement("div");
     this.goalMetIcon.classList.add("goal-icon", "goal-met-icon");
     this.goalMetIcon.innerHTML = checkmarkSvg;
-    this.goalMetIcon.hidden = true;
+    this.hideElement(this.goalMetIcon);
 
     this.goalFailedIcon = document.createElement("div");
     this.goalFailedIcon.classList.add("goal-icon", "goal-failed-icon");
     this.goalFailedIcon.innerHTML = crossSvg;
-    this.goalFailedIcon.hidden = true;
+    this.hideElement(this.goalFailedIcon);
 
     this.goalMetMessageDiv = document.createElement("div");
     this.goalMetMessageDiv.classList.add("goal-met-message");
-    this.goalMetMessageDiv.hidden = true;
+    this.hideElement(this.goalMetMessageDiv);
 
     this.goalContainer = document.createElement("div");
-    this.goalContainer.hidden = true;
+    this.hideElement(this.goalContainer);
     this.goalContainer.classList.add("goal-container");
 
     this.goalMessageDiv.appendChild(this.goalMessageSpan);
@@ -155,5 +157,16 @@ export default abstract class Scene<E extends HasPixiApp> {
 
   reset(): void {
     this.goalMetStatus.undecided();
+  }
+
+  private hideElement(...elements: HTMLElement[]): void {
+    for (const el of elements) {
+      el.style.display = "none";
+    }
+  }
+  private unhideElement(...elements: HTMLElement[]): void {
+    for (const el of elements) {
+      el.style.display = "block";
+    }
   }
 }
