@@ -26,6 +26,8 @@ import { randInt } from "../Utils/math";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
 
+// TODO: show failure when the entity leaves the screen
+// TODO: remove tooltip when !isChoosingInitialVel
 export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
   private sunEntity: ECSEntity;
   private earthEntity: ECSEntity;

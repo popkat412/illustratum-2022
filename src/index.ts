@@ -1,11 +1,13 @@
 import ForcesScene from "./Scenes/ForcesScene";
 // import TestScene from "./Scenes/TestScene";
 import CircularObitScene from "./Scenes/CircularOrbitScene";
+import ApoapsisPointScene from "./Scenes/ApoapsisPointScene";
 
 const SCENES_MAP = {
   // test: TestScene,
   forces: ForcesScene,
   "circular-orbit": CircularObitScene,
+  apoapsis: ApoapsisPointScene,
 };
 
 const scenes = [];

@@ -27,6 +27,14 @@ export default class Vec2 {
     return new Vec2(this.x + other.x, this.y + other.y);
   }
 
+  addX(s: number): Vec2 {
+    return new Vec2(this.x + s, this.y);
+  }
+
+  addY(s: number): Vec2 {
+    return new Vec2(this.x, this.y + s);
+  }
+
   sub(other: Vec2): Vec2 {
     return new Vec2(this.x - other.x, this.y - other.y);
   }

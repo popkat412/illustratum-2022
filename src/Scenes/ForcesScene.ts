@@ -117,7 +117,7 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
       // if the goal is still met
       if (this.goalIsMet()) {
         // ok now show some tick or something
-        this.goalMetStatus.success();
+        this.goalMetStatus.success("test success message");
       }
     }, 500);
   }

@@ -30,43 +30,48 @@ export default abstract class Scene<E extends HasPixiApp> {
         this.goalMetMessageDiv.innerHTML = this.goalMetStatus.msg;
       }
     };
+    const resetGoalUI = () => {
+      this.goalMessageSpan.classList.remove("strikethrough");
+      this.hideElement(
+        this.goalContainer,
+        this.goalContainer,
+        this.goalMetMessageDiv,
+        this.goalMetIcon,
+        this.goalFailedIcon
+      );
+      this.goalMetMessageDiv.classList.remove("goal-green", "goal-red");
+      // TODO: refactor so this is a map of goal status to icon
+      this.goalMetIcon.classList.remove("goal-icon-animation");
+      this.goalFailedIcon.classList.remove("goal-icon-animation");
+
+      this.goalContainer.classList.remove("goal-container-animation");
+    };
     switch (newValue.status) {
       case "success":
+        resetGoalUI();
         setupSucessFailureUI(this.goalMetIcon);
         this.goalMessageSpan.classList.add("strikethrough");
         this.unhideElement(this.goalMetIcon);
         this.goalMetMessageDiv.classList.add("goal-green");
         break;
       case "failure":
+        resetGoalUI();
         setupSucessFailureUI(this.goalFailedIcon);
         this.unhideElement(this.goalFailedIcon);
         this.goalMetMessageDiv.classList.add("goal-red");
         break;
       default:
-        this.goalMessageSpan.classList.remove("strikethrough");
-        this.hideElement(
-          this.goalContainer,
-          this.goalContainer,
-          this.goalMetMessageDiv,
-          this.goalMetIcon,
-          this.goalFailedIcon
-        );
-        this.goalMetMessageDiv.classList.remove("goal-green", "goal-red");
-        // TODO: refactor so this is a map of goal status to icon
-        this.goalMetIcon.classList.remove("goal-icon-animation");
-        this.goalFailedIcon.classList.remove("goal-icon-animation");
-
-        this.goalContainer.classList.remove("goal-container-animation");
+        resetGoalUI();
         break;
     }
   }
-  goalMessageDiv: HTMLDivElement;
-  goalMessageSpan: HTMLSpanElement;
+  private goalMessageDiv: HTMLDivElement;
+  private goalMessageSpan: HTMLSpanElement;
 
-  goalContainer: HTMLDivElement;
-  goalMetIcon: HTMLDivElement;
-  goalFailedIcon: HTMLDivElement;
-  goalMetMessageDiv: HTMLDivElement;
+  private goalContainer: HTMLDivElement;
+  private goalMetIcon: HTMLDivElement;
+  private goalFailedIcon: HTMLDivElement;
+  private goalMetMessageDiv: HTMLDivElement;
 
   constructor(htmlContainer: HTMLDivElement, environment: E) {
     this.htmlContainer = htmlContainer;
