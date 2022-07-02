@@ -106,6 +106,80 @@ export function lightenHexColor(color: number, strength: number): number {
 }
 // }}}
 
+// {{{ ellipse
+export class EllipseData {
+  centre: Vec2;
+  semiMajorAxis: number;
+  semiMinorAxis: number;
+
+  constructor(centre: Vec2, semiMajorAxis: number, semiMinorAxis: number) {
+    this.centre = centre;
+    this.semiMajorAxis = semiMajorAxis;
+    this.semiMinorAxis = semiMinorAxis;
+  }
+
+  // angle from the VERTICAL
+  pointAtAngle(angle: number): Vec2 {
+    angle *= -1;
+    return this.centre.sub(
+      new Vec2(
+        this.semiMajorAxis * Math.sin(angle),
+        this.semiMinorAxis * Math.cos(angle)
+      )
+    );
+  }
+
+  tangentAngleAtAngle(angle: number): number {
+    angle *= -1;
+    return Math.atan(
+      -(this.semiMinorAxis * Math.cos(angle)) /
+        (this.semiMajorAxis * Math.sin(angle))
+    );
+  }
+
+  get eccentricity(): number {
+    return Math.sqrt(
+      1 -
+        (this.semiMinorAxis * this.semiMinorAxis) /
+          (this.semiMajorAxis * this.semiMajorAxis)
+    );
+  }
+
+  get focusDist(): number {
+    return Math.sqrt(
+      this.semiMajorAxis * this.semiMajorAxis -
+        this.semiMinorAxis * this.semiMinorAxis
+    );
+  }
+
+  get leftFocus(): Vec2 {
+    return this.centre.addX(-this.focusDist);
+  }
+
+  get rightFocus(): Vec2 {
+    return this.centre.addX(this.focusDist);
+  }
+
+  get leftVertex(): Vec2 {
+    return this.centre.addX(-this.semiMajorAxis);
+  }
+
+  get rightVertex(): Vec2 {
+    return this.centre.addX(this.semiMajorAxis);
+  }
+
+  // assume that the centre body is at one of the foci
+  get apoapsisDist(): number {
+    return this.semiMajorAxis * (1 + this.eccentricity);
+  }
+
+  // assume that the centre body is at one of the foci
+  get periapsisDist(): number {
+    return this.semiMajorAxis * (1 - this.eccentricity);
+  }
+}
+// }}}
+
 // {{{ multivariable calculus baby wooohooo!!!
 export type VectorField = (inpt: Vec2) => Vec2 | undefined;
 export type ScalarField = (inpt: Vec2) => number | undefined;

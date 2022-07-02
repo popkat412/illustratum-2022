@@ -23,6 +23,13 @@ export default class Vec2 {
     return new Vec2(x, y);
   }
 
+  // vertically up is angle = 0
+  static fromPolar(r: number, theta: number): Vec2 {
+    const x = r * Math.sin(theta);
+    const y = r * Math.cos(theta);
+    return new Vec2(x, y);
+  }
+
   add(other: Vec2): Vec2 {
     return new Vec2(this.x + other.x, this.y + other.y);
   }
@@ -45,6 +52,10 @@ export default class Vec2 {
 
   mag(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
+
+  dist(v: Vec2): number {
+    return this.sub(v).mag();
   }
 
   setMag(s: number, assumeAngle: number | false = false): Vec2 {

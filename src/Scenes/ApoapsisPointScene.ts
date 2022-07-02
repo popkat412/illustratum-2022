@@ -19,10 +19,14 @@ import {
 import Vec2 from "../Vec2";
 import ParticleComponent from "../Components/ParticleComponent";
 import { showHtmlExponential } from "../Utils/render";
+import { EllipseData } from "../Utils/math";
+import { RAD_TO_DEG } from "pixi.js";
 
 export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
   earthEntity: ECSEntity;
   sunEntity: ECSEntity;
+
+  private readonly orbitEllipse: EllipseData;
 
   constructor(htmlContainer: HTMLDivElement) {
     const app = new PIXI.Application();
@@ -38,6 +42,14 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
       new ShowVectorSystem(this.entityManager, this.environment),
       new ShowDistanceSystem(this.entityManager, this.environment),
     ];
+
+    // orbital ellipse
+    const { width, height } = this.environment.app.renderer;
+    const scaleFactor = this.environment.scaleFactor;
+    const semiMajorAxis = ((1 / 3) * width) / scaleFactor;
+    const semiMinorAxis = (height - 150) / 2 / scaleFactor;
+    const centre = new Vec2(width / 2, height / 2).div(scaleFactor);
+    this.orbitEllipse = new EllipseData(centre, semiMajorAxis, semiMinorAxis);
 
     // set up entities
     this.earthEntity = addCelestialBody(this.entityManager, {
@@ -57,7 +69,7 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
 
     this.htmlContainer.style.cursor = "pointer";
     this.app.stage.interactive = true;
-    const THRESHOLD = 15 / this.environment.scaleFactor;
+    const THRESHOLD = 30 / this.environment.scaleFactor;
     this.app.stage.on("pointerdown", () => {
       const pos = this.earthParticleComponent.pos;
       const delta = pos.sub(this.apoapsisPoint).mag();
@@ -78,6 +90,8 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
         );
       }
     });
+
+    //
   }
 
   reset(): void {
@@ -99,47 +113,29 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
     "Click anywhere when the blue planet reaches its apoapsis point";
 
   private get initialSunPos(): Vec2 {
-    const { width, height } = this.environment.app.renderer;
-    const scaleFactor = this.environment.scaleFactor;
-    return new Vec2(width / 3 / scaleFactor, height / 2 / scaleFactor);
+    return this.orbitEllipse.leftFocus;
   }
 
   private get initialEarthPos(): Vec2 {
-    // earth starts at apoapsis
-    return this.apoapsisPoint;
+    return this.orbitEllipse.pointAtAngle(this.initialEarthAngle);
   }
 
-  private get apoapsisDist(): number {
-    const { width } = this.environment.app.renderer;
-    const scaleFactor = this.environment.scaleFactor;
-    return width / 2 / scaleFactor;
-  }
-
-  private get apoapsisPoint(): Vec2 {
-    return this.initialSunPos.addX(this.apoapsisDist);
+  private get initialEarthAngle(): number {
+    return Math.PI / 4;
   }
 
   private get initialEarthVel(): Vec2 {
-    const { width } = this.environment.app.renderer;
-    const scaleFactor = this.environment.scaleFactor;
+    const mu = this.environment.gravitationalConstant * SUN_MASS;
+    const r = this.initialEarthPos.dist(this.initialSunPos);
+    const a = this.orbitEllipse.semiMajorAxis;
+    const mag = Math.sqrt(mu * (2 / r - 1 / a));
+    const angle = this.orbitEllipse.tangentAngleAtAngle(this.initialEarthAngle);
+    console.log({ mag, angle: angle * RAD_TO_DEG });
+    return Vec2.fromPolar(mag, angle);
+  }
 
-    const G = this.environment.gravitationalConstant;
-    const standardGravParameter = G * (EARTH_MASS + SUN_MASS);
-    const semimajorAxis = (width / 2 - 150) / scaleFactor;
-
-    // r is essentially at sun because sun mass >> earth mass
-    // (and also i'm artificially fixing the sun in place)
-    // thats why i'm doing 2 / this.apoapsisDist
-    const mag = Math.sqrt(
-      standardGravParameter * (2 / this.apoapsisDist - 1 / semimajorAxis)
-    );
-    console.log({
-      standardGravParameter,
-      semimajorAxis,
-      apoapsisDist: this.apoapsisDist,
-      mag,
-    });
-    return new Vec2(0, mag);
+  private get apoapsisPoint(): Vec2 {
+    return this.orbitEllipse.rightVertex;
   }
 
   private get app(): PIXI.Application {
