@@ -213,6 +213,8 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
   reset(): void {
     super.reset();
 
+    this.destroyShowDistnaceComponent();
+
     this.isChoosingInitialVel = true;
 
     this.earthParticleComponent.pos = this.earthInitialPos;

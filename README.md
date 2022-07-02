@@ -13,5 +13,5 @@
 
 ## Bugs
 
-- [ ] CircularOrbitScene - spamming reset causes duplicate distance indicator
+- [x] CircularOrbitScene - spamming reset causes duplicate distance indicator
 - [ ] CircularOrbitScene - Weird values get accepted (on high fps screens ?!?)
