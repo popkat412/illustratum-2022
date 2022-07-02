@@ -6,12 +6,16 @@ import MoveParticleSystem from "../Systems/MoveParticleSystem";
 import RendererSystem from "../Systems/RendererSystem";
 import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
-import TooltipSystem from "../Systems/TooltipSystem";
 import TrailRendererSystem from "../Systems/TrailRendererSystem";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import { addCelestialBody } from "../Entities/CelestialBody";
-import { DISP_EXP_DIGITS, EARTH_MASS, SUN_MASS } from "../constants";
-import { randInt } from "../Utils/math";
+import {
+  DISP_EXP_DIGITS,
+  EARTH_COLOR,
+  EARTH_MASS,
+  SUN_COLOR,
+  SUN_MASS,
+} from "../constants";
 import Vec2 from "../Vec2";
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
@@ -40,14 +44,14 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
     // set up entities
     this.earthEntity = addCelestialBody(this.entityManager, {
       mass: EARTH_MASS,
-      color: randInt(0, 0xffffff),
+      color: EARTH_COLOR,
       radius: 20,
       initialPos: this.initialEarthPos,
       initialVel: this.initialEarthVel,
     });
     this.sunEntity = addCelestialBody(this.entityManager, {
       mass: SUN_MASS,
-      color: randInt(0, 0xffffff),
+      color: SUN_COLOR,
       radius: 25,
       fixed: true,
       initialPos: this.initialSunPos,

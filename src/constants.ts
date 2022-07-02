@@ -5,6 +5,10 @@ export const GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID =
 export const VELOCITY_SHOW_VECTOR_COMPONENT_ID =
   "velocityShowVectorComponentId";
 
+// colours
+export const SUN_COLOR = 0xea2c2c;
+export const EARTH_COLOR = 0x2c85ea;
+
 // constants used in code
 export const DISP_EXP_DIGITS = 1;
 

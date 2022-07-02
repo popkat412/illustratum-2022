@@ -8,7 +8,9 @@ import ShowDistanceComponent, {
 import ShowVectorComponent from "../Components/ShowVectorComponent";
 import {
   ASTRONIMICAL_UNIT,
+  EARTH_COLOR,
   EARTH_MASS,
+  SUN_COLOR,
   SUN_MASS,
   VELOCITY_SHOW_VECTOR_COMPONENT_ID,
 } from "../constants";
@@ -22,7 +24,6 @@ import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
 import TooltipSystem from "../Systems/TooltipSystem";
 import TrailRendererSystem from "../Systems/TrailRendererSystem";
-import { randInt } from "../Utils/math";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
 
@@ -127,7 +128,7 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
     this.sunEntity = addCelestialBody(this.entityManager, {
       // sun
       mass: SUN_MASS,
-      color: randInt(0, 0xffffff),
+      color: SUN_COLOR,
       radius: 25,
       fixed: true,
       initialPos: this.sunInitialPos,
@@ -136,7 +137,7 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
     this.earthEntity = addCelestialBody(this.entityManager, {
       // earth
       mass: EARTH_MASS,
-      color: randInt(0, 0xffffff),
+      color: EARTH_COLOR,
       radius: 20,
       initialPos: this.earthInitialPos,
       initialVel: new Vec2(),
