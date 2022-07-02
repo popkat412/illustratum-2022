@@ -305,13 +305,14 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       this.entityManager.getComponent<PixiContainerComponent>(
         entity,
         PixiContainerComponent
-      )!;
+      );
     const showDistanceData =
       this.entityManager.getComponent<ShowDistanceComponent>(
         entity,
         ShowDistanceComponent
-      )!.showDistDataArr[0]; // very fragile but yes
+      )?.showDistDataArr[0]; // very fragile but yes
     // TODO:             ^ refactor to use id instead
+    if (!pixiContainerComponent || !showDistanceData) return;
     pixiContainerComponent.container.removeChild(showDistanceData.pixiText);
     pixiContainerComponent.container.removeChild(showDistanceData.lineGraphic);
     showDistanceData.pixiText.destroy();
