@@ -5,7 +5,7 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "NODE_OPTIONS=--no-experimental-fetch parcel build src/index.html --public-url './'"
   },
   "alias": {
     "vue": "vue/dist/vue.esm-bundler.js"
