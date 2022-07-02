@@ -17,14 +17,13 @@
     "vue": "^3.2.33"
   },
   "devDependencies": {
-    "@parcel/transformer-inline-string": "2.4.1",
-    "@parcel/transformer-sass": "2.4.1",
-    "@parcel/transformer-vue": "2.4.1",
+    "@parcel/transformer-inline-string": "2.6.2",
+    "@parcel/transformer-sass": "2.6.2",
     "@types/katex": "^0.14.0",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",
-    "parcel": "^2.4.1",
+    "parcel": "2.6.2",
     "querystring-es3": "^0.2.1",
     "typescript": "^4.6.4"
   }

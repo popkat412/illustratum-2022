@@ -1,5 +1,1 @@
-## TODO
-
-- [ ] Anti-aliasing graphics
-- [ ] Fix positioning of vector labels
-
+# Illustratum Project 2022
