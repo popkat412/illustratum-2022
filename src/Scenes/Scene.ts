@@ -6,6 +6,7 @@ import crossSvg from "bundle-text:../assets/cross.svg";
 import * as PIXI from "pixi.js";
 import { GoalStatus } from "./Goals";
 import { playCssAnimation } from "../Utils/render";
+import { AllScenesConstructor, sectionManager } from "../SectionManager";
 
 export default abstract class Scene<E extends HasPixiApp> {
   htmlContainer: HTMLDivElement;
@@ -25,19 +26,17 @@ export default abstract class Scene<E extends HasPixiApp> {
     const setupSucessFailureUI = (icon: HTMLDivElement) => {
       resetGoalUI();
 
-      setTimeout(() => {
-        this.unhideElement(this.goalMetMessageDiv, this.goalContainer);
-        playCssAnimation(this.goalContainer, "goal-container-animation");
-        // this.goalContainer.classList.add("goal-container-animation");
-        playCssAnimation(icon, "goal-icon-animation");
-        // icon.classList.add("goal-icon-animation");
-        console.log("goal status msg", this.goalMetStatus.msg);
-        if (this.goalMetStatus.msg) {
-          this.goalMetMessageDiv.innerHTML = this.goalMetStatus.msg;
-        } else {
-          this.goalMetMessageDiv.innerHTML = "";
-        }
-      });
+      this.unhideElement(this.goalMetMessageDiv, this.goalContainer);
+      playCssAnimation(this.goalContainer, "goal-container-animation");
+      // this.goalContainer.classList.add("goal-container-animation");
+      playCssAnimation(icon, "goal-icon-animation");
+      // icon.classList.add("goal-icon-animation");
+      console.log("goal status msg", this.goalMetStatus.msg);
+      if (this.goalMetStatus.msg) {
+        this.goalMetMessageDiv.innerHTML = this.goalMetStatus.msg;
+      } else {
+        this.goalMetMessageDiv.innerHTML = "";
+      }
     };
     const resetGoalUI = () => {
       this.goalMessageSpan.classList.remove("strikethrough");
@@ -61,6 +60,7 @@ export default abstract class Scene<E extends HasPixiApp> {
         this.goalMessageSpan.classList.add("strikethrough");
         this.unhideElement(this.goalMetIcon);
         this.goalMetMessageDiv.classList.add("goal-green");
+        sectionManager.solveScene(this.constructor as AllScenesConstructor);
         break;
       case "failure":
         setupSucessFailureUI(this.goalFailedIcon);

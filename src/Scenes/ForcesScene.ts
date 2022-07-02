@@ -1,7 +1,6 @@
 import * as PIXI from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
 import { ShowDistanceData } from "../Components/ShowDistanceComponent";
-import ShowVectorComponent from "../Components/ShowVectorComponent";
 import {
   ASTRONIMICAL_UNIT,
   EARTH_COLOR,
@@ -19,7 +18,6 @@ import RendererSystem from "../Systems/RendererSystem";
 import SelectableItemSystem from "../Systems/SelectableItemSystem";
 import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
-import { randInt } from "../Utils/math";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
 
@@ -54,14 +52,14 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     this.earthEntity = addCelestialBody(this.entityManager, {
       mass: EARTH_MASS,
       color: EARTH_COLOR,
-      radius: 25,
+      radius: 20,
       fixed: true,
       initialPos: this.initialEarthPos,
     });
     this.sunEntity = addCelestialBody(this.entityManager, {
       mass: SUN_MASS,
       color: SUN_COLOR,
-      radius: 20,
+      radius: 25,
       fixed: true,
       initialPos: this.initialSunPos,
       showDistData: [new ShowDistanceData(this.earthEntity)],

@@ -48,7 +48,6 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
         this.sunEntity,
         new ShowDistanceComponent([new ShowDistanceData(this.earthEntity)])
       );
-      console.log(`sunEntity: ${this.sunEntity}`);
 
       // setup interaction
       this.app.stage.interactive = true;
@@ -230,11 +229,6 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
     this.magnitudeInputBox.value = "0";
     this.angleInputBox.value = "0";
   }
-
-  // update(deltaTime: number): void {
-  //   super.update(deltaTime);
-  //   this.updateInitialVelUI();
-  // }
 
   // a bunch of helper functions
   private get earthParticleComponent(): ParticleComponent {

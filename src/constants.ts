@@ -4,6 +4,7 @@ export const GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID =
   "gravitySystemShowVectorComponentId";
 export const VELOCITY_SHOW_VECTOR_COMPONENT_ID =
   "velocityShowVectorComponentId";
+export const EXPLANATION_SECTION_LOCALSTORAGE_KEY = "unlockedUntil";
 
 // colours
 export const SUN_COLOR = 0xea2c2c;

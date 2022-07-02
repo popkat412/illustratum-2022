@@ -1,20 +1,11 @@
-import ForcesScene from "./Scenes/ForcesScene";
-// import TestScene from "./Scenes/TestScene";
-import CircularObitScene from "./Scenes/CircularOrbitScene";
-import ApoapsisPointScene from "./Scenes/ApoapsisPointScene";
-import PeriapsisPointScene from "./Scenes/PeriapsisPointScene";
+import NBodySystemEnvironment from "./Environments/NBodySystemEnvironment";
+import Scene from "./Scenes/Scene";
+import { sectionManager } from "./SectionManager";
 
-const SCENES_MAP = {
-  // test: TestScene,
-  forces: ForcesScene,
-  "circular-orbit": CircularObitScene,
-  apoapsis: ApoapsisPointScene,
-  periapsis: PeriapsisPointScene,
-};
+// scenes
+const scenes: Scene<NBodySystemEnvironment>[] = [];
 
-const scenes = [];
-
-for (const [k, v] of Object.entries(SCENES_MAP)) {
+for (const [k, v] of sectionManager.sceneList) {
   const div = document.getElementById(k) as HTMLDivElement;
   if (!div) continue;
   const scene = new v(div);
