@@ -153,3 +153,10 @@ export function showHtmlExponential(n: number, fractionDigits: number): string {
   const [base, exp] = s.split(/e/);
   return `${base} &times; 10<sup>${exp.replace("+", "")}</sup>`;
 }
+
+// https://css-tricks.com/restart-css-animation/
+export function playCssAnimation(el: HTMLElement, className: string): void {
+  el.classList.remove(className);
+  void el.offsetWidth; // ACTUAL magic
+  el.classList.add(className);
+}

@@ -106,19 +106,23 @@ $checkmark-animation-delay: 0.35s;
   color: $goal-red;
 }
 
-#circular-orbit-initial-vel-ui {
+.bottom-right-ui {
   position: absolute;
   display: flex;
   bottom: 10px;
   right: 10px;
   text-align: left;
-  // width: calc($content-width / 3);
+  max-width: 30%;
+  align-items: right;
 
   flex-direction: column;
 
+  input {
+    width: 40%;
+  }
+
   > div {
     display: flex;
-    width: 100%;
     justify-content: flex-end;
     height: 1.5em;
   }
@@ -126,6 +130,11 @@ $checkmark-animation-delay: 0.35s;
   > * {
     margin-bottom: 0.5em;
   }
+}
+
+.red-border {
+  border: 1.8px inset red;
+  border-radius: 1px;
 }
 
 @keyframes dash {

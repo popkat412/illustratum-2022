@@ -5,6 +5,7 @@ import checkmarkSvg from "bundle-text:../assets/checkmark.svg";
 import crossSvg from "bundle-text:../assets/cross.svg";
 import * as PIXI from "pixi.js";
 import { GoalStatus } from "./Goals";
+import { playCssAnimation } from "../Utils/render";
 
 export default abstract class Scene<E extends HasPixiApp> {
   htmlContainer: HTMLDivElement;
@@ -22,13 +23,21 @@ export default abstract class Scene<E extends HasPixiApp> {
   protected goalMetStatus: GoalStatus = new GoalStatus();
   private onGoalMetStatusUpdate(newValue: GoalStatus) {
     const setupSucessFailureUI = (icon: HTMLDivElement) => {
-      this.unhideElement(this.goalMetMessageDiv, this.goalContainer);
-      this.goalContainer.classList.add("goal-container-animation");
-      icon.classList.add("goal-icon-animation");
-      console.log("goal status msg", this.goalMetStatus.msg);
-      if (this.goalMetStatus.msg) {
-        this.goalMetMessageDiv.innerHTML = this.goalMetStatus.msg;
-      }
+      resetGoalUI();
+
+      setTimeout(() => {
+        this.unhideElement(this.goalMetMessageDiv, this.goalContainer);
+        playCssAnimation(this.goalContainer, "goal-container-animation");
+        // this.goalContainer.classList.add("goal-container-animation");
+        playCssAnimation(icon, "goal-icon-animation");
+        // icon.classList.add("goal-icon-animation");
+        console.log("goal status msg", this.goalMetStatus.msg);
+        if (this.goalMetStatus.msg) {
+          this.goalMetMessageDiv.innerHTML = this.goalMetStatus.msg;
+        } else {
+          this.goalMetMessageDiv.innerHTML = "";
+        }
+      });
     };
     const resetGoalUI = () => {
       this.goalMessageSpan.classList.remove("strikethrough");
@@ -48,14 +57,12 @@ export default abstract class Scene<E extends HasPixiApp> {
     };
     switch (newValue.status) {
       case "success":
-        resetGoalUI();
         setupSucessFailureUI(this.goalMetIcon);
         this.goalMessageSpan.classList.add("strikethrough");
         this.unhideElement(this.goalMetIcon);
         this.goalMetMessageDiv.classList.add("goal-green");
         break;
       case "failure":
-        resetGoalUI();
         setupSucessFailureUI(this.goalFailedIcon);
         this.unhideElement(this.goalFailedIcon);
         this.goalMetMessageDiv.classList.add("goal-red");

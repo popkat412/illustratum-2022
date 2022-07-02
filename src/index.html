@@ -51,24 +51,79 @@
       moon, ABC. But how do you get there? To do that, we need to escape the
       clutches of planet XYZ’s gravitational field. But first, we need to
       understand gravity itself. In Newtonian mechanics, gravity can be
-      described using <strong>Newton’s law of universal gravitation</strong> It
-      states that $F = G\frac{m_1m_2}{r^2}$ is the <em>magnitude</em> of the
-      force of attraction between two objects with mass, where $m_1$ and $m_2$
-      are the masses of the two objects and $r$ is the radius between them. $G$
-      is the gravitational constant, $6.67 \times 10^{-11} \ \
-      \text{N}\cdot\text{m}^2\cdot\text{kg}^{-2}$. You may notice that this
-      equation does not take into account which objects the force of attraction
-      is acting on, and that is because the force acts with equal magnitude on
-      both objects, regardless of mass. The earth experiences the same force of
-      attraction towards the sun as the sun towards the earth. Then, why does
-      the earth orbit the sun if they are both being pulled on with the same
-      force? That is because the sun is much more <strong>massive</strong>, so
-      it is accelerated less by the same force of attraction.
+      described using <strong>Newton’s law of universal gravitation</strong>.
     </p>
 
+    <p>
+      Try dragging around the two bodies below and try to figure out how the
+      distance between objects is reltaed to the force due to gravity. Is it
+      linearly proportional? Or is it inversely proportional? Or some other
+      relationship?
+    </p>
+
+    <p>
+      These types of relationships can be expressed as $F \propto r^\alpha$,
+      where $r$ is the distance between the two objects, $F$ is the force due to
+      gravity, and $\alpha$ describes the actual relationship. For example, if
+      they are linearly proportional, $\alpha$ would be 1, while $\alpha = -1$
+      if it was inversely proportional.
+    </p>
+
+    <p>
+      Hint: you can move the objects different distances and plot a graph of
+      force against distance, and look at the shape of the graph.
+    </p>
+
+    <aside>
+      Do note that the lengths of the arrows are not linearly related to the
+      magnitude of the forces, so try to look at the numbers instead of the
+      length of the arrows. The arrows are drawn this way to try and avoid
+      overcrowding the scene while accomodating a wide range of magnitudes.
+    </aside>
+
     <div class="canvas-container" id="forces">
-      <div id="particle-ui" v-cloak></div>
+      <div class="bottom-right-ui">
+        <div>
+          <label for="answer">$\alpha = \ $</label>
+          <input
+            autocomplete="off"
+            type="number"
+            id="forces-answer-box"
+            name="answer"
+          />
+        </div>
+        <div>
+          <button id="forces-submit-button">Submit</button>
+        </div>
+      </div>
     </div>
+
+    <p>
+      That's right, the relationship between $F$ and $r$ is
+      <em>inverse square</em>. When the distance increases twofold, the force
+      decreases four fold!
+    </p>
+
+    <p>
+      The actual law states that $$F = G\frac{m_1m_2}{r^2}$$ where $m_1$ and
+      $m_2$ are the masses of the two objects. $G$ is the gravitational constant
+      (you can think of it a proportionality constant), $G = 6.67 \times
+      10^{-11} \ \text{N}\cdot\text{m}^2\cdot\text{kg}^{-2}$.
+    </p>
+    <p>
+      You may notice that this equation does not take into account which objects
+      the force of attraction is acting on, and that is because the force acts
+      with equal magnitude on both objects, regardless of mass. The earth
+      experiences the same force of attraction towards the sun as the sun
+      towards the earth.
+    </p>
+    <p>
+      Then, why does the earth orbit the sun if they are both being pulled on
+      with the same force? That is because the sun is much more massive, so it
+      is accelerated less by the same force of attraction.
+    </p>
+
+    <hr />
 
     <p>
       Now, back to planet XYZ. Coincidentally, planet XYZ also has a mass of
@@ -77,17 +132,41 @@
       orbit is when you are travelling fast enough around a planet to not crash
       into the planet. You are always falling towards your planet, and gravity
       acts on you like normal, however, you are moving fast enough that you
-      never actually crash into the planet. The speed required for such an orbit
-      is given by $v = \sqrt{GM/R}$, where $v$ is the speed required for the
-      orbit, $G$ is the universal gravitational constant, $M$ is the mass of the
-      planet, and $R$ is the radius of the circular orbit.
+      never actually crash into the planet.
+    </p>
+
+    <p>
+      But how fast is fast enough? And in what direction should the velocity be?
+    </p>
+
+    <aside>
+      Remember, velcoity is a <em>vector</em>, which means that it has both a
+      magnitude and a direction.
+    </aside>
+
+    <p>
+      Let's look at the simplest case: a circular orbit. Try to get the blue
+      planet an initial velocity such that it goes into circular orbit (it
+      doesn't have to be perfect, we'll accept some margin of error 🙂).
+    </p>
+
+    <p>
+      To set the intial velocity, you can either type in the boxes at the bottom
+      right, or click anywhere to point the velocity vector that way.
+    </p>
+
+    <p>
+      If you're feeling up for it, the exact velocity and direction can be
+      calculated. we'll show the derivation afterwards, but you're welcome to
+      try youself :p
     </p>
 
     <div class="canvas-container" id="circular-orbit">
-      <div id="circular-orbit-initial-vel-ui">
+      <div id="circular-orbit-initial-vel-ui" class="bottom-right-ui">
         <div>
           <label for="vec-magnitude">Magnitude: </label>
           <input
+            autocomplete="off"
             type="number"
             name="vec–magnitude"
             id="circular-orbit-vec-magnitude"
@@ -95,11 +174,54 @@
         </div>
         <div>
           <label for="vec-angle">Angle (deg): </label>
-          <input type="number" name="vec-angle" id="circular-orbit-vec-angle" />
+          <input autocomplete"off" type="number" name="vec-angle"
+          id="circular-orbit-vec-angle" />
         </div>
-        <button id="circular-orbit-go-button">GO!</button>
+        <div>
+          <button id="circular-orbit-go-button">GO!</button>
+        </div>
       </div>
     </div>
+
+    <p>
+      Great! You made it! This is one example of
+      <em>uniform circular motion</em>. Uniform circular motion is when a body
+      moves in a circle with a constant magnitude of velocity. Do note that even
+      though the <em>magnitude</em> of velocity remains constant, the
+      <em>direction</em> of velocity is always changing, so it has to be
+      accelerating.
+    </p>
+
+    <p>
+      However, this acceleration never changes the direction of the velocity, it
+      has to point perpendicular to the velocity.
+    </p>
+
+    <p>
+      In this case, the acceleration is provided by the force the red body
+      exerts on the blue one and is <em>radial</em> (points towards the centre
+      of the circle), so for there to be uniform circular motion,
+      <strong>the velocity must be tangential to the circle of motion</strong>,
+      aka the angle is either 0 or 180 degrees pointing vertically up or down
+      (in this situation with the blue planet starting directly to the right of
+      the red one). You should have reached this same conclusion from the
+      eariler demo.
+    </p>
+
+    <p>
+      Ok, we know the <em>direction</em> of the velocity, but what about the
+      <em>magnitude</em> of the velocity? Here is where the math comes in.
+      Uniform circular motion is described by the equation $$a = \frac{v^2}{r}$$
+      From a previous demo, we know that the force of gravitational attraction
+      is $$F = G \frac{m_1 m_2}{r^2}$$ if we let $m_1$ be the mass of the blue
+      planet and $m_2$ be the mass of the red planet. Applying Newton's second
+      law, $$\begin{align*}F &= m_1 a \\ \Longrightarrow v &= \sqrt{\frac{G
+      m_2}{r}}\end{align*}$$ Substituting in the masses of the red planet and
+      the distances, we get a value of around $3.0 \times 10^4 \
+      \text{m}\cdot\text{s}^{-1}$.
+    </p>
+
+    <hr />
 
     <div id="apoapsis" class="canvas-container"></div>
   </body>
