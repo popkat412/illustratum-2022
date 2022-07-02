@@ -22,7 +22,8 @@ import { showHtmlExponential } from "../Utils/render";
 import { EllipseData } from "../Utils/math";
 import { RAD_TO_DEG } from "pixi.js";
 
-export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
+// TODO: abstract out the common code
+export default class PeriapsisPointScene extends Scene<NBodySystemEnvironment> {
   earthEntity: ECSEntity;
   sunEntity: ECSEntity;
 
@@ -72,16 +73,16 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
     const THRESHOLD = 30 / this.environment.scaleFactor;
     this.app.stage.on("pointerdown", () => {
       const pos = this.earthParticleComponent.pos;
-      const delta = pos.sub(this.apoapsisPoint).mag();
+      const delta = pos.sub(this.periapsisPoint).mag();
       const htmlDispDelta = showHtmlExponential(delta, DISP_EXP_DIGITS);
       console.log({ THRESHOLD });
       if (delta < THRESHOLD) {
         this.goalMetStatus.success(
-          `You got it within ${htmlDispDelta} m of the real apoapsis point.`
+          `You got it within ${htmlDispDelta} m of the real periapsis point.`
         );
       } else {
         this.goalMetStatus.failure(
-          `You werer ${htmlDispDelta} m off the real apoapsis point.`
+          `You werer ${htmlDispDelta} m off the real periapsis point.`
         );
       }
     });
@@ -105,7 +106,7 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
   }
 
   readonly goalMessage =
-    "Click anywhere when the blue planet reaches its apoapsis point";
+    "Click anywhere when the blue planet reaches its periapsis point";
 
   private get initialSunPos(): Vec2 {
     return this.orbitEllipse.leftFocus;
@@ -129,8 +130,8 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
     return Vec2.fromPolar(mag, angle);
   }
 
-  private get apoapsisPoint(): Vec2 {
-    return this.orbitEllipse.rightVertex;
+  private get periapsisPoint(): Vec2 {
+    return this.orbitEllipse.leftVertex;
   }
 
   private get app(): PIXI.Application {
