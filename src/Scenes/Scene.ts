@@ -99,7 +99,8 @@ export default abstract class Scene<E extends HasPixiApp> {
     // reset button
     this.resetButton = document.createElement("button");
     this.resetButton.innerText = "Reset";
-    this.resetButton.onclick = () => {
+    this.resetButton.onclick = (ev) => {
+      ev.stopPropagation();
       this.reset();
     };
     this.resetButton.classList.add("reset-button");

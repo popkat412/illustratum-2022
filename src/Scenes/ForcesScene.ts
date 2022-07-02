@@ -111,36 +111,12 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
         ParticleComponent
       )!;
     sunParticleComponent.pos = this.initialSunPos;
+
+    this.answerInputBox.value = "";
+    this.answerInputBox.classList.remove("red-border");
   }
 
   readonly goalMessage = `Figure out the relationship between F and r`;
-
-  // goalIsMet(): boolean {
-  //   const expected = GOAL_FORCE.toExponential(DISP_EXP_DIGITS);
-  //   // a bit ugly but it'll work
-  //   // use the ShowVectorComponent to get the forces between the two.
-  //   // (a lot of force unwrapping but whatever)
-  //   // TODO: refactor this
-  //   const actual = this.earthShowVectorComponent!.getVectorData(
-  //     GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID
-  //   )!
-  //     .vec!.mag()
-  //     .toExponential(DISP_EXP_DIGITS);
-
-  //   return expected == actual;
-  // }
-  // goalMetFn(): void {
-  //   if (!this.goalMetStatus.isUndecided()) return;
-  //   // wait half a second for better UX
-  //   // TODO: make this not spawn like ten thousand setTimeouts
-  //   setTimeout(() => {
-  //     // if the goal is still met
-  //     if (this.goalIsMet()) {
-  //       // ok now show some tick or something
-  //       this.goalMetStatus.success("test success message");
-  //     }
-  //   }, 500);
-  // }
 
   private get initialEarthPos(): Vec2 {
     const app = this.environment.app;
@@ -158,12 +134,6 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
       app.renderer.height / 2 / scaleFactor
     );
   }
-  // private get earthShowVectorComponent(): ShowVectorComponent | undefined {
-  //   return this.entityManager.getComponent<ShowVectorComponent>(
-  //     this.earthEntity,
-  //     ShowVectorComponent
-  //   );
-  // }
 
   private failureMessage(a: number): string {
     if (!Number.isInteger(a)) {

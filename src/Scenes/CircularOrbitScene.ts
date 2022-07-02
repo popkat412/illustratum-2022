@@ -130,7 +130,7 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       mass: SUN_MASS,
       color: SUN_COLOR,
       radius: 25,
-      fixed: true,
+      // fixed: true,
       initialPos: this.sunInitialPos,
     });
 

@@ -18,10 +18,8 @@ import {
 } from "../constants";
 import Vec2 from "../Vec2";
 import ParticleComponent from "../Components/ParticleComponent";
-import PixiGraphicsRenderComponent from "../Components/PIXIGraphicsRenderComponent";
 import { showHtmlExponential } from "../Utils/render";
 
-// TODO: make color of earth and sun consistent throughout
 export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
   earthEntity: ECSEntity;
   sunEntity: ECSEntity;
@@ -53,18 +51,17 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
       mass: SUN_MASS,
       color: SUN_COLOR,
       radius: 25,
-      fixed: true,
+      // fixed: true,
       initialPos: this.initialSunPos,
     });
 
-    // make the earth clickable
-    const { pixiGraphics } = this.earthPixiGraphicsComponent;
-    pixiGraphics.buttonMode = true; // change cursor
-    pixiGraphics.interactive = true;
-    pixiGraphics.on("pointerdown", () => {
+    this.htmlContainer.style.cursor = "pointer";
+    this.app.stage.interactive = true;
+    const THRESHOLD = 15 / this.environment.scaleFactor;
+    this.app.stage.on("pointerdown", () => {
       const pos = this.earthParticleComponent.pos;
       const delta = pos.sub(this.apoapsisPoint).mag();
-      const THRESHOLD = 1e3;
+      console.log({ THRESHOLD });
       if (delta < THRESHOLD) {
         this.goalMetStatus.success(
           `You got it within ${showHtmlExponential(
@@ -88,9 +85,18 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
 
     this.earthParticleComponent.pos = this.initialEarthPos;
     this.earthParticleComponent.vel = this.initialEarthVel;
+
+    const canvas = this.trailRendererSystem.canvas;
+    this.trailRendererSystem.context.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
   }
 
-  readonly goalMessage = "Click the planet when it reaches its apoapsis point";
+  readonly goalMessage =
+    "Click anywhere when the blue planet reaches its apoapsis point";
 
   private get initialSunPos(): Vec2 {
     const { width, height } = this.environment.app.renderer;
@@ -136,11 +142,8 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
     return new Vec2(0, mag);
   }
 
-  private get earthPixiGraphicsComponent(): PixiGraphicsRenderComponent {
-    return this.entityManager.getComponent<PixiGraphicsRenderComponent>(
-      this.earthEntity,
-      PixiGraphicsRenderComponent
-    )!;
+  private get app(): PIXI.Application {
+    return this.environment.app;
   }
 
   private get earthParticleComponent(): ParticleComponent {
@@ -148,5 +151,11 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
       this.earthEntity,
       ParticleComponent
     )!;
+  }
+
+  private get trailRendererSystem(): TrailRendererSystem<NBodySystemEnvironment> {
+    return this.systems.filter(
+      (x) => x instanceof TrailRendererSystem
+    )[0] as TrailRendererSystem<NBodySystemEnvironment>;
   }
 }
