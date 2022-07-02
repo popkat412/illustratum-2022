@@ -13,7 +13,7 @@ export default class MoveParticleSystem<
 > extends ECSSystem<E> {
   setup() {}
 
-  update(_deltaTime: number): void {
+  update(deltaTime: number): void {
     for (const [
       entity,
       particleComponent,
@@ -22,11 +22,11 @@ export default class MoveParticleSystem<
     )) {
       if (!particleComponent.fixed) {
         particleComponent.vel = particleComponent.vel.add(
-          particleComponent.acc.mult(this.environment.timeFactor)
+          particleComponent.acc.mult(this.environment.timeFactor * deltaTime)
         );
 
         particleComponent.pos = particleComponent.pos.add(
-          particleComponent.vel.mult(this.environment.timeFactor)
+          particleComponent.vel.mult(this.environment.timeFactor * deltaTime)
         );
       }
       if (particleComponent.showVelocityVector) {

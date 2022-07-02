@@ -7,7 +7,7 @@
 - [x] Show next section only after succeeding in first section
 - [ ] Explanation for Kepler's laws
 - [ ] Show failure for circular orbit view
-- [ ] Actually use deltaTime in calculations
+- [x] Actually use deltaTime in calculations
 - [ ] Fix positioning of forces vector label
 - [ ] Anti-aliasing of graphics
 
