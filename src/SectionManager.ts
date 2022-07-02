@@ -71,7 +71,7 @@ class SectionManager {
       ) + 1;
     console.log(unlockedUntil, newUnlockedUntil);
 
-    if (newUnlockedUntil - unlockedUntil != 1) {
+    if (newUnlockedUntil - unlockedUntil > 1) {
       throw new Error(
         `inconsistent scene order, newUnlockedUnti: ${newUnlockedUntil}, unlockedUntil: ${unlockedUntil}`
       );
