@@ -3,7 +3,7 @@
 ## TODOs
 
 - [ ] Gravitational field visualisation
-- [ ] Show the distance scale (and possibly time scale)
+- [x] Show the distance scale (and possibly time scale)
 - [x] Show next section only after succeeding in first section
 - [ ] Explanation for Kepler's laws
 - [ ] Show failure for circular orbit view

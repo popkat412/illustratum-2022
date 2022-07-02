@@ -1,14 +1,18 @@
 import EntityManager from "../EntityComponentSystem/EntityManager";
 import ECSSystem from "../EntityComponentSystem/System";
-import { HasPixiApp } from "../Environments/EnvironmentInterfaces";
+import {
+  HasPixiApp,
+  HasRenderScale,
+} from "../Environments/EnvironmentInterfaces";
 import checkmarkSvg from "bundle-text:../assets/checkmark.svg";
 import crossSvg from "bundle-text:../assets/cross.svg";
 import * as PIXI from "pixi.js";
 import { GoalStatus } from "./Goals";
 import { playCssAnimation } from "../Utils/render";
 import { AllScenesConstructor, sectionManager } from "../SectionManager";
+import { DISP_EXP_DIGITS } from "../constants";
 
-export default abstract class Scene<E extends HasPixiApp> {
+export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   htmlContainer: HTMLDivElement;
   readonly resetButton: HTMLButtonElement;
 
@@ -18,6 +22,10 @@ export default abstract class Scene<E extends HasPixiApp> {
   systems: ECSSystem<E>[] = [];
 
   readonly fpsText: PIXI.Text;
+
+  readonly distanceScaleGraphics: PIXI.Graphics;
+  readonly distanceScaleText: PIXI.Text;
+  readonly scaleRealDist = 2e11 as const;
 
   // goal related things
   abstract readonly goalMessage: string;
@@ -95,6 +103,36 @@ export default abstract class Scene<E extends HasPixiApp> {
     this.fpsText.position.set(10, 10);
     this.fpsText.zIndex = 10;
     this.environment.app.stage.addChild(this.fpsText);
+
+    // distance scale
+    this.distanceScaleGraphics = new PIXI.Graphics();
+    for (let i = 0; i < 5; i++) {
+      this.distanceScaleGraphics
+        .lineStyle({ color: i % 2 == 0 ? 0xffffff : 0xaaaaaa, width: 2 })
+        .moveTo(i, 0)
+        .lineTo(i + 1, 0);
+    }
+    this.distanceScaleGraphics.width =
+      this.scaleRealDist * this.environment.scaleFactor;
+    this.fpsText.zIndex = 10;
+    this.distanceScaleGraphics.position.set(
+      10,
+      this.environment.app.renderer.height - 60
+    );
+    this.environment.app.stage.addChild(this.distanceScaleGraphics);
+
+    this.distanceScaleText = new PIXI.Text(
+      `Scale:\n1 strip = ${this.scaleRealDist.toExponential(
+        DISP_EXP_DIGITS
+      )} m`,
+      { fill: "white", fontSize: 14 }
+    );
+    this.distanceScaleText.zIndex = 10;
+    this.distanceScaleText.position.set(
+      10,
+      this.environment.app.renderer.height - 100
+    );
+    this.environment.app.stage.addChild(this.distanceScaleText);
 
     // reset button
     this.resetButton = document.createElement("button");
