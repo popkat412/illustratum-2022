@@ -27,6 +27,14 @@ export default class TooltipSystem<E> extends ECSSystem<E> {
       const graphics = pixiGraphicsRenderComponent.pixiGraphics;
       graphics.interactive = true;
       graphics.on("pointerover", (ev: PIXI.InteractionEvent) => {
+        if (
+          !this.entityManager.getComponent<TooltipComponent>(
+            entity,
+            TooltipComponent
+          )
+        ) {
+          return;
+        }
         const canvas = ev.data.originalEvent.target as HTMLCanvasElement;
         tooltipDiv.style.display = "block";
         tooltipDiv.innerHTML = tooltipComponent.tooltipContent;

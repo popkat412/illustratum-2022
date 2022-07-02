@@ -22,13 +22,11 @@ import MoveParticleSystem from "../Systems/MoveParticleSystem";
 import RendererSystem from "../Systems/RendererSystem";
 import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
-import TooltipSystem from "../Systems/TooltipSystem";
 import TrailRendererSystem from "../Systems/TrailRendererSystem";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
 
 // TODO: show failure when the entity leaves the screen
-// TODO: remove tooltip when !isChoosingInitialVel
 export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
   private sunEntity: ECSEntity;
   private earthEntity: ECSEntity;
@@ -97,6 +95,9 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       // but for now i'll just have to remember to manually remove it
       this.destroyShowDistnaceComponent();
 
+      // this.entityManager.removeComponent(this.earthEntity, TooltipComponent);
+      // this.entityManager.removeComponent(this.sunEntity, TooltipComponent);
+
       this.initialVelUiDiv.style.display = "none";
     }
   }
@@ -121,7 +122,6 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       new TrailRendererSystem(this.entityManager, this.environment),
       new ShowVectorSystem(this.entityManager, this.environment),
       new ShowDistanceSystem(this.entityManager, this.environment),
-      new TooltipSystem(this.entityManager, this.environment),
     ];
 
     // set up entities

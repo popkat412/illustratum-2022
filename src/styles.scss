@@ -238,9 +238,23 @@ $checkmark-animation-delay: 0.35s;
 aside {
   background-color: #eee;
   padding: 0.2em 1em;
-  border: 3px #ffb87d solid;
+  border: 3px grey solid;
   border-radius: 10px;
   margin: 0.5em 0;
+
+  &.info {
+    border-color: #2a93cc;
+    &::before {
+      content: "ℹ️";
+    }
+  }
+
+  &.warn {
+    border-color: #ffb87d;
+    &::before {
+      content: "⚠️";
+    }
+  }
 }
 
 [v-cloak] {
