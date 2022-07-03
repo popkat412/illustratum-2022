@@ -91,7 +91,6 @@ export default class ShowDistanceSystem<
     entity: ECSEntity,
     showDistData: ShowDistanceData
   ): void {
-    console.log(`setting up entity: ${entity}`);
     const { lineGraphic, pixiText, color } = showDistData;
     lineGraphic.zIndex = -1;
     lineGraphic.pivot.set(0, 0);

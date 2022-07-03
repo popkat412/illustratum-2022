@@ -69,8 +69,9 @@
 
         <aside class="info">
           Throught all the demos, the blue body will have a mass $5.97 \times
-          10^{24}$ (which is the mass of the Earth), and the red body will have
-          a mass of $1.99 \times 10^{30}$ (which is the mass of the Sun).
+          10^{24} \ \text{kg}$ (which is the mass of the Earth), and the red
+          body will have a mass of $1.99 \times 10^{30} \ \text{kg}$ (which is
+          the mass of the Sun).
         </aside>
 
         <p>
@@ -178,6 +179,20 @@
           to try youself :p
         </p>
 
+        <aside class="info">
+          If you play around with the demo below, you may realise that
+          sometimes, orbit of the blue planet is actually changing, for example
+          with an initial velocity of 1.6e4 m/s pointing upwards, the orbit of
+          the planet appears to be "drifting". Do note that
+          <strong>that does not happen in real life</strong>, and is a
+          consequence of the integration method used in the simulations. These
+          simulations are only approximations of what happens in real life.
+          Usually, the approximations are very accurate, but it breaks down when
+          large forces and velocities are involved. If you're curious, see the
+          <a href="https://en.wikipedia.org/wiki/Euler_method">Euler method</a>
+          Wikipedia page.
+        </aside>
+
         <div class="canvas-container" id="circular-orbit">
           <div id="circular-orbit-initial-vel-ui" class="bottom-right-ui">
             <div>
@@ -239,7 +254,7 @@
           $m_1$ be the mass of the blue planet and $m_2$ be the mass of the red
           planet. Applying Newton's second law, $$\begin{align*}F &= m_1 a \\
           \Longrightarrow v &= \sqrt{\frac{G m_2}{r}}\end{align*}$$ Substituting
-          in the masses of the red planet and the distances, we get a value of
+          in the masses of the red star and the distances, we get a value of
           around $3.0 \times 10^4 \ \text{m}\cdot\text{s}^{-1}$.
         </p>
 
@@ -333,6 +348,46 @@
           That's right, the periapsis point is just the point in the orbit where
           the two bodies are the closest.
         </p>
+
+        <hr />
+
+        <p>
+          Now, Patches is a very educated cat, and she notices that the red star
+          looks like its at one of the foci (plural of "focus") of the ellipse
+          that is the blue planet's orbit.
+        </p>
+
+        <div class="img-with-credits">
+          <a
+            title=" Ag2gaeh, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia
+          Commons"
+            href="https://commons.wikimedia.org/wiki/File:Ellipse-def0.svg"
+            ><img
+              width="400"
+              alt="Ellipse-def0"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Ellipse-def0.svg/256px-Ellipse-def0.svg.png"
+          /></a>
+          <div class="credits">
+            <a href="https://commons.wikimedia.org/wiki/File:Ellipse-def0.svg"
+              >Ag2gaeh</a
+            >,
+            <a href="https://creativecommons.org/licenses/by-sa/4.0"
+              >CC BY-SA 4.0</a
+            >, via Wikimedia Commons
+          </div>
+        </div>
+
+        <p>
+          And indeed, the red star <em>is</em> at the focus of the elliptical
+          orbit. Patches has just stumbled across one of
+          <strong>Kepler's laws of planetary motion</strong>. The first law
+          states that
+          <em
+            >the orbit of a planet is an ellipse with the Sun at one of the two
+            foci</em
+          >.
+        </p>
+        <p>
       </div>
     </div>
   </body>

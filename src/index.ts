@@ -12,8 +12,6 @@ for (const [k, v] of sectionManager.sceneList) {
   scenes.push(scene);
 }
 
-console.log(scenes);
-
 for (const scene of scenes) {
   scene.setup();
 }

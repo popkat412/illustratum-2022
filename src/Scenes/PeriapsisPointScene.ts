@@ -75,7 +75,6 @@ export default class PeriapsisPointScene extends Scene<NBodySystemEnvironment> {
       const pos = this.earthParticleComponent.pos;
       const delta = pos.sub(this.periapsisPoint).mag();
       const htmlDispDelta = showHtmlExponential(delta, DISP_EXP_DIGITS);
-      console.log({ THRESHOLD });
       if (delta < THRESHOLD) {
         this.goalMetStatus.success(
           `You got it within ${htmlDispDelta} m of the real periapsis point.`

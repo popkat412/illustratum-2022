@@ -122,11 +122,7 @@ export default class ApoapsisPointScene extends Scene<NBodySystemEnvironment> {
   private get initialEarthVel(): Vec2 {
     const mu = this.environment.gravitationalConstant * SUN_MASS;
     const r = this.initialEarthPos.dist(this.initialSunPos);
-    const a = this.orbitEllipse.semiMajorAxis;
-    const mag = Math.sqrt(mu * (2 / r - 1 / a));
-    const angle = this.orbitEllipse.tangentAngleAtAngle(this.initialEarthAngle);
-    console.log({ mag, angle: angle * RAD_TO_DEG });
-    return Vec2.fromPolar(mag, angle);
+    return this.orbitEllipse.calculateOrbitalVel(this.initialEarthAngle, mu, r);
   }
 
   private get apoapsisPoint(): Vec2 {

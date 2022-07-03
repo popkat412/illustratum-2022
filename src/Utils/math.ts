@@ -118,6 +118,17 @@ export class EllipseData {
     this.semiMinorAxis = semiMinorAxis;
   }
 
+  static fromFocus(
+    centre: Vec2,
+    linearEccentricity: number,
+    semiMajorAxis: number
+  ): EllipseData {
+    const semiMinorAxis = Math.sqrt(
+      semiMajorAxis * semiMajorAxis - linearEccentricity * linearEccentricity
+    );
+    return new EllipseData(centre, semiMajorAxis, semiMinorAxis);
+  }
+
   // angle from the VERTICAL
   pointAtAngle(angle: number): Vec2 {
     angle *= -1;
@@ -129,12 +140,24 @@ export class EllipseData {
     );
   }
 
+  angleAtPoint(point: Vec2): number {
+    return point.sub(this.centre).angle();
+  }
+
   tangentAngleAtAngle(angle: number): number {
     angle *= -1;
     return Math.atan(
       -(this.semiMinorAxis * Math.cos(angle)) /
         (this.semiMajorAxis * Math.sin(angle))
     );
+  }
+
+  // basically vis-viva equatino
+  calculateOrbitalVel(angle: number, mu: number, r: number): Vec2 {
+    const a = this.semiMajorAxis;
+    const velMag = Math.sqrt(mu * (2 / r - 1 / a));
+    const velAngle = this.tangentAngleAtAngle(angle);
+    return Vec2.fromPolar(velMag, velAngle);
   }
 
   get eccentricity(): number {
@@ -145,7 +168,7 @@ export class EllipseData {
     );
   }
 
-  get focusDist(): number {
+  get linearEccentricity(): number {
     return Math.sqrt(
       this.semiMajorAxis * this.semiMajorAxis -
         this.semiMinorAxis * this.semiMinorAxis
@@ -153,11 +176,11 @@ export class EllipseData {
   }
 
   get leftFocus(): Vec2 {
-    return this.centre.addX(-this.focusDist);
+    return this.centre.addX(-this.linearEccentricity);
   }
 
   get rightFocus(): Vec2 {
-    return this.centre.addX(this.focusDist);
+    return this.centre.addX(this.linearEccentricity);
   }
 
   get leftVertex(): Vec2 {
