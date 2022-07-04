@@ -120,7 +120,7 @@ export default class Vec2 {
   // angle to the _vertical_ in _radians_
   // 0 degress points UP in _pixi space_
   setAngle(angle: number): Vec2 {
-    return new Vec2(Math.sin(angle), Math.cos(angle)).mult(-this.mag());
+    return new Vec2(Math.sin(-angle), Math.cos(-angle)).mult(-this.mag());
   }
 
   rotate(angle: number): Vec2 {
