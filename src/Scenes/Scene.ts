@@ -29,7 +29,7 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
 
   readonly distanceScaleGraphics: PIXI.Graphics;
   readonly distanceScaleText: PIXI.BitmapText;
-  readonly scaleRealDist = 2e11 as const;
+  readonly scaleRealDist = 2e10 as const;
 
   protected frameNum = 0;
 
@@ -135,14 +135,14 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
 
     // distance scale
     this.distanceScaleGraphics = new PIXI.Graphics();
+    this.distanceScaleGraphics.cacheAsBitmap = true;
+    const scaleScreenDist = this.scaleRealDist * this.environment.scaleFactor;
     for (let i = 0; i < 5; i++) {
       this.distanceScaleGraphics
         .lineStyle({ color: i % 2 == 0 ? 0xffffff : 0xaaaaaa, width: 2 })
-        .moveTo(i, 0)
-        .lineTo(i + 1, 0);
+        .moveTo(i * scaleScreenDist, 0)
+        .lineTo((i + 1) * scaleScreenDist, 0);
     }
-    this.distanceScaleGraphics.width =
-      this.scaleRealDist * this.environment.scaleFactor;
     this.fpsText.zIndex = 10;
     this.distanceScaleGraphics.position.set(
       10,
