@@ -8,10 +8,10 @@
 - [x] Explanation for Kepler's laws
 - [x] Increase margin of error for Apoapsis & Periapsis
 - [ ] Barycentre demo
-- [ ] Show failure for circular orbit view
+- [x] Show failure for circular orbit view
 - [x] Actually use deltaTime in calculations
 - [ ] Fix positioning of forces vector label
-- [ ] Anti-aliasing of graphics
+- [x] Anti-aliasing of graphics
 
 ## Bugs
 

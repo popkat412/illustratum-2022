@@ -196,6 +196,10 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       ) {
         console.log("goalMetAlready");
         this.goalMetStatus.success();
+      } else {
+        setTimeout(() => {
+          this.goalMetStatus.failure("That wasn't it, try again");
+        }, 2000);
       }
       this.isChoosingInitialVel = false;
     };
