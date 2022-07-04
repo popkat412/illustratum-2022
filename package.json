@@ -7,15 +7,11 @@
     "dev": "parcel src/index.html",
     "build": "NODE_OPTIONS=--no-experimental-fetch parcel build src/index.html --public-url './'"
   },
-  "alias": {
-    "vue": "vue/dist/vue.esm-bundler.js"
-  },
   "dependencies": {
     "@pixi/filter-glow": "^4.1.5",
     "@pixi/graphics-smooth": "^0.0.29",
     "katex": "^0.16.0",
-    "pixi.js": "^6.3.0",
-    "vue": "^3.2.33"
+    "pixi.js": "^6.3.0"
   },
   "devDependencies": {
     "@parcel/transformer-inline-string": "2.6.2",
