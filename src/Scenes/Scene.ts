@@ -10,7 +10,11 @@ import * as PIXI from "pixi.js";
 import { GoalStatus } from "./Goals";
 import { playCssAnimation } from "../Utils/render";
 import { AllScenesConstructor, sectionManager } from "../SectionManager";
-import { DISP_EXP_DIGITS, DIST_FONT_NAME } from "../constants";
+import {
+  DISP_EXP_DIGITS,
+  DIST_FONT_NAME,
+  UPDATE_TEXT_FRAMES,
+} from "../constants";
 
 export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   htmlContainer: HTMLDivElement;
@@ -26,6 +30,8 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   readonly distanceScaleGraphics: PIXI.Graphics;
   readonly distanceScaleText: PIXI.BitmapText;
   readonly scaleRealDist = 2e11 as const;
+
+  protected frameNum = 0;
 
   // goal related things
   abstract readonly goalMessage: string;
@@ -209,6 +215,7 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
     // update function
     this.environment.app.ticker.add((deltaTime: number) => {
       this.update(deltaTime);
+      this.frameNum++;
     });
   }
 
@@ -222,11 +229,12 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   update(deltaTime: number): void {
     // systems
     for (const system of this.systems) {
-      system.update(deltaTime);
+      system.update(deltaTime, this.frameNum);
     }
 
     // fps text
-    this.fpsText.text = `${this.environment.app.ticker.FPS.toFixed()} FPS`;
+    if (this.frameNum % UPDATE_TEXT_FRAMES == 0)
+      this.fpsText.text = `${this.environment.app.ticker.FPS.toFixed()} FPS`;
   }
 
   reset(): void {

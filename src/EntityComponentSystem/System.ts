@@ -10,5 +10,5 @@ export default abstract class ECSSystem<E> {
   }
 
   abstract setup(): void;
-  abstract update(deltaTime: number): void;
+  abstract update(deltaTime: number, frameNum: number): void;
 }

@@ -3,7 +3,7 @@ import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import ShowDistanceComponent, {
   ShowDistanceData,
 } from "../Components/ShowDistanceComponent";
-import { DISP_EXP_DIGITS } from "../constants";
+import { DISP_EXP_DIGITS, UPDATE_TEXT_FRAMES } from "../constants";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import ECSSystem from "../EntityComponentSystem/System";
 import { HasRenderScale } from "../Environments/EnvironmentInterfaces";
@@ -26,7 +26,7 @@ export default class ShowDistanceSystem<
     }
   }
 
-  update(_deltaTime: number): void {
+  update(_deltaTime: number, frameNum: number): void {
     for (const [
       entity,
       { showDistDataArr },
@@ -74,7 +74,9 @@ export default class ShowDistanceSystem<
         lineGraphic.rotation = diff.angle();
 
         // text
-        pixiText.text = `${dist.toExponential(DISP_EXP_DIGITS)} m`;
+        if (frameNum % UPDATE_TEXT_FRAMES == 0) {
+          pixiText.text = `${dist.toExponential(DISP_EXP_DIGITS)} m`;
+        }
         const heightOffset = orientation < 0 ? pixiText.height : 0;
         pixiText.pivot.y =
           orientation * (LINE_OFFSET + TAIL_LENGTH + TEXT_OFFSET) +

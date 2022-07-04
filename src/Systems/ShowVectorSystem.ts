@@ -5,7 +5,7 @@ import { sgn } from "../Utils/math";
 import { updateArrowGraphic } from "../Utils/render";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
 import Vec2 from "../Vec2";
-import { DISP_EXP_DIGITS } from "../constants";
+import { DISP_EXP_DIGITS, UPDATE_TEXT_FRAMES } from "../constants";
 
 export default class ShowVectorSystem<E> extends ECSSystem<E> {
   textPosFn: (vec: Vec2, pixiText: PIXI.BitmapText, h: number) => Vec2 =
@@ -36,7 +36,7 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
     }
   }
 
-  update() {
+  update(_deltaTime: number, frameNum: number) {
     for (const [
       ,
       { vectorDataArr },
@@ -52,7 +52,7 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
         pixiText,
         scalingFn,
       } of vectorDataArr) {
-        pixiText.text = "";
+        if (frameNum % UPDATE_TEXT_FRAMES == 0) pixiText.text = "";
 
         arrowGraphic.clear();
 
@@ -68,9 +68,10 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
           arrowheadWidth: 20,
         });
 
-        pixiText.text = `${label} = ${vec
-          .mag()
-          .toExponential(DISP_EXP_DIGITS)} ${units}`;
+        if (frameNum % UPDATE_TEXT_FRAMES == 0)
+          pixiText.text = `${label} = ${vec
+            .mag()
+            .toExponential(DISP_EXP_DIGITS)} ${units}`;
         const textPos = this.textPosFn(vec, pixiText, h);
         pixiText.x = textPos.x;
         pixiText.y = textPos.y;

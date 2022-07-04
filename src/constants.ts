@@ -15,6 +15,7 @@ export const EARTH_COLOR = 0x2c85ea;
 
 // constants used in code
 export const DISP_EXP_DIGITS = 1;
+export const UPDATE_TEXT_FRAMES = 5;
 
 // actual physical constants
 export const ASTRONIMICAL_UNIT = 1.495979e11;
