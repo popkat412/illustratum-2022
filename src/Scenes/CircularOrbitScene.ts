@@ -165,11 +165,14 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
       const val = (ev.target as HTMLInputElement).value;
       const parsed = parseFloat(val);
       if (isNaN(parsed)) return;
-      console.log(parsed);
-      this.earthParticleComponent.vel = this.earthParticleComponent.vel.setMag(
-        parsed,
-        0
-      );
+
+      const angleVal = this.angleInputBox.value;
+      const parsedAngle = parseFloat(angleVal);
+      if (isNaN(parsedAngle)) return;
+
+      this.earthParticleComponent.vel = this.earthParticleComponent.vel
+        .setMag(parsed, 0)
+        .setAngle(parsedAngle * DEG_TO_RAD);
     };
     this.angleInputBox.oninput = (ev) => {
       if (!ev.target) return;

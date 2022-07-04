@@ -16,7 +16,7 @@
 ## Bugs
 
 - [x] Fix inconsistent angle direction
-- [ ] CircularOrbitScene - changing the angle while magnitude is 0.
+- [x] CircularOrbitScene - changing the angle while magnitude is 0.
 - [x] Reset the position of the sun as well 
 - [x] CircularOrbitScene - spamming reset causes duplicate distance indicator
 - [ ] CircularOrbitScene - Weird values get accepted (on high fps screens ?!?)
