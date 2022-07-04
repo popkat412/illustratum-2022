@@ -68,7 +68,6 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
         )!.inverseScalingFn;
         const velMag = inverseScalingFn(length);
         const vel = screenCoordDiff.setMag(velMag, 0);
-        console.log(vel.angle() * RAD_TO_DEG);
         this.earthParticleComponent.vel = vel;
         this.updateInitialVelUI();
       };

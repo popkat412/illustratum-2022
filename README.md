@@ -7,7 +7,9 @@
 - [ ] Barycentre demo
 
 #### Smaller stuff
+- [ ] Apoapsis & Periapsis - show where it was when you clicked 
 - [ ] Increase render resolution
+- [ ] Margin below aside element
 - [x] Show the distance scale (and possibly time scale)
 - [x] Show next section only after succeeding in first section
 - [x] Explanation for Kepler's laws

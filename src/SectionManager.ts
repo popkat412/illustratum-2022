@@ -1,4 +1,3 @@
-import { EXPLANATION_SECTION_LOCALSTORAGE_KEY } from "./constants";
 import ForcesScene from "./Scenes/ForcesScene";
 import GravitationalFieldScene from "./Scenes/GravitationalFieldScene";
 import CircularObitScene from "./Scenes/CircularOrbitScene";
@@ -14,7 +13,8 @@ export type AllScenesConstructor =
   | typeof CircularObitScene
   | typeof ApoapsisPointScene
   | typeof PeriapsisPointScene;
-type SceneList = readonly (readonly [string, AllScenesConstructor])[];
+// last bool is for whether it has goal or not
+type SceneList = readonly (readonly [string, AllScenesConstructor, boolean])[];
 
 class SectionManager {
   private instructionText = document.createElement("div");
@@ -23,6 +23,8 @@ class SectionManager {
   ) as HTMLCollectionOf<HTMLDivElement>;
 
   readonly sceneList: SceneList;
+
+  private unlockedUntil = 0;
 
   constructor(sceneList: SceneList) {
     this.sceneList = sceneList;
@@ -52,27 +54,17 @@ class SectionManager {
     }
   }
 
-  get unlockedUntil(): number {
-    const stored = localStorage.getItem(EXPLANATION_SECTION_LOCALSTORAGE_KEY);
-    if (!stored) return 0;
-    const num = parseInt(stored, 10);
-    if (!isNaN(num)) return num;
-    return 0;
-  }
-
-  private set unlockedUntil(newValue: number) {
-    localStorage.setItem(
-      EXPLANATION_SECTION_LOCALSTORAGE_KEY,
-      newValue.toString()
-    );
-  }
-
   solveScene(sceneClass: AllScenesConstructor): void {
     const unlockedUntil = this.unlockedUntil;
-    const newUnlockedUntil =
-      this.sceneList.findIndex(
-        ([, v]) => v == sceneClass // TODO: not sure if this truly works
-      ) + 1;
+    let newUnlockedUntil =
+      this.sceneList.findIndex(([, v]) => v == sceneClass) + 1;
+    for (
+      let i = 0;
+      i < newUnlockedUntil;
+      i++ // this is like super fragile but idc
+    )
+      if (!this.sceneList[i][2]) newUnlockedUntil--;
+
     console.log(unlockedUntil, newUnlockedUntil);
 
     if (newUnlockedUntil - unlockedUntil > 1) {
@@ -98,12 +90,12 @@ class SectionManager {
 }
 
 const SCENE_LIST: SceneList = [
-  ["forces", ForcesScene],
-  ["gravitational-field", GravitationalFieldScene],
-  ["gravitational-field-2", GravitationalFieldScene2],
-  ["circular-orbit", CircularOrbitScene],
-  ["apoapsis", ApoapsisPointScene],
-  ["periapsis", PeriapsisPointScene],
+  ["forces", ForcesScene, true],
+  ["gravitational-field", GravitationalFieldScene, false],
+  ["gravitational-field-2", GravitationalFieldScene2, false],
+  ["circular-orbit", CircularOrbitScene, true],
+  ["apoapsis", ApoapsisPointScene, true],
+  ["periapsis", PeriapsisPointScene, true],
 ] as const;
 
 export const sectionManager = new SectionManager(SCENE_LIST);
