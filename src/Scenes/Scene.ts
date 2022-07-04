@@ -88,10 +88,33 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   private goalFailedIcon: HTMLDivElement;
   private goalMetMessageDiv: HTMLDivElement;
 
+  protected canvasIntersectionObserver: IntersectionObserver;
+
   constructor(htmlContainer: HTMLDivElement, environment: E) {
     this.htmlContainer = htmlContainer;
     this.environment = environment;
     this.htmlContainer.appendChild(this.environment.app.view);
+
+    // intersection observer
+    this.canvasIntersectionObserver = new IntersectionObserver(
+      (entries, observer) => {
+        for (const { isIntersecting, target } of entries) {
+          if (target != this.htmlContainer) continue;
+          if (isIntersecting) {
+            console.log("came into view!", this.constructor.name);
+            this.environment.app.start();
+          } else {
+            console.log("left view!", this.constructor.name);
+            this.environment.app.stop();
+          }
+        }
+      },
+      {
+        root: null,
+        threshold: 0.2,
+      }
+    );
+    this.canvasIntersectionObserver.observe(this.htmlContainer);
 
     // fps text
     this.fpsText = new PIXI.Text(
