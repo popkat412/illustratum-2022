@@ -3,7 +3,7 @@
 ## TODOs
 
 #### Demos
-- [ ] Gravitational field visualisation
+- [x] Gravitational field visualisation
 - [ ] Barycentre demo
 
 #### Smaller stuff
