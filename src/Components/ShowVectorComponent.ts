@@ -3,6 +3,7 @@ import ECSComponent from "../EntityComponentSystem/Component";
 import * as PIXI from "pixi.js";
 import Vec2 from "../Vec2";
 import { InverseScalingFn, ScalingFn } from "../Utils/math";
+import { VEC_FONT_NAME } from "../constants";
 
 export class ShowVectorData {
   readonly id: string;
@@ -14,7 +15,7 @@ export class ShowVectorData {
   color: number;
 
   arrowGraphic = new SmoothGraphics();
-  pixiText = new PIXI.Text("");
+  pixiText = new PIXI.BitmapText("", { fontName: VEC_FONT_NAME });
 
   scalingFn: ScalingFn;
   inverseScalingFn: InverseScalingFn;

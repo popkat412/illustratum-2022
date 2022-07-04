@@ -10,7 +10,7 @@ import * as PIXI from "pixi.js";
 import { GoalStatus } from "./Goals";
 import { playCssAnimation } from "../Utils/render";
 import { AllScenesConstructor, sectionManager } from "../SectionManager";
-import { DISP_EXP_DIGITS } from "../constants";
+import { DISP_EXP_DIGITS, DIST_FONT_NAME } from "../constants";
 
 export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   htmlContainer: HTMLDivElement;
@@ -24,7 +24,7 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   readonly fpsText: PIXI.Text;
 
   readonly distanceScaleGraphics: PIXI.Graphics;
-  readonly distanceScaleText: PIXI.Text;
+  readonly distanceScaleText: PIXI.BitmapText;
   readonly scaleRealDist = 2e11 as const;
 
   // goal related things
@@ -97,7 +97,7 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
 
     // intersection observer
     this.canvasIntersectionObserver = new IntersectionObserver(
-      (entries, observer) => {
+      (entries) => {
         for (const { isIntersecting, target } of entries) {
           if (target != this.htmlContainer) continue;
           if (isIntersecting) {
@@ -144,11 +144,11 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
     );
     this.environment.app.stage.addChild(this.distanceScaleGraphics);
 
-    this.distanceScaleText = new PIXI.Text(
+    this.distanceScaleText = new PIXI.BitmapText(
       `Scale:\n1 strip = ${this.scaleRealDist.toExponential(
         DISP_EXP_DIGITS
       )} m`,
-      { fill: "white", fontSize: 14 }
+      { fontName: DIST_FONT_NAME }
     );
     this.distanceScaleText.zIndex = 10;
     this.distanceScaleText.position.set(

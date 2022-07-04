@@ -6,6 +6,9 @@ export const VELOCITY_SHOW_VECTOR_COMPONENT_ID =
   "velocityShowVectorComponentId";
 export const EXPLANATION_SECTION_LOCALSTORAGE_KEY = "unlockedUntil";
 
+export const VEC_FONT_NAME = "Arial13";
+export const DIST_FONT_NAME = "Arial14";
+
 // colours
 export const SUN_COLOR = 0xea2c2c;
 export const EARTH_COLOR = 0x2c85ea;

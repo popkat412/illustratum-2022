@@ -8,7 +8,7 @@ import Vec2 from "../Vec2";
 import { DISP_EXP_DIGITS } from "../constants";
 
 export default class ShowVectorSystem<E> extends ECSSystem<E> {
-  textPosFn: (vec: Vec2, pixiText: PIXI.Text, h: number) => Vec2 =
+  textPosFn: (vec: Vec2, pixiText: PIXI.BitmapText, h: number) => Vec2 =
     this.defaultTextPos;
 
   setup() {
@@ -53,8 +53,6 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
         scalingFn,
       } of vectorDataArr) {
         pixiText.text = "";
-        pixiText.style.fontSize = 13;
-        pixiText.style.fill = color;
 
         arrowGraphic.clear();
 
@@ -80,7 +78,11 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
     }
   }
 
-  private defaultTextPos(vec: Vec2, pixiText: PIXI.Text, h: number): Vec2 {
+  private defaultTextPos(
+    vec: Vec2,
+    pixiText: PIXI.BitmapText,
+    h: number
+  ): Vec2 {
     const isUp = sgn(Vec2.UP.dot(vec), sgn(Vec2.RIGHT.dot(vec)));
     const quadrant = vec.quadrant();
     const needHeightOffset = quadrant == 2 || quadrant == 4;
