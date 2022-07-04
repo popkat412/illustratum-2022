@@ -1,12 +1,16 @@
 import { EXPLANATION_SECTION_LOCALSTORAGE_KEY } from "./constants";
 import ForcesScene from "./Scenes/ForcesScene";
+import GravitationalFieldScene from "./Scenes/GravitationalFieldScene";
 import CircularObitScene from "./Scenes/CircularOrbitScene";
 import ApoapsisPointScene from "./Scenes/ApoapsisPointScene";
 import PeriapsisPointScene from "./Scenes/PeriapsisPointScene";
 import CircularOrbitScene from "./Scenes/CircularOrbitScene";
+import GravitationalFieldScene2 from "./Scenes/GravitationalFieldScene2";
 
 export type AllScenesConstructor =
   | typeof ForcesScene
+  | typeof GravitationalFieldScene
+  | typeof GravitationalFieldScene2
   | typeof CircularObitScene
   | typeof ApoapsisPointScene
   | typeof PeriapsisPointScene;
@@ -95,6 +99,8 @@ class SectionManager {
 
 const SCENE_LIST: SceneList = [
   ["forces", ForcesScene],
+  ["gravitational-field", GravitationalFieldScene],
+  ["gravitational-field-2", GravitationalFieldScene2],
   ["circular-orbit", CircularOrbitScene],
   ["apoapsis", ApoapsisPointScene],
   ["periapsis", PeriapsisPointScene],

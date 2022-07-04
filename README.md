@@ -7,6 +7,7 @@
 - [ ] Barycentre demo
 
 #### Smaller stuff
+- [ ] Increase render resolution
 - [x] Show the distance scale (and possibly time scale)
 - [x] Show next section only after succeeding in first section
 - [x] Explanation for Kepler's laws
@@ -21,4 +22,5 @@
 - [x] CircularOrbitScene - changing the angle while magnitude is 0.
 - [x] Reset the position of the sun as well 
 - [x] CircularOrbitScene - spamming reset causes duplicate distance indicator
-- [ ] CircularOrbitScene - Weird values get accepted (on high fps screens ?!?)
+- [ ] CircularOrbitScene - weird values get accepted (on high fps screens ?!?) _[cannot reproduce]_
+- [ ] CircularOrbitScene - bodies don't move after pressing go _[cannot reproduce]_

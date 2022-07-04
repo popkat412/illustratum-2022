@@ -41,11 +41,13 @@ export default class ShowVectorFieldSystem<
     }
     // query sample points for gravitational field
     const particleComponents: ParticleComponent[] = [];
-    for (const entity of unzipList(
-      this.entityManager.allEntitiesWithComponent<GravityComponent>(
-        GravityComponent
-      )
-    )[0]) {
+    for (const [
+      entity,
+      gravityComponent,
+    ] of this.entityManager.allEntitiesWithComponent<GravityComponent>(
+      GravityComponent
+    )) {
+      if (!gravityComponent.partOfFieldVisualisation) continue;
       const particleComponent =
         this.entityManager.getComponent<ParticleComponent>(
           entity,
@@ -68,8 +70,8 @@ export default class ShowVectorFieldSystem<
 
     // draw the arrow
     for (const [coord, field] of zipList(samplePoints, fields)) {
-      if (!field) continue;
-      const arrowGraphic = new SmoothGraphics();
+      if (!field || field.mag() == 0) continue;
+      const arrowGraphic = new PIXI.Graphics();
       arrowGraphic.beginFill(this.getColor(field.mag()));
       updateArrowGraphic(this.scaleMag(field.mag()), arrowGraphic, {
         arrowWidth: 5,

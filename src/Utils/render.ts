@@ -24,7 +24,7 @@ export function updateParticleComponent(
 
 export function updateArrowGraphic(
   length: number,
-  arrowGraphic: SmoothGraphics,
+  arrowGraphic: PIXI.Graphics | SmoothGraphics,
   {
     arrowWidth,
     arrowheadWidth,

@@ -38,6 +38,8 @@ export interface CelestialBodyOptions {
   initialPos?: Vec2;
   initialVel?: Vec2;
   showDistData?: ShowDistanceData[];
+  partOfFieldVisualisation?: boolean;
+  showForceVector?: boolean;
 }
 
 export function addCelestialBody(
@@ -50,6 +52,8 @@ export function addCelestialBody(
     initialPos: pos = new Vec2(),
     initialVel: vel = new Vec2(),
     showDistData = [],
+    partOfFieldVisualisation,
+    showForceVector,
   }: CelestialBodyOptions
 ): ECSEntity {
   const pixiCircle = new SmoothGraphics();
@@ -62,9 +66,12 @@ export function addCelestialBody(
 
   entityManager.addComponent(
     entity,
-    new ParticleComponent({ mass, fixed, vel, pos })
+    new ParticleComponent({ mass, fixed, vel, pos, showForceVector })
   );
-  entityManager.addComponent(entity, new GravityComponent());
+  entityManager.addComponent(
+    entity,
+    new GravityComponent(partOfFieldVisualisation)
+  );
 
   entityManager.addComponent(entity, new TrailRenderComponent(color));
   entityManager.addComponent(entity, new PixiContainerComponent());

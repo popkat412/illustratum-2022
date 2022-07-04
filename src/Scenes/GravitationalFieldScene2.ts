@@ -1,6 +1,5 @@
 import * as PIXI from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
-import { ShowDistanceData } from "../Components/ShowDistanceComponent";
 import {
   ASTRONIMICAL_UNIT,
   EARTH_COLOR,
@@ -15,20 +14,15 @@ import DraggableItemSystem from "../Systems/DraggableItemSystem";
 import GravitySystem from "../Systems/GravitySystem";
 import RendererSystem from "../Systems/RendererSystem";
 import SelectableItemSystem from "../Systems/SelectableItemSystem";
-import ShowDistanceSystem from "../Systems/ShowDistanceSystem";
+import ShowVectorFieldSystem from "../Systems/ShowVectorFieldSystem";
 import ShowVectorSystem from "../Systems/ShowVectorSystem";
 import Vec2 from "../Vec2";
 import Scene from "./Scene";
 
-const ANSWER = -2;
-
-// TODO: change the goal for this one
-export default class ForcesScene extends Scene<NBodySystemEnvironment> {
-  private sunEntity: ECSEntity;
+export default class GravitationalFieldScene2 extends Scene<NBodySystemEnvironment> {
   private earthEntity: ECSEntity;
-
-  private answerInputBox: HTMLInputElement;
-  private submitButton: HTMLButtonElement;
+  private sunEntity1: ECSEntity;
+  private sunEntity2: ECSEntity;
 
   constructor(htmlContainer: HTMLDivElement) {
     const app = new PIXI.Application();
@@ -36,61 +30,39 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     environment.scaleFactor = 2e-9;
     super(htmlContainer, environment);
 
-    // set up systems
     this.systems = [
       new GravitySystem(this.entityManager, this.environment),
-      // new MoveParticleSystem(this.entityManager, this.environment),
-      new SelectableItemSystem(this.entityManager, this.environment),
       new DraggableItemSystem(this.entityManager, this.environment),
+      new SelectableItemSystem(this.entityManager, this.environment),
       new RendererSystem(this.entityManager, this.environment),
       new ShowVectorSystem(this.entityManager, this.environment),
-      new ShowDistanceSystem(this.entityManager, this.environment),
+      new ShowVectorFieldSystem(this.entityManager, this.environment),
     ];
 
-    // set up entities
     this.earthEntity = addCelestialBody(this.entityManager, {
       mass: EARTH_MASS,
       color: EARTH_COLOR,
       radius: 20,
       fixed: true,
       initialPos: this.initialEarthPos,
+      partOfFieldVisualisation: false,
     });
-    this.sunEntity = addCelestialBody(this.entityManager, {
+    this.sunEntity1 = addCelestialBody(this.entityManager, {
       mass: SUN_MASS,
       color: SUN_COLOR,
       radius: 25,
       fixed: true,
-      initialPos: this.initialSunPos,
-      showDistData: [new ShowDistanceData(this.earthEntity)],
+      initialPos: this.initialSunPos1,
+      showForceVector: false,
     });
-
-    // set up UI
-    this.answerInputBox = document.getElementById(
-      "forces-answer-box"
-    )! as HTMLInputElement;
-    this.submitButton = document.getElementById(
-      "forces-submit-button"
-    )! as HTMLButtonElement;
-
-    this.submitButton.onclick = () => {
-      const input = this.answerInputBox.value;
-      console.log(input);
-      if (input == "") {
-        this.answerInputBox.classList.add("red-border");
-        return;
-      }
-      const parsed = Number(input);
-      if (isNaN(parsed)) {
-        this.answerInputBox.classList.add("red-border");
-        return;
-      }
-      this.answerInputBox.classList.remove("red-border");
-      if (parsed == ANSWER) {
-        this.goalMetStatus.success("Congratulations");
-      } else {
-        this.goalMetStatus.failure(this.failureMessage(parsed));
-      }
-    };
+    this.sunEntity2 = addCelestialBody(this.entityManager, {
+      mass: SUN_MASS,
+      color: SUN_COLOR,
+      radius: 25,
+      fixed: true,
+      initialPos: this.initialSunPos2,
+      showForceVector: false,
+    });
   }
 
   reset(): void {
@@ -102,20 +74,29 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
         ParticleComponent
       )!;
     earthParticleComponent.pos = this.initialEarthPos;
-    const sunParticleComponent =
+    const sun1ParticleComponent =
       this.entityManager.getComponent<ParticleComponent>(
-        this.sunEntity,
+        this.sunEntity1,
         ParticleComponent
       )!;
-    sunParticleComponent.pos = this.initialSunPos;
-
-    this.answerInputBox.value = "";
-    this.answerInputBox.classList.remove("red-border");
+    sun1ParticleComponent.pos = this.initialSunPos1;
+    const sun2ParticleComponent =
+      this.entityManager.getComponent<ParticleComponent>(
+        this.sunEntity2,
+        ParticleComponent
+      )!;
+    sun2ParticleComponent.pos = this.initialSunPos2;
   }
 
-  readonly goalMessage = `Figure out the relationship between F and r`;
-
   private get initialEarthPos(): Vec2 {
+    const app = this.environment.app;
+    const scaleFactor = this.environment.scaleFactor;
+    return new Vec2(
+      app.renderer.width / 2 / scaleFactor,
+      app.renderer.height / 3 / scaleFactor
+    );
+  }
+  private get initialSunPos1(): Vec2 {
     const app = this.environment.app;
     const scaleFactor = this.environment.scaleFactor;
     return new Vec2(
@@ -123,7 +104,7 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
       app.renderer.height / 2 / scaleFactor
     );
   }
-  private get initialSunPos(): Vec2 {
+  private get initialSunPos2(): Vec2 {
     const app = this.environment.app;
     const scaleFactor = this.environment.scaleFactor;
     return new Vec2(
@@ -132,19 +113,5 @@ export default class ForcesScene extends Scene<NBodySystemEnvironment> {
     );
   }
 
-  private failureMessage(a: number): string {
-    if (!Number.isInteger(a)) {
-      return "Hint: the correct answer is an integer";
-    }
-    if (a == 0) {
-      return "A value of 0 means that F is not related to r at all...";
-    }
-    if (a > 4) {
-      return "That number is way too big. Try again";
-    }
-    if (a < -4) {
-      return "That number is way too small. Try again";
-    }
-    return "That wasn't it, try again";
-  }
+  readonly goalMessage = null;
 }

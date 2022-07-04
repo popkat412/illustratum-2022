@@ -34,9 +34,10 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   protected frameNum = 0;
 
   // goal related things
-  abstract readonly goalMessage: string;
+  abstract readonly goalMessage: string | null;
   protected goalMetStatus: GoalStatus = new GoalStatus();
   private onGoalMetStatusUpdate(newValue: GoalStatus) {
+    if (this.goalMessage == null) return;
     const setupSucessFailureUI = (icon: HTMLDivElement) => {
       resetGoalUI();
 
@@ -179,6 +180,8 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
     this.goalMessageDiv = document.createElement("div");
     setTimeout(() => {
       // very ugly hack to access a abstract property
+      if (this.goalMessage == null) this.goalMessageSpan.style.display = "none";
+
       this.goalMessageSpan.innerHTML = `Goal: ${this.goalMessage}`;
     });
     this.goalMessageDiv.classList.add("goal-message");

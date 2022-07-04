@@ -118,7 +118,7 @@ export default class Vec2 {
   // very scuffed, in range [-pi/2, pi]
   angle(): number {
     if (this.mag() == 0) {
-      console.warn("Vec2.angle() is 0 for zero vector");
+      // console.warn("Vec2.angle() is 0 for zero vector");
     }
     return Math.atan2(this.y, this.x) + Math.PI / 2;
   }

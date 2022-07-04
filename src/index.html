@@ -145,6 +145,84 @@
         <hr />
 
         <p>
+          We can also express the effect one massive body has on another with
+          something know as a gravitational field. The gravitational field is a
+          vector field, which means it associates each point in space with a
+          vector. It is defined as $$\vec{g} = \frac{\vec{F}}{m}$$ where $m$ is
+          the mass of a <em>test particle</em>. Note that the gravitational
+          field has the same units as acceleration, $\text{m} \cdot
+          \text{s}^{-2}$.
+        </p>
+
+        <aside class="warn">
+          The gravitational field does NOT depend on the mass of the test
+          charge. Hopefully you'll see why in a moment.
+        </aside>
+
+        <p>
+          Another way of looking at this is that the gravitational field at a
+          particular point gives the
+          <em>acceleration</em> of a body at that point (provided, of course,
+          that the gravitational force is the only force acting on the body).
+        </p>
+
+        <p>
+          Let us look at the gravitational field of a single body with mass $M$.
+          Because of symmetry, the gravitational field must be radial, i.e.
+          always pointing directly away/towards the body. To we can use Newton's
+          law of universal gravitation to calculate this field: $$
+          \begin{align*} \vec{F}(r) &= G \frac{Mm}{r^2} \hat{r} \\
+          \Longrightarrow \vec{g}(r) &= \frac{\vec{F}}{m} = G
+          \frac{M}{r^2}\hat{r} \end{align*}$$ where $\vec{r}$ is the vector
+          pointing from the test particle to our body $M$, and $r$ is the
+          magnitude of $\vec{r}$.
+        </p>
+
+        <aside class="info">
+          Remember, the gravitational field is a <em>vector</em> field, so it
+          must have a direction. In this case, $\hat{r}$ refers to the unit
+          vector in the direction of $\vec{r}$, which is the mathematical way of
+          saying our field is radial.
+        </aside>
+
+        <p>
+          The gravitational field can be visualised by drawing a vector field.
+          We sample points in space, then draw a arrow there to represent the
+          gravitational field at that point. The length of the arrows are NOT
+          drawn to scale in order to avoid overlaps, so the colour of the vector
+          will be used to represent the magnitude of the vector instead.
+        </p>
+
+        <p>
+          The following is a visualisation of the gravitational field caused by
+          Patches' red star. Try dragging around the bodies, you'll notice that
+          the force on the blue planet is in the same direction as the field, as
+          can be deduced from the definition.
+        </p>
+
+        <aside class="info">
+          In this case, you can think of the blue planet as a test particle.
+        </aside>
+
+        <div id="gravitational-field" class="canvas-container"></div>
+
+        <p>
+          The gravitational field obeys the <em>superposition</em> principle,
+          which says that the gravitational field caused by multiple bodies is
+          the vector sum of the gravitational field caused by each body
+          individually.
+        </p>
+
+        <p>
+          This can be seen in the next visualisation, where the gravitational
+          field caused by two red stars is shown.
+        </p>
+
+        <div id="gravitational-field-2" class="canvas-container"></div>
+
+        <hr />
+
+        <p>
           Now, back to Patches' blue planet. Patches aspires to be the first cat
           to go to space. To do that, she needs to get into orbit around the
           planet. An orbit is when you are travelling fast enough around a

@@ -1,8 +1,6 @@
 import GravityComponent from "../Components/GravityComponent";
 import ParticleComponent from "../Components/ParticleComponent";
-import ShowVectorComponent, {
-  ShowVectorData,
-} from "../Components/ShowVectorComponent";
+import ShowVectorComponent from "../Components/ShowVectorComponent";
 import { GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID } from "../constants";
 import ECSEntity from "../EntityComponentSystem/Entity";
 import ECSSystem from "../EntityComponentSystem/System";
@@ -50,7 +48,7 @@ export default class GravitySystem<
           entity,
           ShowVectorComponent
         );
-      if (showVectorComponent /*&& !particleComponent.fixed*/) {
+      if (showVectorComponent && particleComponent.showForceVector) {
         const vecData = showVectorComponent.getVectorData(
           GRAVITY_SYSTEM_SHOW_VECTOR_COMPONENT_ID
         )!;
