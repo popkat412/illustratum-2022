@@ -70,7 +70,7 @@ export default class PeriapsisPointScene extends Scene<NBodySystemEnvironment> {
 
     this.htmlContainer.style.cursor = "pointer";
     this.app.stage.interactive = true;
-    const THRESHOLD = 30 / this.environment.scaleFactor;
+    const THRESHOLD = 50 / this.environment.scaleFactor;
     this.app.stage.on("pointerdown", () => {
       const pos = this.earthParticleComponent.pos;
       const delta = pos.sub(this.periapsisPoint).mag();
