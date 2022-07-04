@@ -94,6 +94,8 @@ export default class PeriapsisPointScene extends Scene<NBodySystemEnvironment> {
 
     this.earthParticleComponent.pos = this.initialEarthPos;
     this.earthParticleComponent.vel = this.initialEarthVel;
+    this.sunParticleComponent.pos = this.initialSunPos;
+    this.sunParticleComponent.vel = new Vec2();
 
     const canvas = this.trailRendererSystem.canvas;
     this.trailRendererSystem.context.clearRect(
@@ -140,6 +142,12 @@ export default class PeriapsisPointScene extends Scene<NBodySystemEnvironment> {
   private get earthParticleComponent(): ParticleComponent {
     return this.entityManager.getComponent<ParticleComponent>(
       this.earthEntity,
+      ParticleComponent
+    )!;
+  }
+  private get sunParticleComponent(): ParticleComponent {
+    return this.entityManager.getComponent<ParticleComponent>(
+      this.sunEntity,
       ParticleComponent
     )!;
   }

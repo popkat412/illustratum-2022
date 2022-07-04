@@ -223,6 +223,8 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
 
     this.earthParticleComponent.pos = this.earthInitialPos;
     this.earthParticleComponent.vel = this.earthInitialVel;
+    this.sunParticleComponent.pos = this.sunInitialPos;
+    this.sunParticleComponent.vel = new Vec2();
 
     const canvas = this.trailRendererSystem.canvas;
     this.trailRendererSystem.context.clearRect(
@@ -240,6 +242,12 @@ export default class CircularOrbitScene extends Scene<NBodySystemEnvironment> {
   private get earthParticleComponent(): ParticleComponent {
     return this.entityManager.getComponent<ParticleComponent>(
       this.earthEntity,
+      ParticleComponent
+    )!;
+  }
+  private get sunParticleComponent(): ParticleComponent {
+    return this.entityManager.getComponent<ParticleComponent>(
+      this.sunEntity,
       ParticleComponent
     )!;
   }
