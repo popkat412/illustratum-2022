@@ -1,3 +1,4 @@
+import { SmoothGraphics } from "@pixi/graphics-smooth";
 import * as PIXI from "pixi.js";
 import ECSComponent from "../EntityComponentSystem/Component";
 import ECSEntity from "../EntityComponentSystem/Entity";
@@ -7,7 +8,7 @@ export class ShowDistanceData {
 
   color: number;
 
-  lineGraphic = new PIXI.Graphics();
+  lineGraphic = new SmoothGraphics();
   pixiText = new PIXI.Text("");
 
   _setupDone = false;

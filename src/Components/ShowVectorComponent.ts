@@ -1,3 +1,4 @@
+import { SmoothGraphics } from "@pixi/graphics-smooth";
 import ECSComponent from "../EntityComponentSystem/Component";
 import * as PIXI from "pixi.js";
 import Vec2 from "../Vec2";
@@ -12,7 +13,7 @@ export class ShowVectorData {
   units: string;
   color: number;
 
-  arrowGraphic = new PIXI.Graphics();
+  arrowGraphic = new SmoothGraphics();
   pixiText = new PIXI.Text("");
 
   scalingFn: ScalingFn;

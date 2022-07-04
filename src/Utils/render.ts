@@ -1,3 +1,4 @@
+import { SmoothGraphics } from "@pixi/graphics-smooth";
 import * as PIXI from "pixi.js";
 import ParticleComponent from "../Components/ParticleComponent";
 import PixiContainerComponent from "../Components/PIXIContainerComponent";
@@ -23,7 +24,7 @@ export function updateParticleComponent(
 
 export function updateArrowGraphic(
   length: number,
-  arrowGraphic: PIXI.Graphics,
+  arrowGraphic: SmoothGraphics,
   {
     arrowWidth,
     arrowheadWidth,

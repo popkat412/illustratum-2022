@@ -1,10 +1,11 @@
+import { SmoothGraphics } from "@pixi/graphics-smooth";
+import * as PIXI from "pixi.js";
 import ECSSystem from "../EntityComponentSystem/System";
 import {
   HasGravitationalConstant,
   HasPixiApp,
   HasRenderScale,
 } from "../Environments/EnvironmentInterfaces";
-import * as PIXI from "pixi.js";
 import Vec2 from "../Vec2";
 import { gravitationlField } from "./GravitySystem";
 import GravityComponent from "../Components/GravityComponent";
@@ -68,7 +69,7 @@ export default class ShowVectorFieldSystem<
     // draw the arrow
     for (const [coord, field] of zipList(samplePoints, fields)) {
       if (!field) continue;
-      const arrowGraphic = new PIXI.Graphics();
+      const arrowGraphic = new SmoothGraphics();
       arrowGraphic.beginFill(this.getColor(field.mag()));
       updateArrowGraphic(this.scaleMag(field.mag()), arrowGraphic, {
         arrowWidth: 5,

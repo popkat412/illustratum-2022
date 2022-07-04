@@ -1,10 +1,10 @@
-import * as PIXI from "pixi.js";
+import { SmoothGraphics } from "@pixi/graphics-smooth";
 import ECSComponent from "../EntityComponentSystem/Component";
 
 export default class PixiGraphicsRenderComponent extends ECSComponent {
-  pixiGraphics: PIXI.Graphics;
+  pixiGraphics: SmoothGraphics;
 
-  constructor(graphics: PIXI.Graphics) {
+  constructor(graphics: SmoothGraphics) {
     super();
     this.pixiGraphics = graphics;
   }

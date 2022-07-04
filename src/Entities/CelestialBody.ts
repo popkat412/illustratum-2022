@@ -1,4 +1,5 @@
 import { GlowFilter } from "@pixi/filter-glow";
+import { SmoothGraphics } from "@pixi/graphics-smooth";
 import * as PIXI from "pixi.js";
 import DraggableComponent from "../Components/DraggableComponent";
 import GravityComponent from "../Components/GravityComponent";
@@ -51,7 +52,8 @@ export function addCelestialBody(
     showDistData = [],
   }: CelestialBodyOptions
 ): ECSEntity {
-  const pixiCircle = new PIXI.Graphics();
+  const pixiCircle = new SmoothGraphics();
+  pixiCircle.cacheAsBitmap = true;
   pixiCircle.beginFill(color);
   pixiCircle.drawCircle(0, 0, radius);
   pixiCircle.endFill();
