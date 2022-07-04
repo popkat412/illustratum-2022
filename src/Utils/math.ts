@@ -16,6 +16,10 @@ export function clampRange(x: number, low: number, high: number): number {
   return Math.max(Math.min(x, high), low);
 }
 
+export function inIncRange(x: number, low: number, high: number): boolean {
+  return low <= x && x <= high;
+}
+
 // https://github.com/processing/p5.js/blob/v1.4.1/src/math/calculation.js#L409
 export function mapRange(
   x: number,

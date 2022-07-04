@@ -1,4 +1,4 @@
-import { approxEq } from "./Utils/math";
+import { approxEq, inIncRange, mapRange } from "./Utils/math";
 
 /**
   Basic 2D vector class containing only the methods I need.
@@ -40,6 +40,11 @@ export default class Vec2 {
 
   addY(s: number): Vec2 {
     return new Vec2(this.x, this.y + s);
+  }
+
+  addR(s: number): Vec2 {
+    const newR = this.mag() + s;
+    return Vec2.fromPolar(newR, this.angle());
   }
 
   sub(other: Vec2): Vec2 {
@@ -110,6 +115,7 @@ export default class Vec2 {
 
   // angle to the _vertical_ in _radians_
   // 0 degress points UP in _pixi space_
+  // very scuffed, in range [-pi/2, pi]
   angle(): number {
     if (this.mag() == 0) {
       console.warn("Vec2.angle() is 0 for zero vector");
@@ -117,10 +123,28 @@ export default class Vec2 {
     return Math.atan2(this.y, this.x) + Math.PI / 2;
   }
 
+  // in range [0, 2pi]
+  positiveAngle(): number {
+    const angle = this.angle();
+    if (angle >= 0) return angle;
+    return mapRange(angle, -Math.PI / 2, 0, (3 * Math.PI) / 2, 2 * Math.PI);
+  }
+
   // angle to the _vertical_ in _radians_
   // 0 degress points UP in _pixi space_
   setAngle(angle: number): Vec2 {
     return new Vec2(Math.sin(-angle), Math.cos(-angle)).mult(-this.mag());
+  }
+
+  // those ambiguous angles will just return any quadrant that it might belong in
+  // e.g. angle 0 will give either quadrant 1 or 2
+  quadrant(): 1 | 2 | 3 | 4 {
+    const angle = this.positiveAngle();
+    if (inIncRange(angle, 0, Math.PI / 2)) return 1;
+    if (inIncRange(angle, Math.PI / 2, Math.PI)) return 4;
+    if (inIncRange(angle, Math.PI, (3 * Math.PI) / 2)) return 3;
+    if (inIncRange(angle, (3 * Math.PI) / 2, 2 * Math.PI)) return 2;
+    throw new Error(`unknown quadrant for angle ${angle}`);
   }
 
   rotate(angle: number): Vec2 {

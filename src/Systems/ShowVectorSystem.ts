@@ -1,3 +1,4 @@
+import * as PIXI from "pixi.js";
 import ShowVectorComponent from "../Components/ShowVectorComponent";
 import ECSSystem from "../EntityComponentSystem/System";
 import { sgn } from "../Utils/math";
@@ -7,7 +8,8 @@ import Vec2 from "../Vec2";
 import { DISP_EXP_DIGITS } from "../constants";
 
 export default class ShowVectorSystem<E> extends ECSSystem<E> {
-  textPosFn: (vec: Vec2, h: number) => Vec2 = this.defaultTextPos;
+  textPosFn: (vec: Vec2, pixiText: PIXI.Text, h: number) => Vec2 =
+    this.defaultTextPos;
 
   setup() {
     for (const [
@@ -71,18 +73,20 @@ export default class ShowVectorSystem<E> extends ECSSystem<E> {
         pixiText.text = `${label} = ${vec
           .mag()
           .toExponential(DISP_EXP_DIGITS)} ${units}`;
-        const textPos = this.textPosFn(vec, h);
+        const textPos = this.textPosFn(vec, pixiText, h);
         pixiText.x = textPos.x;
         pixiText.y = textPos.y;
       }
     }
   }
 
-  private defaultTextPos(vec: Vec2, h: number): Vec2 {
-    // TODO: account for height offset
-    const upOrDown = sgn(Vec2.UP.dot(vec));
-    const textOffset = vec.rotate(Math.PI / 2).setMag(20);
-    const textPos = vec.setMag(h * 0.75).add(textOffset.mult(upOrDown));
-    return textPos;
+  private defaultTextPos(vec: Vec2, pixiText: PIXI.Text, h: number): Vec2 {
+    const isUp = sgn(Vec2.UP.dot(vec), sgn(Vec2.RIGHT.dot(vec)));
+    const quadrant = vec.quadrant();
+    const needHeightOffset = quadrant == 2 || quadrant == 4;
+    const a = vec.setMag(h * 0.5);
+    const b = a.rotate((isUp * Math.PI) / 2).setMag(20);
+    const c = needHeightOffset ? Vec2.UP.setMag(pixiText.height) : new Vec2();
+    return a.add(b).add(c);
   }
 }

@@ -1,6 +1,7 @@
 import NBodySystemEnvironment from "./Environments/NBodySystemEnvironment";
 import Scene from "./Scenes/Scene";
 import { sectionManager } from "./SectionManager";
+import Vec2 from "./Vec2";
 
 // scenes
 const scenes: Scene<NBodySystemEnvironment>[] = [];
