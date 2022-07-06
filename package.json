@@ -17,6 +17,7 @@
     "@parcel/transformer-inline-string": "2.6.2",
     "@parcel/transformer-sass": "2.6.2",
     "@types/katex": "^0.14.0",
+    "@types/node": "^18.0.3",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",

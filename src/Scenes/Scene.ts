@@ -132,7 +132,9 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
     );
     this.fpsText.position.set(10, 10);
     this.fpsText.zIndex = 10;
-    this.environment.app.stage.addChild(this.fpsText);
+    if (process.env.NODE_ENV == "development") {
+      this.environment.app.stage.addChild(this.fpsText);
+    }
 
     // distance scale
     this.distanceScaleGraphics = new PIXI.Graphics();
