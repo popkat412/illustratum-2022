@@ -1,5 +1,6 @@
 import EntityManager from "../EntityComponentSystem/EntityManager";
 import ECSSystem from "../EntityComponentSystem/System";
+import fitty from "fitty";
 import {
   HasPixiApp,
   HasRenderScale,
@@ -98,9 +99,16 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
   protected canvasIntersectionObserver: IntersectionObserver;
 
   constructor(htmlContainer: HTMLDivElement, environment: E) {
+    const canvasAndGoalContainerContainer = document.createElement("div");
+    canvasAndGoalContainerContainer.classList.add("canvas-and-goal-container-container");
+    const uiContainer = htmlContainer.getElementsByClassName("ui-container")[0] || document.createElement("div");
+    uiContainer.classList.add("ui-container");
+
     this.htmlContainer = htmlContainer;
     this.environment = environment;
-    this.htmlContainer.appendChild(this.environment.app.view);
+    this.htmlContainer.prepend(canvasAndGoalContainerContainer);
+    canvasAndGoalContainerContainer.appendChild(this.environment.app.view);
+
 
     // intersection observer
     this.canvasIntersectionObserver = new IntersectionObserver(
@@ -174,7 +182,7 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
       this.reset();
     };
     this.resetButton.classList.add("reset-button");
-    this.htmlContainer.appendChild(this.resetButton);
+    uiContainer.prepend(this.resetButton);
 
     // goal system
     this.goalMessageSpan = document.createElement("span");
@@ -182,11 +190,14 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
     this.goalMessageDiv = document.createElement("div");
     setTimeout(() => {
       // very ugly hack to access a abstract property
-      if (this.goalMessage == null) this.goalMessageSpan.style.display = "none";
-
-      this.goalMessageSpan.innerHTML = `Goal: ${this.goalMessage}`;
+      if (this.goalMessage === null) {
+        this.goalMessageSpan.innerHTML = "";
+      } else {
+        this.goalMessageSpan.innerHTML = `Goal: ${this.goalMessage}`;
+      }
     });
     this.goalMessageDiv.classList.add("goal-message");
+    fitty(this.goalMessageSpan, { minSize: 5, maxSize: 20 });
 
     this.goalMetIcon = document.createElement("div");
     this.goalMetIcon.classList.add("goal-icon", "goal-met-icon");
@@ -212,8 +223,10 @@ export default abstract class Scene<E extends HasPixiApp & HasRenderScale> {
     this.goalContainer.appendChild(this.goalFailedIcon);
     this.goalContainer.appendChild(this.goalMetMessageDiv);
 
-    this.htmlContainer.appendChild(this.goalMessageDiv);
-    this.htmlContainer.appendChild(this.goalContainer);
+    canvasAndGoalContainerContainer.appendChild(this.goalMessageDiv);
+    canvasAndGoalContainerContainer.appendChild(this.goalContainer);
+
+    this.htmlContainer.appendChild(uiContainer);
 
     this.goalMetStatus.onUpdate = this.onGoalMetStatusUpdate.bind(this);
 

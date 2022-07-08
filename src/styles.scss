@@ -1,4 +1,5 @@
 $content-width: 35em;
+$mobile-breakpoint: 640px;
 
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
@@ -6,10 +7,7 @@ body {
   margin: 0 auto;
   line-height: 1.7em;
   max-width: $content-width;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding: 50px;
   text-justify: inter-word;
   text-align: justify;
   text-rendering: optimizeLegibility;
@@ -17,11 +15,27 @@ body {
   font-size: 20px;
 }
 
+@media (max-width: $mobile-breakpoint) {
+  body {
+    text-align: start;
+    padding: 10px;
+  }
+}
+
 .reset-button {
   position: absolute;
   bottom: 20px;
   left: 10px;
 }
+
+
+@media (max-width: $mobile-breakpoint) {
+  .reset-button {
+    position: static;
+    height: 30px;
+  }
+}
+
 
 $goal-green: #73af55;
 $goal-red: #c02a26;
@@ -52,15 +66,32 @@ $goal-red: #c02a26;
   animation-fill-mode: forwards;
 }
 
+@media (max-width: $mobile-breakpoint) {
+  .strikethrough::after {
+    height: 1px;
+  }
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 $checkmark-animation-duration: 2.5s;
 $checkmark-animation-delay: 0.35s;
 
 .goal-message {
   position: absolute;
   top: 10px;
-  width: 100%;
   text-align: center;
   white-space: nowrap;
+  color: white;
+  width: 100%;
+
+  > span {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
 }
 
 .goal-met-message {
@@ -95,6 +126,10 @@ $checkmark-animation-delay: 0.35s;
   pointer-events: none;
 }
 
+.canvas-and-goal-container-container {
+  position: relative;
+}
+
 .goal-container-animation {
   animation: bg-fade-inout $checkmark-animation-duration;
 }
@@ -125,7 +160,6 @@ $checkmark-animation-delay: 0.35s;
   right: 10px;
   text-align: left;
   max-width: 30%;
-  align-items: right;
 
   flex-direction: column;
 
@@ -141,6 +175,18 @@ $checkmark-animation-delay: 0.35s;
 
   > * {
     margin-bottom: 0.5em;
+  }
+}
+
+@media (max-width: $mobile-breakpoint) {
+  .bottom-right-ui {
+    position: static;
+    max-width: 100%;
+  }
+
+  .ui-container {
+    display: flex;
+    justify-content: space-between;
   }
 }
 
@@ -224,6 +270,12 @@ $checkmark-animation-delay: 0.35s;
   }
 }
 
+@media (max-width: $mobile-breakpoint) {
+  .canvas-container {
+    color: black;
+  }
+}
+
 .tooltip {
   position: fixed;
   top: 100px;
@@ -267,7 +319,6 @@ aside {
 
 .explanation-section-container {
   position: relative;
-  transition: all 0.5s;
 
   > .instruction-text {
     position: absolute;
